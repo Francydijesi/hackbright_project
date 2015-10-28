@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Welcome to our site!</h1>
+<form action="/register-confirm" id="register" method="POST">
+    Email: <input type="text" name='email'><br><br>
+    Password: <input type="password" id="password" name="password"><br> <br>
+    Re-enter Password: <input type="password" id="passwordcheck" name="passwordCheck"><br> <br>
+    <input type="submit" value="Register"> 
+
+</form>
+
+<script src="https://code.jquery.com/jquery.js"></script>
+<script>
+function validatePassword(evt) {
+    if ($("#password").val() !== $("#passwordcheck").val()) {
+        alert("Your passwords don't match");
+        evt.preventDefault();
+        $("#register").trigger("reset");
+    }
+    
+    if ($("#password").val().length < 6) {
+        alert("Your password needs to be at least 6 characters long.");
+        evt.preventDefault();
+        $("#register").trigger("reset");
+    }
+   
+}
+$("#register").on('submit', validatePassword)
+</script>
+{% endblock %}

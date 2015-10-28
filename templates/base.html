@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+<head>
+  <title>Ratings</title>
+</head>
+
+<body>
+  
+  {% if 'User' in session %}
+    <a href="/logout"> Log Out Here </a>
+  {% else %}
+    <p><a href="/login">Log In Here</a></p>
+  {% endif %}
+  <hr>
+
+  {% block content %} put your content here {% endblock %}
+
+</body>
+</html>

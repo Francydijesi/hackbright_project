@@ -1,0 +1,11 @@
+insert into x_recipe_ingredient (recipe_fk,ingredient_name,ingredient_info,quantity,measure) VALUES (1,'baby spinach leaves',' or equivalent quantity of larger leaves','5','ounces');
+insert into x_recipe_ingredient (recipe_fk,ingredient_name,ingredient_info,quantity,measure) VALUES (1,'egg','','4','');
+insert into x_recipe_ingredient (recipe_fk,ingredient_name,ingredient_info,quantity,measure) VALUES (1,'egg','yolk','4','');
+insert into x_recipe_ingredient (recipe_fk,ingredient_name,ingredient_info,quantity,measure) VALUES (1,'salt','','','');
+insert into x_recipe_ingredient (recipe_fk,ingredient_name,ingredient_info,quantity,measure) VALUES (1,'nutmeg','grated','1/4','teaspoon');
+insert into x_recipe_ingredient (recipe_fk,ingredient_name,ingredient_info,quantity,measure) VALUES (1,'pepper','black','1','teaspoon');
+insert into x_recipe_ingredient (recipe_fk,ingredient_name,ingredient_info,quantity,measure) VALUES (1,'flour','all-purpose','3 ¼','cup');
+insert into x_recipe_ingredient (recipe_fk,ingredient_name,ingredient_info,quantity,measure) VALUES (1,'butter','','4','tablespoons');
+insert into x_recipe_ingredient (recipe_fk,ingredient_name,ingredient_info,quantity,measure) VALUES (1,'bacon','or pancetta, cut crosswise into thin lardons','4','ounces');
+insert into x_recipe_ingredient (recipe_fk,ingredient_name,ingredient_info,quantity,measure) VALUES (1,'sage','fresh','12','leaves');
+insert into x_recipe_ingredient (recipe_fk,ingredient_name,ingredient_info,quantity,measure) VALUES (1,'Parmesan','grated','','');

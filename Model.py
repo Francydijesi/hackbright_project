@@ -1,11 +1,8 @@
-"""Models and database functions for Ratings project."""
+"""Models and database functions for Food Planner project."""
 
 from flask_sqlalchemy import SQLAlchemy
-from correlation import pearson
+from flask import Flask
 
-# This is the connection to the SQLite database; we're getting this through
-# the Flask-SQLAlchemy helper library. On this, we can find the `session`
-# object, where we do most of our interactions (like committing, etc.)
 
 db = SQLAlchemy()
 
@@ -27,7 +24,7 @@ class User(db.Model):
     age = db.Column(db.Integer, nullable=True)
     gender = db.Column(db.String(15), nullable=True)
     name =db.Column(db.String(50), nullable=True)
-    zipcode =db.Column(db.IntegerString(50), nullable=True)
+    zipcode =db.Column(db.Integer, nullable=True)
 
     @classmethod
     def get_user_by_email_password(cls, user_email, user_password):
@@ -50,7 +47,7 @@ class User(db.Model):
 #
 ### RECIPES ###
 
-class Recipes(db.Model):
+class Recipe(db.Model):
     """ Recipes list """
 
     __tablename__ = "recipes"
@@ -59,10 +56,11 @@ class Recipes(db.Model):
     title = db.Column(db.String(64), nullable=False)
     description = db.Column(db.String(300), nullable=True)
     image_url = db.Column(db.String(100), nullable=True)
-    cat_code = db.Column(db.String(50), db.foreignKey('categories.cat_code'))
+    cat_code = db.Column(db.String(50), db.ForeignKey('categories.cat_code'))
     cuisine = db.Column(db.String(50), nullable=True)
     calories = db.Column(db.Integer, nullable=True)
-    rate = db.Column(db.String(50), nullable=True)
+    source = db.Column(db.String(50), nullable=True)
+    rate = db.Column(db.String(20), nullable=True)
     servings = db.Column(db.Integer, nullable=True)
     cook_time = db.Column(db.String(50), nullable=True)
     skill_level = db.Column(db.String(2), nullable=True)
@@ -77,15 +75,16 @@ class Recipes(db.Model):
 #
 ### RECIPES PREPARATION###
 
-class RecipeSteps(db.Model):
+class RecipeStep(db.Model):
     """ List of steps for each recipe """
 
     __tablename__ = "recipe_steps"
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     recipe_fk = db.Column(db.Integer, db.ForeignKey('recipes.recipe_id'))
-    step_description = db.Column(db.String(500), nullable=true) 
-    step_num = db.Column(db.Integer, nullable=true)
+    step_description = db.Column(db.Text, nullable=True) 
+    step_num = db.Column(db.Integer, nullable=True)
+
 
     def __repr__(self):
         """ Recipe Step """
@@ -97,7 +96,7 @@ class RecipeSteps(db.Model):
 #
 ### RECIPES CATEGORIES ###
 
-class Categories(db.Model):
+class Category(db.Model):
     """ List of recipe categories """
 
     __tablename__ = "categories"
@@ -114,13 +113,13 @@ class Categories(db.Model):
 #
 ### INGREDIENTS ###
 
-class Ingredients(db.Model):
+class Ingredient(db.Model):
     """Ingredients list"""
 
     __tablename__ = "ingredients"
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
+    name = db.Column(db.String(50), nullable=False, unique=True)
     pkg_weight = db.Column(db.Integer, nullable=True)
     pkg_measure = db.Column(db.Integer, nullable=True)
     cost = db.Column(db.String(100), nullable=True)
@@ -189,6 +188,15 @@ class RecipeUser(db.Model):
     user_fk = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     recipe_fk = db.Column(db.Integer, db.ForeignKey('recipes.recipe_id'))
 
+    # Define relationship to user
+    user = db.relationship("User",
+                           backref=db.backref("x_recipe_user", order_by=user_fk))
+
+    # Define relationship to recipe
+    recipe = db.relationship("Recipe",
+                           backref=db.backref("x_recipe_user", order_by=recipe_fk))
+
+
     def __repr__(self):
         """ Recipe User Association """
 
@@ -205,16 +213,26 @@ class RecipeIngredient(db.Model):
     __tablename__ = "x_recipe_ingredient"
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    recipe_fk = db.Column(db.Integer, db.ForeignKey('recipe.recipe_id'))
-    ingredient_fk = db.Column(db.Integer, db.ForeignKey('ingredients.ingredient_id'))
-    quantity = db.Column(db.Integer, nullable=True)
+    recipe_fk = db.Column(db.Integer, db.ForeignKey('recipes.recipe_id'))
+    ingredient_name = db.Column(db.String(50), db.ForeignKey('ingredients.name'))
+    ingredient_info = db.Column(db.String(50), nullable=True)
+    quantity = db.Column(db.String(20), nullable=True)
     measure = db.Column(db.String(20), nullable=True)
+
+    # Define relationship to Recipe
+    recipe = db.relationship("Recipe",
+                           backref=db.backref("x_recipe_ingredient",
+                                                       order_by=recipe_fk))
+    # Define relationship to Ingredient
+    ingredient = db.relationship("Ingredient",
+                           backref=db.backref("x_recipe_ingredient", order_by=ingredient_name))
+
 
     def __repr__(self):
         """ User Ingredient Association"""
 
-        return "<RecipeIngredient ingredient_id= %s name=%s>" % ( self.ingredient,
-                                                             self.name )
+        return "<RecipeIngredient ingredient_id= %s name=%s>" % ( self.id,
+                                                             self.ingredient_name )
 
 ##############################################################################
 # Helper functions
@@ -223,14 +241,12 @@ def connect_to_db(app):
     """Connect the database to our Flask app."""
 
     # Configure to use our SQLite database
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///ratings.db'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///recipes.db'
     db.app = app
     db.init_app(app)
 
 
 if __name__ == "__main__":
-    # As a convenience, if we run this module interactively, it will leave
-    # you in a state of being able to work with the database directly.
 
     from server import app
     connect_to_db(app)

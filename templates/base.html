@@ -1,19 +1,35 @@
 <!doctype html>
 <html>
 <head>
-  <title>Ratings</title>
+  
+  <title>{% block title %}{% endblock%}</title>
+  <link rel="stylesheet" href="/static/css/style.css"></link>
+
 </head>
 
 <body>
-  
-  {% if 'User' in session %}
-    <a href="/logout"> Log Out Here </a>
-  {% else %}
-    <p><a href="/login">Log In Here</a></p>
-  {% endif %}
+  <!-- Top bar with Logo Title Login -->
+<div class="top-bar">  
+<table>
+    <tr>
+      <td class="logo-wrap">Logo</td>
+      <td class="title-wrap">{% block page %} {% endblock %}</td>
+      <td class="login-wrap">  
+          {% if 'User' in session %}
+            <a href="/logout"> Sign Out </a>
+          {% else %}
+            <a href="/login">Sign In </a>|<a href="/register">Sign Up </a>
+            
+          {% endif %}
+      </td>
+    </tr>  
   <hr>
+  </table>
+</div>  
 
-  {% block content %} put your content here {% endblock %}
+<!-- Navigation bar --> 
+
+  {% block content %} {% endblock %}
 
 </body>
 </html>

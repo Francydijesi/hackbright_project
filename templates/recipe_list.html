@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}Meal planner{% endblock%}
+{% block page %} Recipes {% endblock%}
+{% block content %}
+<body>
+<!--
+<div id="header">
+<h1>Recipes</h1>
+</div>-->
+
+<div id="nav">
+London<br>
+Paris<br>
+Tokyo<br>
+</div>
+
+<div>
+
+  <table>
+    {% for recipe in recipes %}
+        <tr id="recipe">
+            <td><h3>{{ recipe.title }}</h3></td>  
+            <td></td>  
+        </tr>  
+        <tr>
+            <td><img src="/static/img/{{ recipe.image_url }}.jpg" style="height:200px; padding:30px;"></td>
+            <td>{{ recipe.description }}</td>
+        </tr>  
+    {% endfor %}
+  </table>  
+</div>
+
+<div id="footer">
+
+</div>
+
+</body>
+
+{% endblock %}

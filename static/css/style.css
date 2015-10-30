@@ -1,35 +1,35 @@
 
-html .navigation-m.panel{
-
-    position: relative;
-    float: left;
-    display: none;
-    border: 2px solid black;
-}
 
 div.top-bar{
 
-    background: green;
+    background: #ffcc33;
     width: 1200px;
+    padding-left: 20px;
 
 }
 
 td.logo-wrap{
-   padding-left: 30px;
+   
    text-align:center;
    width: 100px;
+   font-size: 30px;
+   font-family: 'Brush Script MT', cursive;
 }
 
 td.title-wrap{
    width:900px;
-   font-size: 48px;
+   font-size: 60px;
    text-align:center;
+   font-family: 'Brush Script MT', cursive;
 }
 
 td.login-wrap{
- width: 200px;  
- text-align:right;
- padding-right: 30px;
+   width: 200px;  
+   text-align:right;
+   font-size: 30px;
+   font-family: 'Brush Script MT', cursive;
+   vertical-align: bottom;
+ 
 }
 
 .img_container{
@@ -37,13 +37,16 @@ td.login-wrap{
   width:1200px;
 }
 
+
 td.section{
 
     width:400px;
     font-size: 30px;
-    
     text-align:center;
+    font-family: 'Brush Script MT', cursive;
 }
+
+/* Recipe list*/
 
 #header {
     background-color:black;
@@ -51,19 +54,44 @@ td.section{
     text-align:center;
     padding:5px;
 }
-#nav {
+div#nav{
     line-height:30px;
     background-color:#eeeeee;
-    height:300px;
-    width:250px;
+    height:auto  ;  
+    width:350px;
     float:left;
-    padding:20px; 
-}
-td#recipe {
+    padding-left: 30px;
+    padding-top:30px;
+}   
+div#recipe-box{
     
-    padding-left:30px;
-    font-size: 15px; 
+    width: 1200px;
+    font-family: 'Brush Script MT', cursive;
+    padding-left: 20px;
+    padding-bottom: 20px;
 }
+td#recipe-title{
+        
+    font-size: 30px; 
+    font:bold;
+    font-family: 'Brush Script MT', cursive;
+    vertical-align: top;
+}
+
+td#recipe-desc{
+    
+    font-size: 20px; 
+    width:500px;
+    text-align: left;
+    vertical-align: top;
+    padding: 20px 20px 20px 20px;
+}
+
+img#recipe-img{
+    width:300px;
+    padding-top: 20px;
+}
+
 #footer {
     background-color:black;
     color:white;
@@ -72,3 +100,74 @@ td#recipe {
     padding:5px; 
 }
 
+/* Recipe page */
+
+#recipe-page{
+   
+  width:600px;
+}
+
+
+div#ingr-box{
+    width:400px;
+    padding-top: 20px;
+    padding-left: 20px;
+    
+}
+
+div#steps-box{
+    width:600px;
+    padding-top: 20px;
+    padding-left: 20px;
+    font-family: 'Brush Script MT', cursive;
+    font-size: 30px;
+    
+}
+td#ingr-item{
+
+    font-family: 'Brush Script MT', cursive;
+    font-size: 25px;
+    text-align: left;
+    
+}
+td#ingr-qty{
+
+    font-family: 'Brush Script MT', cursive;
+    font-size: 25px;
+    text-align: left;
+    padding-left: 20px;
+}
+td#step-num{
+
+    font-family: 'Brush Script MT';
+    font-size: 25px;
+    text-align: left;
+    padding-left: 20px;
+    padding-top: 20px;
+    font-weight: bold;
+    
+
+}
+td#step-desc{
+
+    font-family: 'Brush Script MT', cursive;
+    font-size: 25px;
+    text-align: left;
+    padding-left: 20px;
+    padding-top: 20px;
+
+}
+p#r-desc{
+   font-family: 'Brush Script MT', cursive;
+    font-size: 25px;
+    text-align: left;
+    padding-left: 20px;
+}
+p#ingr{
+    font-family: 'Brush Script MT', cursive;
+    font-size: 40px;
+}
+p#rec-tit{
+    font-family: 'Brush Script MT', cursive;
+    font-size: 40px;
+}

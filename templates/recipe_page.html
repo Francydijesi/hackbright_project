@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block title %}Meal planner{% endblock%}
+{% block page %} Recipe {% endblock%}
+{% block content %}
+<body>
+
+<div class="container">
+    <div class="row">
+        <p id="rec-tit">{{ recipe.title }}</p>
+    </div>    
+    <div class="row">
+        <div class="col-xs-6">   
+            <img id="recipe-page" src="/static/img/recipes/{{ recipe.image_url }}">
+         </div>   
+        
+        <div class="col-xs-6">
+            <p id="r-desc">{{ recipe.description }}<p>
+        </div>    
+        
+    </div>
+
+<!-- Sections -->
+<!-- <div class="img_container">-->
+<div class="row">
+     <div class="col-xs-6">
+     <!-- <div id="ingr-box"> -->
+
+        <table>
+            <tr><td><p id="ingr"> Ingredients: </p></td></tr>
+            {% for ingredient in ingredients%}
+                <tr>
+                    <td id="ingr-qty">{{ ingredient.quantity }} {{ ingredient.measure }}</td>
+                    {% if ingredient.quantity and ingredient.quantity > 1  and not ingredient.measure%}
+                        <td id="ingr-item">{{ ingredient.ingredient_name }}s</td>
+                    {% else %} 
+                        <td id="ingr-item">{{ ingredient.ingredient_name }}</td>   
+                    {% endif %}    
+                </tr>
+            {% endfor%}
+            
+        </table>       
+    </div>
+    <div class="col-xs-6">
+    <!-- <div id="steps-box"> -->
+        <table>
+            {% for step in steps %}
+            <tr> 
+                <td id="step-num"> STEP {{ step.step_num }}</td></tr>
+                <td id="step-desc"> {{ step.step_description }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>    
+</div>
+</div>
+</body>
+
+{% endblock %}

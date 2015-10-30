@@ -1,6 +1,6 @@
 from jinja2 import StrictUndefined
 
-from flask import Flask, render_template, redirect, request, flash, session
+from flask import Flask, render_template, redirect, request, flash, session, jsonify
 
 from flask_debugtoolbar import DebugToolbarExtension
 
@@ -21,7 +21,7 @@ app.jinja_env.undefined = StrictUndefined
 @app.route('/')
 def index():
     """Homepage."""
-    
+
     return render_template("homepage.html")
 
 @app.route("/recipes")
@@ -29,30 +29,83 @@ def recipe_list():
     """Show list of users."""
 
     # If user is logged in, search user's recipes.
-    # if session['user']:
-    # recipes = u.Recipe.query.all()
-    
+    if 'user' in session:
+        recipes = u.Recipe.query.all()
+
     # If user is not logged in, return all recipes
-    # else:
-    recipes = Recipe.query.all()
-    print recipes
+    else:
+        recipes = Recipe.query.all()
+
     return render_template("recipe_list.html", recipes=recipes)
+
+@app.route("/filtered_recipe.json")
+def filteres_recipe():
+    """ Search recipes by filters """
+
+    # Gets the values of the filter
+    title = request.args.get("title")
+    cuisine = request.args.get("cuisine")
+    cat = request.args.get("cat")
+    level = request.args.get("level")
+    
+    # Checks if the fields have a value and save it in a dictionary
+    args = {}
+
+    if title:
+        args['title'] = title
+
+    if cuisine:
+        args['title'] = title
+
+    if cat:
+        args['cat'] = cat
+
+    if level:
+        args['skill_level'] = level
+    
+    # Execute the query and passes the values in the dictionary
+    recipes = Recipe.query.filter_by(args).all()
+
+    # Creates a list of recipe in a json format  
+    list_of_recipe_dictionaries = [ r.json() for r in recipes ]
+    
+    # Creates a dictionary of jsonified recipes
+    recipe_info = {
+        'recipes': list_of_recipe_dictionaries
+    }
+    
+    return jsonify(recipe_info)
+
+@app.route("/recipe_page/<int:recipeid>")
+def recipe_page(recipeid):
+    """ Show recipe details """
+    # print "RECIPE TYPE {}".format(type(recipeid))
+
+    recipe = Recipe.query.filter_by(recipe_id=recipeid).first()
+
+    ingredients = RecipeIngredient.query.filter_by(recipe_fk=recipeid)
+
+    steps = RecipeStep.query.filter_by(recipe_fk=recipeid)
+
+    return render_template("recipe_page.html", recipe=recipe,
+                      ingredients=ingredients, steps=steps)
+
 
 # @app.route("/plan")
 # def plan():
 #     return render_template("planning.html")
 
 
-# @app.route("/grocery")   
+# @app.route("/grocery")
 
 # ##############################################################################
-# # REGISTER - LOGIN - LOGOUT 
+# # REGISTER - LOGIN - LOGOUT
 # ##############################################################################
-# @app.route("/register")
-# def register_user():
-#     """Allows the user to sign up for an account"""
+@app.route("/register")
+def register_user():
+    """Allows the user to sign up for an account"""
 
-#     return render_template("signup_form.html")
+    return render_template("signup_form.html")
 
 # @app.route("/register-confirm", methods=["POST"])
 # def confirm_new_user():

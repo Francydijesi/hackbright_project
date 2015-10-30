@@ -2,30 +2,79 @@
 {% block title %}Meal planner{% endblock%}
 {% block page %} Recipes {% endblock%}
 {% block content %}
+
+
 <body>
-<!--
-<div id="header">
-<h1>Recipes</h1>
-</div>-->
+<!-- Filters-->
+    <div id="nav">
+        
+    <b>Filter by </b><br><br>
+    <form id="filter-form">
 
-<div id="nav">
-London<br>
-Paris<br>
-Tokyo<br>
-</div>
+        Name:
+        <select name="title" id="rec-title">
+                <option value=""></option>
+            {% for recipe in recipes%}
+                <option value="{{ recipe.title }}">{{ recipe.title }}</option>
+            {% endfor %}
+        </select>
+        <br>
+    
+        Cuisine:
+        <select name="cuisine" id="rec-cuisine">
+            <option></option>
+            {% for recipe in recipes%}
+                <option value="{{ recipe.cuisine }}">{{ recipe.cuisine }}</option>
+            {% endfor %}
+        </select>    
+        <br>
+        
+        Category:
+        <select name="category" id="rec-cat">
+            <option></option>
+            {% for recipe in recipes%}
+                <option value="{{ recipe.cat_code }}">{{ recipe.category.cat_name }}</option>
+            {% endfor %}
+        </select>    
+        <br>
+      
+        Level:
+        <select name="level" id="rec-level">
+            <option></option>
+            {% for recipe in recipes%}
+                <option value="{{ recipe.skill_level }}">{{ recipe.skill_level }}</option>
+            {% endfor %}
+        </select>  
+        <br> <br>
+        
+        <input class="btn btn-default" type="submit" value="Filter">
 
-<div>
+    </form>
+  
+
+
+    </div>
+<!-- Recipe List-->
+<div id="recipe-box">
 
   <table>
     {% for recipe in recipes %}
-        <tr id="recipe">
-            <td><h3>{{ recipe.title }}</h3></td>  
-            <td></td>  
-        </tr>  
+       
+     <form action="/recipe_page/{{ recipe.recipe_id }}">
         <tr>
-            <td><img src="/static/img/{{ recipe.image_url }}.jpg" style="height:200px; padding:30px;"></td>
-            <td>{{ recipe.description }}</td>
-        </tr>  
+         <td><a href="/recipe_page/{{ recipe.recipe_id }}"><img id="recipe-img" src="/static/img/recipes/{{ recipe.image_url }}"></a></td>
+         <td id="recipe-desc">
+            <table>
+                <tr><td id="recipe-title">{{ recipe.title }}</td> </tr>
+                <tr><td>{{ recipe.description }}</td></tr>
+                <tr><td></td></tr>
+                <tr><td><span class="glyphicon glyphicon-star" text-align="bottom" aria-hidden="true">
+                        </span></td></tr>
+                        <tr><td><input type="submit" value="View"></td></tr>
+            </table>
+          </td>  
+        </tr>
+      </form>  
     {% endfor %}
   </table>  
 </div>
@@ -34,6 +83,31 @@ Tokyo<br>
 
 </div>
 
-</body>
+<script>
 
+    function refreshRecipe(results){
+        console.log(results);
+       //TO DO: replace form
+    }
+
+    function submitSearch(evt) {
+      alert("Submitting");
+      evt.preventDefault();
+
+      var formInputs = {
+        "title": $("#rec-title").val(),
+        "cuisine": $("#rec-cuisine").val(),
+        "cat": $("#rec-cat").val(),
+        "rate": $("#rec-rate").val(),
+        "level": $("#rec-level").val()
+      };
+
+      $.get("/filtered_recipe.json", formInputs, refreshRecipe);
+    }
+
+    $("#filter-form").on("submit", submitSearch);
+
+</script>
+
+</body>
 {% endblock %}

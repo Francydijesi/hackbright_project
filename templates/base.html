@@ -3,8 +3,9 @@
 <head>
   
   <title>{% block title %}{% endblock%}</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" href="/static/css/style.css"></link>
-
+  <script src="https://code.jquery.com/jquery.js"></script>
 </head>
 
 <body>
@@ -12,7 +13,7 @@
 <div class="top-bar">  
 <table>
     <tr>
-      <td class="logo-wrap">Logo</td>
+      <td class="logo-wrap"><a href="/">Logo</a></td>
       <td class="title-wrap">{% block page %} {% endblock %}</td>
       <td class="login-wrap">  
           {% if 'User' in session %}
@@ -28,6 +29,12 @@
 </div>  
 
 <!-- Navigation bar --> 
+<ul class="nav nav-tabs">
+  <li role="presentation"><a href="/">Home</a></li>
+  <li role="presentation"><a href="/recipes">Recipe</a></li>
+  <li role="presentation"><a href="#">Plan Meals</a></li>
+  <li role="presentation"><a href="#">Shopping Lists</a></li>
+</ul>
 
   {% block content %} {% endblock %}
 

@@ -64,6 +64,31 @@ class Recipe(db.Model):
     servings = db.Column(db.Integer, nullable=True)
     cook_time = db.Column(db.String(50), nullable=True)
     skill_level = db.Column(db.String(2), nullable=True)
+    
+    # Define relationship to categorie
+    category = db.relationship("Category",
+                           backref=db.backref("recipes", order_by=cat_code))
+
+    def json(self):
+        print "METHOD json"
+        dict = {
+                "recipe_id" : self.recipe_id,
+                "title" : self.title,
+                "description" : self.description,
+                "image_url" : self.image_url,
+                "cat_code" : self.cat_code,
+                "cuisine" : self.cuisine,
+                "calories" : self.calories,
+                "source" : self.source,
+                "rate" : self.rate,
+                "servings" : self.servings,
+                "cook_time" : self.cook_time,
+                "skill_level" : self.skill_level
+
+        }
+
+        return dict
+       
 
     def __repr__(self):
         """ Recipe information"""
@@ -103,6 +128,7 @@ class Category(db.Model):
 
     cat_code = db.Column(db.String(5), primary_key=True)
     cat_name = db.Column(db.String(50))
+
 
     def __repr__(self):
         """ Category """
@@ -242,6 +268,7 @@ def connect_to_db(app):
 
     # Configure to use our SQLite database
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///recipes.db'
+    app.config['SQLALCHEMY_ECHO'] = True
     db.app = app
     db.init_app(app)
 

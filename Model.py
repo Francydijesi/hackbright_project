@@ -174,11 +174,23 @@ class Meals(db.Model):
     week_planned = db.Column(db.Integer, nullable=True)
     list_fk = db.Column(db.String(50), nullable=True)
 
+    @classmethod
+    def plan_meal(cls, recipe_id, meal_type, servings, user_id, date):
+
+        new_meal = Meals(user_fk = user_id, recipe_fk = recipe_id,
+                        meal_type = meal_type, portions = servings,
+                        date_planned = date)
+        print new_meal
+        db.session.add(new_meal)
+        db.session.commit()
+
+
     def __repr__(self):
         """ Meals list"""
 
         return "<Meals meal= %s recipe=%s date=%s>" % ( self.meal_id,
-                                            self.recipe_fk, date_planned )
+                                       self.recipe_fk, date_planned )
+
 
 ##############################################################################
 #

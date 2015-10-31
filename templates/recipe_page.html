@@ -73,21 +73,37 @@
         <!-- CALENDAR -->
         <div id="calendar-box" style="display: none;">
 
-            <form>
+            <form action="/plan-meal">
 
-                <label for="meal">Meal Date : </label>
-                <input type="date" id="meal-day" name="meal" size="20" />
-                <br>  <br>
+                <label for="date">Meal Date : </label>
+                <input type="date" id="meal-day" name="date" size="20" />
+                <br><br>
+
                 <label for="type">Meal Type : </label>
-                <select>
+                <select name="type">
                     <option id="meal-type" name="type" value=""></option>
                     <option id="meal-type" name="type" value="breakfast">Breakfast</option>
-                    <option id="meal-type" name="type" value"lunch">Lunch</option>
+                    <option id="meal-type" name="type" value="lunch">Lunch</option>
                     <option id="meal-type" name="type" value="dinner">Dinner</option>
                     <option id="meal-type" name="type" value="dinner">Snack</option>
                 </select>
-                <br>  <br>
-                <input class="btn btn-default" type="button" value="Submit">
+                <br><br>
+
+                <label for="servings">Number of servings : </label>
+                <select name="servings">
+                    <option id="meal-type" name="servings" value=""></option>
+                    <option id="meal-type" name="servings" value="1">1</option>
+                    <option id="meal-type" name="servings" value="2">2</option>
+                    <option id="meal-type" name="servings" value="3">3</option>
+                    <option id="meal-type" name="servings" value="4">4</option>
+                    <option id="meal-type" name="servings" value="5">5</option>
+                    <option id="meal-type" name="servings" value="6">6</option>
+                    <option id="meal-type" name="servings" value="7">7</option>
+                    <option id="meal-type" name="servings" value="8">8</option>
+                </select>
+                <br><br>
+                <input type="hidden" name="recipeid" value="{{ recipe.recipe_id }}" />
+                <input class="btn btn-default" type="submit" value="Submit" />
                 
              </form>   
 

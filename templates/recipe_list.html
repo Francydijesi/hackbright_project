@@ -32,8 +32,9 @@
         Category:
         <select name="category" id="rec-cat">
             <option></option>
-            {% for category in categories %}
-               <option value="{{ category }}">{{ category.cat_name }}</option>
+            
+            {% for recipe in recipes%}
+                <option value="{{ recipe.category.cat_code }}">{{ recipe.category.cat_name }}</option>
             {% endfor %}
         </select>    
         <br>

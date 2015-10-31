@@ -5,7 +5,7 @@ from flask import Flask, render_template, redirect, request, flash, session, jso
 from flask_debugtoolbar import DebugToolbarExtension
 
 from model import (Recipe, User, Ingredient, RecipeStep, Category, RecipeUser,
-                    RecipeIngredient,  connect_to_db, db)
+                    RecipeIngredient, Meals, connect_to_db, db)
 
 
 app = Flask(__name__)
@@ -20,12 +20,14 @@ app.jinja_env.undefined = StrictUndefined
 
 @app.route('/')
 def index():
+
     """Homepage."""
 
     return render_template("homepage.html")
 
 @app.route("/recipes")
 def recipe_list():
+
     """Show list of users."""
 
     # If user is logged in, search user's recipes.
@@ -35,15 +37,18 @@ def recipe_list():
     # If user is not logged in, return all recipes
     else:
         recipes = Recipe.query.all()
+        groupedrecipe = Recipe.query.group_by(Recipe.cat_code).group_by(Recipe.cuisine).all()
+    print "GROUPED RECIPES :{}".format(groupedrecipe)
     # for cat in categories:    
     #     categories = (recipe.category.cat_name)
     categories = Category.query.distinct()
     print categories
 
-    return render_template("recipe_list.html", recipes=recipes, categories=categories)
+    return render_template("recipe_list.html", recipes=recipes, categories=groupedrecipe)
 
 @app.route("/filtered_recipe.json")
 def filteres_recipe():
+
     """ Search recipes by filters """
 
     # Gets the values of the filter
@@ -51,7 +56,7 @@ def filteres_recipe():
     cuisine = request.args.get("cuisine")
     cat = request.args.get("cat")
     level = request.args.get("level")
-    
+
     # Checks if the fields have a value and save it in a dictionary
     args = {}
 
@@ -63,25 +68,26 @@ def filteres_recipe():
 
     if cat:
         args['cat_code'] = cat
-    print "NEW\n\n\n\n\n\n"
+
     if level:
         args['skill_level'] = level
-    
+
     # Execute the query and passes the values in the dictionary
     recipes = Recipe.query.filter_by(**args).all()
-    print "RECIPES: {}".format(recipes)
-    # Creates a list of recipe in a json format  
-    list_of_recipe_dictionaries = [ r.json() for r in recipes ]
-    
+
+    # Creates a list of recipe in a json format
+    list_of_recipe_dictionaries = [r.json() for r in recipes]
+
     # Creates a dictionary of jsonified recipes
     recipe_info = {
         'recipes': list_of_recipe_dictionaries
     }
-    
+
     return jsonify(recipe_info)
 
 @app.route("/recipe_page/<int:recipeid>")
 def recipe_page(recipeid):
+
     """ Show recipe details """
     # print "RECIPE TYPE {}".format(type(recipeid))
 
@@ -94,11 +100,27 @@ def recipe_page(recipeid):
     return render_template("recipe_page.html", recipe=recipe,
                       ingredients=ingredients, steps=steps)
 
+@app.route("/plan-meal")
+def plan():
 
-# @app.route("/plan")
-# def plan():
-#     return render_template("planning.html")
+    """ Add a recipe to Meals """
 
+    date = request.args.get("date")
+    print "\n\n\n\n\nDATE: ".format(date)
+    meal_type = request.args.get("type")
+    print meal_type
+    servings = request.args.get("servings")
+    print servings
+    recipe_id = request.args.get("recipeid")
+    print recipe_id
+
+    if 'user' in session:
+        Meals.plan_meal(recipe_id, meal_type, servings, session["user"], date)
+    else:
+        Meals.plan_meal(recipe_id, meal_type, servings, None, date)
+ 
+    db.session.commit()
+    return redirect("/recipes")
 
 # @app.route("/grocery")
 

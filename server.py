@@ -106,7 +106,7 @@ def plan():
     """ Add a recipe to Meals """
 
     date = request.args.get("date")
-    print "\n\n\n\n\nDATE: ".format(date)
+    print "\n\n\n\n\nDATE:{} ".format(date)
     meal_type = request.args.get("type")
     print meal_type
     servings = request.args.get("servings")

@@ -2,7 +2,7 @@
 
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
-
+from datetime import datetime
 
 db = SQLAlchemy()
 
@@ -170,16 +170,18 @@ class Meals(db.Model):
     recipe_fk = db.Column(db.Integer, db.ForeignKey('recipes.recipe_id'))
     user_fk = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     portions = db.Column(db.Integer, nullable=True)
-    date_planned = db.Column(db.Date, nullable=False)
+    date_planned = db.Column(db.DateTime, nullable=False)
     week_planned = db.Column(db.Integer, nullable=True)
     list_fk = db.Column(db.String(50), nullable=True)
 
     @classmethod
     def plan_meal(cls, recipe_id, meal_type, servings, user_id, date):
 
-        new_meal = Meals(user_fk = user_id, recipe_fk = recipe_id,
-                        meal_type = meal_type, portions = servings,
-                        date_planned = date)
+        date_planned = datetime.strptime(date,"%m/%d/%Y")
+        print "\n\n\n\nDate Planned: {}".format(date_planned)
+        new_meal = Meals(user_fk=user_id, recipe_fk=recipe_id,
+                        meal_type=meal_type, portions=servings,
+                        date_planned=date_planned)
         print new_meal
         db.session.add(new_meal)
         db.session.commit()
@@ -189,7 +191,7 @@ class Meals(db.Model):
         """ Meals list"""
 
         return "<Meals meal= %s recipe=%s date=%s>" % ( self.meal_id,
-                                       self.recipe_fk, date_planned )
+                                       self.recipe_fk, self.date_planned )
 
 
 ##############################################################################

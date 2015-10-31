@@ -71,7 +71,7 @@ class Recipe(db.Model):
 
     def json(self):
         print "METHOD json"
-        dict = {
+        rec_dict = {
                 "recipe_id" : self.recipe_id,
                 "title" : self.title,
                 "description" : self.description,
@@ -87,7 +87,7 @@ class Recipe(db.Model):
 
         }
 
-        return dict
+        return rec_dict
        
 
     def __repr__(self):
@@ -160,24 +160,25 @@ class Ingredient(db.Model):
 #
 ### MEALS ###
 
-# class Meals(db.Model):
-#     """Meals list"""
+class Meals(db.Model):
+    """Meals list"""
 
-#     __tablename__ = "meals"
+    __tablename__ = "meals"
 
-#     meal_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-#     recipe_fk = db.Column(db.Integer, db.ForeignKey('recipes.recipe_id'))
-#     user_fk = db.Column(db.Integer, db.ForeignKey('users.user_id'))
-#     portions = db.Column(db.Integer, nullable=True)
-#     date_planned = db.Column(db.Date, nullable=False)
-#     week_planned = db.Column(db.Integer, nullable=True)
-#     list_fk = db.Column(db.String(50), nullable=True)
+    meal_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    meal_type = db.Column(db.String(20))
+    recipe_fk = db.Column(db.Integer, db.ForeignKey('recipes.recipe_id'))
+    user_fk = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    portions = db.Column(db.Integer, nullable=True)
+    date_planned = db.Column(db.Date, nullable=False)
+    week_planned = db.Column(db.Integer, nullable=True)
+    list_fk = db.Column(db.String(50), nullable=True)
 
-#     def __repr__(self):
-#         """ Meals list"""
+    def __repr__(self):
+        """ Meals list"""
 
-#         return "<Meals meal= %s recipe=%s date=%s>" % ( self.meal_id,
-#                                             self.recipe_fk, date_planned )
+        return "<Meals meal= %s recipe=%s date=%s>" % ( self.meal_id,
+                                            self.recipe_fk, date_planned )
 
 ##############################################################################
 #

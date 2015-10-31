@@ -133,14 +133,14 @@ td#ingr-item{
 td#ingr-qty{
 
     font-family: 'Brush Script MT', cursive;
-    font-size: 25px;
+    font-size: 20px;
     text-align: left;
     padding-left: 20px;
 }
 td#step-num{
 
     font-family: 'Brush Script MT';
-    font-size: 25px;
+    font-size: 20px;
     text-align: left;
     padding-left: 20px;
     padding-top: 20px;
@@ -151,7 +151,7 @@ td#step-num{
 td#step-desc{
 
     font-family: 'Brush Script MT', cursive;
-    font-size: 25px;
+    font-size: 20px;
     text-align: left;
     padding-left: 20px;
     padding-top: 20px;

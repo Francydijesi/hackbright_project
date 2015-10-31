@@ -32,8 +32,8 @@
         Category:
         <select name="category" id="rec-cat">
             <option></option>
-            {% for recipe in recipes%}
-                <option value="{{ recipe.cat_code }}">{{ recipe.category.cat_name }}</option>
+            {% for category in categories %}
+               <option value="{{ category }}">{{ category.cat_name }}</option>
             {% endfor %}
         </select>    
         <br>
@@ -57,7 +57,7 @@
 <!-- Recipe List-->
 <div id="recipe-box">
 
-  <table>
+  <table id="rec-table">
     {% for recipe in recipes %}
        
      <form action="/recipe_page/{{ recipe.recipe_id }}">
@@ -86,12 +86,36 @@
 <script>
 
     function refreshRecipe(results){
-        console.log(results);
-       //TO DO: replace form
+        // console.log("Results: " + results.recipes[0].recipe_id);
+        $("#rec-table").empty();        
+
+        for(k in results.recipes){ 
+
+            $("#rec-table").html(makeHtml(results.recipes[k]));  
+
+        }
+        
+    }
+
+    function makeHtml (recipe){
+        
+        console.log("MAKE HTML:"+recipe);
+        var html = "<form action='/recipe_page/" + recipe.recipe_id + "'>";
+        html += "<tr><td><a href='/recipe_page/"+ recipe["recipe_id"] +"'>";
+        html += "<img id='recipe-img' src='/static/img/recipes/"+ recipe.image_url +"'>";
+        html +="</a></td><td id='recipe-desc'><table><tr><td id='recipe-title'>";
+        html += recipe.title +"</td> </tr><tr><td>"+ recipe.description +"</td></tr>";
+        html += "<tr><td></td></tr><tr><td>";
+        html += "<span class='glyphicon glyphicon-star' text-align='bottom'";
+        html += " aria-hidden='true'></span></td></tr><tr><td><input type='submit'";
+        html += " value='View'></td></tr></table></td></tr></form>  ";
+        console.log(html);
+        return html;
+
     }
 
     function submitSearch(evt) {
-      alert("Submitting");
+     
       evt.preventDefault();
 
       var formInputs = {

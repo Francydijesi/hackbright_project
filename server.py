@@ -35,8 +35,12 @@ def recipe_list():
     # If user is not logged in, return all recipes
     else:
         recipes = Recipe.query.all()
+    # for cat in categories:    
+    #     categories = (recipe.category.cat_name)
+    categories = Category.query.distinct()
+    print categories
 
-    return render_template("recipe_list.html", recipes=recipes)
+    return render_template("recipe_list.html", recipes=recipes, categories=categories)
 
 @app.route("/filtered_recipe.json")
 def filteres_recipe():
@@ -58,14 +62,14 @@ def filteres_recipe():
         args['title'] = title
 
     if cat:
-        args['cat'] = cat
-
+        args['cat_code'] = cat
+    print "NEW\n\n\n\n\n\n"
     if level:
         args['skill_level'] = level
     
     # Execute the query and passes the values in the dictionary
-    recipes = Recipe.query.filter_by(args).all()
-
+    recipes = Recipe.query.filter_by(**args).all()
+    print "RECIPES: {}".format(recipes)
     # Creates a list of recipe in a json format  
     list_of_recipe_dictionaries = [ r.json() for r in recipes ]
     

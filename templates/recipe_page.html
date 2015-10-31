@@ -3,56 +3,136 @@
 {% block page %} Recipe {% endblock%}
 {% block content %}
 <body>
-
-<div class="container">
-    <div class="row">
-        <p id="rec-tit">{{ recipe.title }}</p>
-    </div>    
-    <div class="row">
-        <div class="col-xs-6">   
-            <img id="recipe-page" src="/static/img/recipes/{{ recipe.image_url }}">
-         </div>   
+    <div class="container">
         
-        <div class="col-xs-6">
-            <p id="r-desc">{{ recipe.description }}<p>
+        <div class="row">
+            <p id="rec-tit">{{ recipe.title }}</p>
         </div>    
-        
-    </div>
 
-<!-- Sections -->
-<!-- <div class="img_container">-->
-<div class="row">
-     <div class="col-xs-6">
-     <!-- <div id="ingr-box"> -->
-
-        <table>
-            <tr><td><p id="ingr"> Ingredients: </p></td></tr>
-            {% for ingredient in ingredients%}
-                <tr>
-                    <td id="ingr-qty">{{ ingredient.quantity }} {{ ingredient.measure }}</td>
-                    {% if ingredient.quantity and ingredient.quantity > 1  and not ingredient.measure%}
-                        <td id="ingr-item">{{ ingredient.ingredient_name }}s</td>
-                    {% else %} 
-                        <td id="ingr-item">{{ ingredient.ingredient_name }}</td>   
-                    {% endif %}    
-                </tr>
-            {% endfor%}
+        <div class="row">
+            <!-- RECIPE IMG -->
+            <div class="col-xs-6">   
+                <img id="recipe-page" src="/static/img/recipes/{{ recipe.image_url }}">
+            </div>   
             
-        </table>       
+            <!-- RECIPE DESCRIPTION + BUTTONS -->
+            <div class="col-xs-6">
+                <div class="container-fluid">
+                    
+                    <div class="row">
+                        <!-- RECIPE DESCRIPTION -->
+                        <div class="col-xs-12">
+                            <p id="r-desc">{{ recipe.description }}<p><br>
+                        </div>        
+                    </div>
+                    
+                    <div class="row">
+                        <!-- BUTTONS -->
+                        <div class="col-xs-3 col-xs-offset-9"> 
+                             <button class="btn btn-default" id="add-meal" type="submit">Add to Meal</button>
+                        </div>        
+                    </div>    
+                </div>  
+            </div>     
+        </div>
+        
+        <div class="row">
+             <!-- INGREDIENTS -->
+             <div class="col-xs-6">
+             
+                <table>
+                    <tr><td><p id="ingr"> Ingredients: </p></td></tr>
+                    {% for ingredient in ingredients%}
+                        <tr>
+                            <td id="ingr-qty">{{ ingredient.quantity }} {{ ingredient.measure }}</td>
+                            {% if ingredient.quantity and ingredient.quantity > 1  and not ingredient.measure%}
+                                <td id="ingr-item">{{ ingredient.ingredient_name }}s</td>
+                            {% else %} 
+                                <td id="ingr-item">{{ ingredient.ingredient_name }}</td>   
+                            {% endif %}    
+                        </tr>
+                    {% endfor%}
+                    
+                </table>       
+            </div>
+
+            <!-- INSTRUCTIONS -->
+            <div class="col-xs-6">
+            
+                <table>
+                    {% for step in steps %}
+                    <tr> 
+                        <td id="step-num"> STEP {{ step.step_num }}</td></tr>
+                        <td id="step-desc"> {{ step.step_description }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>    
+        </div>
+
+        <!-- CALENDAR -->
+        <div id="calendar-box" style="display: none;">
+
+            <form>
+
+                <label for="meal">Meal Date : </label>
+                <input type="date" id="meal-day" name="meal" size="20" />
+                <br>  <br>
+                <label for="type">Meal Type : </label>
+                <select>
+                    <option id="meal-type" name="type" value=""></option>
+                    <option id="meal-type" name="type" value="breakfast">Breakfast</option>
+                    <option id="meal-type" name="type" value"lunch">Lunch</option>
+                    <option id="meal-type" name="type" value="dinner">Dinner</option>
+                    <option id="meal-type" name="type" value="dinner">Snack</option>
+                </select>
+                <br>  <br>
+                <input class="btn btn-default" type="button" value="Submit">
+                
+             </form>   
+
+        </div>
     </div>
-    <div class="col-xs-6">
-    <!-- <div id="steps-box"> -->
-        <table>
-            {% for step in steps %}
-            <tr> 
-                <td id="step-num"> STEP {{ step.step_num }}</td></tr>
-                <td id="step-desc"> {{ step.step_description }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-    </div>    
-</div>
-</div>
+    
+    <script>
+      
+        function addRec(evt){
+        
+            $("#calendar-box").css({display: "block"});
+
+        }
+
+        $("#add-meal").on("click",addRec);
+    </script>    
+    
+    <script type="text/javascript">
+    
+        var datefield = document.createElement("input")   
+        
+        datefield.setAttribute("type", "date")
+
+        //if browser doesn't support input type="date", load files for jQuery UI Date Picker
+        if (datefield.type!="date"){ 
+
+            document.write('<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />\n')
+
+            document.write('<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"><\/script>\n')
+
+            document.write('<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"><\/script>\n') 
+        }
+    </script>
+
+    <script>    
+        //if browser doesn't support input type="date", initialize date picker widget:
+        if (datefield.type!="date"){ 
+
+            jQuery(function($){ //on document.ready
+                $('#meal-day').datepicker();
+            })
+        }
+
+    </script>
+
 </body>
 
 {% endblock %}

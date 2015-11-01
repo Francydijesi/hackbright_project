@@ -2,6 +2,8 @@
 {% block title %}Meal planner{% endblock%}
 {% block page %} Recipe {% endblock%}
 {% block content %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <body>
     <div class="container">
         
@@ -29,7 +31,63 @@
                     <div class="row">
                         <!-- BUTTONS -->
                         <div class="col-xs-3 col-xs-offset-9"> 
-                             <button class="btn btn-default" id="add-meal" type="submit">Add to Meal</button>
+<!-- <button class="btn btn-default" id="add-meal" type="submit">Add to Meal</button> -->
+<!-- Trigger the modal with a button -->
+<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Add to Planner</button>
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Planner</h4>
+      </div>
+      <div class="modal-body">
+       
+            <form action="/plan-meal">
+
+                <label for="date">Meal Date : </label>
+                <input type="date" id="meal-day" name="date" size="20" />
+                <br><br>
+
+                <label for="type">Meal Type : </label>
+                <select name="type">
+                    <option id="meal-type" name="type" value=""></option>
+                    <option id="meal-type" name="type" value="breakfast">Breakfast</option>
+                    <option id="meal-type" name="type" value="lunch">Lunch</option>
+                    <option id="meal-type" name="type" value="dinner">Dinner</option>
+                    <option id="meal-type" name="type" value="dinner">Snack</option>
+                </select>
+                <br><br>
+
+                <label for="servings">Number of servings : </label>
+                <select name="servings">
+                    <option id="meal-type" name="servings" value=""></option>
+                    <option id="meal-type" name="servings" value="1">1</option>
+                    <option id="meal-type" name="servings" value="2">2</option>
+                    <option id="meal-type" name="servings" value="3">3</option>
+                    <option id="meal-type" name="servings" value="4">4</option>
+                    <option id="meal-type" name="servings" value="5">5</option>
+                    <option id="meal-type" name="servings" value="6">6</option>
+                    <option id="meal-type" name="servings" value="7">7</option>
+                    <option id="meal-type" name="servings" value="8">8</option>
+                </select>
+                <br><br>
+                <input type="hidden" name="recipeid" value="{{ recipe.recipe_id }}" />
+                <input class="btn btn-default" type="submit" value="Submit" />
+                
+             </form>   
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
                         </div>        
                     </div>    
                 </div>  

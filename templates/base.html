@@ -50,7 +50,18 @@
 <!-- Navigation bar --> 
 <ul class="nav nav-tabs">
   <li role="presentation"><a href="/">Home</a></li>
-  <li role="presentation"><a href="/recipes">Recipe</a></li>
+  <!-- <li role="presentation"><a href="/recipes">Recipe</a></li> -->
+  <li role="presentation" class="dropdown">
+      <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" 
+         aria-haspopup="true" aria-expanded="false">Recipe<span class="caret"></span>
+      </a>
+      <ul class="dropdown-menu">
+        <li><a href="/recipes">View</a></li>
+        <li><a href="#">Import<a></li>
+        <li><a href="/addRecipes">Manual</a></li>
+      </ul>
+  </li>
+
   <li role="presentation"><a href="#">Plan Meals</a></li>
   <li role="presentation"><a href="#">Shopping Lists</a></li>
 </ul>

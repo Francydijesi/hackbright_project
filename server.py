@@ -46,6 +46,14 @@ def recipe_list():
 
     return render_template("recipe_list.html", recipes=recipes, categories=groupedrecipe)
 
+@app.route("/addRecipes")
+def add_recipes():
+
+    """ Add a new recipe manually """
+
+    ingredients = Ingredient.query.order_by("name").all()
+    return render_template("recipe_form.html", ingredients=ingredients)
+
 @app.route("/filtered_recipe.json")
 def filteres_recipe():
 
@@ -100,25 +108,22 @@ def recipe_page(recipeid):
     return render_template("recipe_page.html", recipe=recipe,
                       ingredients=ingredients, steps=steps)
 
+
 @app.route("/plan-meal")
 def plan():
 
     """ Add a recipe to Meals """
 
     date = request.args.get("date")
-    print "\n\n\n\n\nDATE:{} ".format(date)
     meal_type = request.args.get("type")
-    print meal_type
     servings = request.args.get("servings")
-    print servings
     recipe_id = request.args.get("recipeid")
-    print recipe_id
 
     if 'user' in session:
         Meals.plan_meal(recipe_id, meal_type, servings, session["user"], date)
     else:
         Meals.plan_meal(recipe_id, meal_type, servings, None, date)
- 
+
     db.session.commit()
     return redirect("/recipes")
 

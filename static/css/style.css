@@ -56,7 +56,7 @@ td.section{
 }
 div#nav{
     line-height:30px;
-    background-color:#eeeeee;
+    /* background-color:#eeeeee; */
     height:auto  ;  
     width:350px;
     float:left;
@@ -170,4 +170,14 @@ p#ingr{
 p#rec-tit{
     font-family: 'Brush Script MT', cursive;
     font-size: 40px;
+}
+
+/* Recipe FORM */
+#form-container{
+   width:600px;
+   padding: 30px; 
+}
+#ingr{
+    padding:10px;
+    border: 1px solid black;
 }

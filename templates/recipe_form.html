@@ -1,0 +1,265 @@
+{% extends 'base.html' %}
+{% block title %}Meal planner{% endblock%}
+{% block page %} Family Recipe {% endblock%}
+{% block content %}
+
+<body>
+<!-- <div id="form-container"> -->
+
+<div container>
+    
+    <div class="col-xs-2">
+    </div>
+    <div class="col-xs-6">
+        <form action="/addRecipeForm" id="add-rec" enctype="multipart/form-data" name="fileinfo">
+
+            <div class="form-group" id="family-recipe">
+                <label for="title">Title</label>
+                <input type="text" class="form-control" id="title" placeholder="Title" name='title'>
+            </div>
+
+            <div class="form-group">
+                <label for="desc">Description</label>
+                <textarea class="form-control" rows="3" id="desc" name='description'></textarea>
+            </div>
+            
+            <div class="form-group" id="family-recipe">
+                <label for="source">Source</label>
+                <input type="text" class="form-control" id="source" name='source'>
+            </div>
+
+            <div class="form-group" id="family-recipe">
+                <label for="cat">Category</label>
+                <select class="form-control" name="category" id="cat">
+                    <option></option>
+                    {% for cat in categories%}
+                       <option value="{{ cat.cat_code }}">{{cat.cat_name}}</option>
+                    {% endfor %}
+                </select> 
+            </div>
+            
+            <div class="form-group" id="family-recipe">
+                <label for="cuisine">Cuisine</label>
+                <input type="text" class="form-control" id="cuisine" name='cuisine'>
+            </div>
+
+            <div class="form-group" id="family-recipe">
+                <label for="servings">Servings</label>
+                <select class="form-control" name="servings" id="serv">
+                    <option value=""></option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4" active>4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                </select>
+            </div>
+            <div class="form-group" id="family-recipe">
+                <label for="time">Cook time</label>
+                <input type="text" class="form-control" id="time" name='cookTime'>
+            </div>
+
+            <div class="form-group" id="family-recipe">
+                <label for="skill">Level</label>
+                <select class="form-control" name="level" id="skill">
+                    <option value=""></option>
+                    <option value="E">Easy</option>
+                    <option value="M">Medium</option>
+                    <option value="D">Difficult</option>
+                </select>    
+            <div class="form-group">
+                <label for="recipeImg">Image</label>
+                <input type="file" id="recipeImg">
+                <img id="blah" src="#" alt="family recipe" style="display:none" />
+            </div>
+ 
+    </ul>
+<div id="ingr">
+            <div class="form-group">
+                <label for="ingr">Ingredients</label>
+                <select class="form-control" name="ingredient" id="ingr-name">
+                    <option></option>
+                    {% for ingr in ingredients%}
+                       <option value="{{ ingr.name }}">{{ingr.name}}</option>
+                    {% endfor %}
+                </select>  
+            </div>
+            <div class="form-group">
+                
+                <div class="form-inline">
+                    <div class="form-group" class="col-xs-3">
+                        <!-- <div class="col-xs-2">     -->
+                            <label for="qty">Quantity</label>
+                            <input type="text" class="form-control" id="qty"></input>
+                        <!-- </div> -->
+                    </div>
+                    <div class="form-group" class="col-xs-2">
+                        <!-- <div class="col-xs-2">     -->
+                            <label for="units">Measurements</label>
+                            <select class="form-control" id="unit" name="units">
+                                <option> </option>
+                                <option value="cups">cup</option>
+                                <option value="teaspoon">teaspoon</option>
+                                <option value="tablespoon">tablespoon</option>
+                                <option value="pound">pound</option>
+                                <option value="ounces">ounce</option>
+                                <option value="pinch">pinch</option>
+                            </select>  
+                        <!-- </div> -->
+                    </div>  
+
+                    <div class="form-group" class="col-xs-1">
+                       <!-- <div class="col-xs-1">  -->
+                    <button type="submit" class="btn btn-default" id="add-ingr">Add</button>  
+                    <!-- </div> -->
+                    </div>  
+
+                    <div class="form-group" class="col-xs-6" id="list-ingr">
+
+                    </div>
+                </div>      
+
+            </div>
+                    
+  </div>  <div class="form-group">   </div>     
+            <div class="form-group">
+                <button type="submit" class="btn btn-default">Submit</button>
+            </div>
+      
+        </form>
+    </div>
+</div>   
+
+<script>
+
+// UPLOAD IMG 
+
+// form_data.append("Title","polpette");
+    function readURL() {
+        
+        var input = document.getElementById("recipeImg");
+        var reader = new FileReader();
+        
+        reader.onload = function (e) {
+          $('#blah').toggle();  
+          $('#blah').attr('src', e.target.result).width(150);
+        };
+
+        reader.readAsDataURL(input.files[0]);
+        // form_data = input.files[0];
+      
+    }
+
+    // $(recipeImg).on("change", readURL);
+
+// Save ingredients
+
+    var listIngr = [];
+    // var ingredients = { "ingredients": listIngr};
+    var eachIngr = {};
+
+
+    function showIngredients(){
+
+        var htmlIngr = "<ul>";
+       
+        for(var i=0 ; i < listIngr.length ; i++){
+
+           htmlIngr += "<li>" + listIngr[i].qty + " " + listIngr[i].unit +" ";
+           htmlIngr += listIngr[i].name + "</li>";
+        }
+
+        htmlIngr += "</ul>";
+
+        $("#list-ingr").html(htmlIngr);
+    }
+
+    function saveIngr(evt){
+        evt.preventDefault();
+
+        eachIngr = {
+            "name": $("#ingr-name").val(),
+            "qty": $("#qty").val(),
+            "unit": $("#unit").val()
+          };
+
+        listIngr.push(eachIngr);
+        
+        showIngredients();
+    }
+
+    $("#add-ingr").on("click", saveIngr);
+
+// SEND FORM
+
+    function sendNewForm(evt){
+        alert("sending")
+        evt.preventDefault();
+        
+        // Links the formData to the form
+        var form = document.querySelector('#add-rec');
+        var formData = new FormData(form);
+
+        // Get the file to upload
+        var fileEl = $('input[type=file]');
+        var actualFile = fileEl.get(0).files[0];
+        
+        // Appends the image and list of ingredients
+        formData.append("Image",actualFile);
+
+        console.log(listIngr.length);
+        console.log(listIngr[0]);
+
+        formData.append("listIngr", JSON.stringify(listIngr));
+        console.log(JSON.stringify(listIngr)    )
+
+        // for (var i =0; i < listIngr.length ; i++){
+        //     formData.append("Ingr[]",listIngr[i]);
+        // }
+        // formData.append("Ingr[]",listIngr);
+
+        $.ajax({
+              type: 'POST',
+              url: '/addRecipe.json',
+              data: formData,
+              processData: false,
+              contentType: false,
+              success: refreshRecipeForm
+            });
+    }
+
+    $("#add-rec").on("submit",sendNewForm);
+
+// SEND FORM    
+    
+
+    function refreshRecipeForm(){
+        console.log("URRA!");
+        alert("refresh");
+    }
+
+    // function sendForm(evt) {
+
+    //   evt.preventDefault();
+
+    //   var formInputs = {
+    //     "title": $("#title").val(),
+    //     "description": $("#desc").val(),
+    //     "source": $("#source").val(),
+    //     // "img": $("#blah").val(),
+    //     // "img" : form_data,
+    //     "ingredients": listIngr
+    //   };
+      // form_data.append("title");
+    //   $.get("/addRecipe.json", formInputs, refreshRecipeForm);
+    // }
+
+
+    // $("#add-rec").on("submit",sendForm);
+</script>
+</body>
+
+{% endblock %}

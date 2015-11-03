@@ -88,7 +88,30 @@ class Recipe(db.Model):
         }
 
         return rec_dict
-       
+
+
+    @classmethod
+    def addRecipe(cls, title, description, image, cat_code, servings, cooktime,
+                  skillLevel):
+
+        print "ADD RECIPE"
+        image_url = None
+
+        if image:
+            image_url= cat_code + "_" + recipe_id + "jpg"
+
+        new_recipe = Recipe(title=title,description=description,image_url=image_url,
+                            cat_code=cat_code, servings=servings, cook_time=cooktime,
+                            skill_level=skillLevel)
+        
+        db.session.add(new_recipe)
+        db.session.commit()
+        # print db.session.query(max(recipes.recipe_id))
+        # print db.session.query(func.max(Recipe.recipe_id))
+
+
+        # return id
+
 
     def __repr__(self):
         """ Recipe information"""
@@ -236,7 +259,7 @@ class RecipeUser(db.Model):
     # Define relationship to recipe
     recipe = db.relationship("Recipe",
                            backref=db.backref("x_recipe_user", order_by=recipe_fk))
-
+   
 
     def __repr__(self):
         """ Recipe User Association """
@@ -268,6 +291,14 @@ class RecipeIngredient(db.Model):
     ingredient = db.relationship("Ingredient",
                            backref=db.backref("x_recipe_ingredient", order_by=ingredient_name))
 
+    @classmethod
+    def addIngredients(cls, recipefk, ingredient_name, quantity, measure):
+        
+        recipeIngr = RecipeIngredient(recipe_fk=recipe_fk,ingredient_name=ingredient_name,
+                     quantity=quantity, measure=measure)
+
+        db.session.add(recipeIngr)
+        db.session.commit()
 
     def __repr__(self):
         """ User Ingredient Association"""

@@ -6,7 +6,9 @@ from flask_debugtoolbar import DebugToolbarExtension
 
 from model import (Recipe, User, Ingredient, RecipeStep, Category, RecipeUser,
                     RecipeIngredient, Meals, connect_to_db, db)
-
+from werkzeug import secure_filename
+import os
+import json
 
 app = Flask(__name__)
 
@@ -16,6 +18,17 @@ app.secret_key = "ABC"
 # Normally, if you use an undefined variable in Jinja2, it fails silently.
 # This is horrible. Fix this so that, instead, it raises an error.
 app.jinja_env.undefined = StrictUndefined
+
+# This is the path to the upload directory
+app.config['UPLOAD_FOLDER'] = 'static/img/recipes/'
+
+# These are the extension that we are accepting to be uploaded
+app.config['ALLOWED_EXTENSIONS'] = set(['png', 'jpg', 'jpeg', 'gif'])
+
+# For a given file, return whether it's an allowed type or not
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
 
 
 @app.route('/')
@@ -42,17 +55,119 @@ def recipe_list():
     # for cat in categories:    
     #     categories = (recipe.category.cat_name)
     categories = Category.query.distinct()
+
     print categories
 
     return render_template("recipe_list.html", recipes=recipes, categories=groupedrecipe)
 
-@app.route("/addRecipes")
+@app.route("/addRecipesForm")
 def add_recipes():
 
-    """ Add a new recipe manually """
+    """ Get list of ingredients and return recipe form """
 
     ingredients = Ingredient.query.order_by("name").all()
-    return render_template("recipe_form.html", ingredients=ingredients)
+    categories = Category.query.distinct()
+    return render_template("recipe_form.html", ingredients=ingredients, categories=categories)
+
+@app.route("/addRecipe.json", methods=['POST'])
+def enter_recipe():
+    """ Add a new recipe in DB """
+    
+    print "ADD RECIPE"
+    # Get the name of the uploaded file
+    # file = request.files['file']
+    # # Check if the file is one of the allowed types/extensions
+    # if file and allowed_file(file.filename):
+    #     # Make the filename safe, remove unsupported chars
+    #     filename = secure_filename(file.filename)
+    #     # Move the file form the temporal folder to
+    #     # the upload folder we setup
+    #     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    #     # Redirect the user to the uploaded_file route, which
+    #     # will basicaly show on the browser the uploaded file
+    print "\n\n\nFILES!\n\n\n\n"
+
+    title = request.form.get("title")
+    description = request.form.get("description")
+    source = request.form.get("source")
+    cat_code = request.form.get("category")
+    cuisine = request.form.get("cuisine")
+    servings = request.form.get("servings")
+    cooktime = request.form.get("cookTime")
+    skillLevel = request.form.get("level")
+    
+    print "Title", title
+    print "Description ", description
+    print "Source ", source
+    print "Category ", cat_code
+    print "Cuisine ", cuisine
+    print "Servings ", servings
+    print "SkillLevel ", skillLevel
+
+    # # Checks if the fields have a value and save it in a dictionary
+    # args = {}
+
+    # if title:
+    #     args['title'] = title
+
+    # if description:
+    #     args['description'] = description
+
+    # if source:
+    #     args['source'] = source
+
+    # if cat_code:
+    #     args['cat_code'] = cat_code
+
+    # if cuisine:
+    #     args['cuisine'] = cuisine
+
+    # if Servings:
+    #     args['Servings'] = Servings
+
+    # if skillLevel:
+    #     args['skill_level'] = skillLevel
+
+
+    # Saves the img file in the directory
+    filename=""
+
+    if 'Image' in request.files:
+        img_file = request.files['Image']
+        if img_file and allowed_file(img_file.filename):
+            filename = secure_filename(img_file.filename)
+            print filename
+            img_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+    # Add recipe in 'recipes' Table 
+    Recipe.addRecipe(title, description, filename, cat_code,
+             servings, cooktime, skillLevel)
+    
+    # recipefk = Recipe.query(max(Recipe.recipe_id))
+    # db.session.query(func.max(Recipe.recipe_id))
+
+    # Add ingredients in 'RecipeIngredient'
+    ingredients = json.loads(request.form.get("listIngr"))
+
+    for ingredient in ingredients:
+        name = ingredient["name"]
+        qty = ingredient["qty"]
+        unit = ingredient["unit"]
+
+        # Ingredient.addIngredients(recipefk, name, qty, unit)
+
+    
+
+
+# Enter the recipe in the recipes table
+
+
+    # print("INGREDIENT: {}".format(type(ingredients)))
+    # print("INGREDIENT NAME: {}".format(ingredients.name))
+
+
+    # return jsonify({"data": "pluto"})
+    return "I'M A STRING"
 
 @app.route("/filtered_recipe.json")
 def filteres_recipe():
@@ -200,4 +315,4 @@ if __name__ == "__main__":
     # Use the DebugToolbar
     DebugToolbarExtension(app)
 
-    app.run()
+    app.run(debug=True)

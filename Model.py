@@ -133,6 +133,13 @@ class RecipeStep(db.Model):
     step_description = db.Column(db.Text, nullable=True) 
     step_num = db.Column(db.Integer, nullable=True)
 
+    @classmethod
+    def addRecipeStep(step_num, step_description):
+        new_recStep = RecipeStep(step_num=step_num, step_description=step_description)
+
+        db.session.add(new_recStep)
+        db.commit()
+
 
     def __repr__(self):
         """ Recipe Step """
@@ -174,10 +181,25 @@ class Ingredient(db.Model):
     cost = db.Column(db.String(100), nullable=True)
     aisle = db.Column(db.String(50), nullable=True)
 
+    @classmethod
+    def getIngredientByName(cls, name):   
+        ingr = Ingredient.query.filter(Ingredient.name.like('%name%')).all()
+        print "INGREDIENTS", ingr
+        return ingr
+
+    @classmethod
+    def addIngredients(cls, name):
+        if not cls.getIngredientByName(name.lower()):
+            new_ingredient = Ingredient(name=name.lower())
+            db.session.add(new_ingredient)
+            db.session.commit()
+
+    
+
     def __repr__(self):
         """ Ingredients information"""
 
-        return "<Ingredients ingredient_id= %s name=%s>" % ( self.ingredient,
+        return "<Ingredients ingredient_id= %s name=%s>" % ( self.id,
                                                              self.name )
 ##############################################################################
 #
@@ -292,8 +314,8 @@ class RecipeIngredient(db.Model):
                            backref=db.backref("x_recipe_ingredient", order_by=ingredient_name))
 
     @classmethod
-    def addIngredients(cls, recipefk, ingredient_name, quantity, measure):
-        
+    def addIngredients(cls, recipe_fk, ingredient_name, quantity, measure):
+
         recipeIngr = RecipeIngredient(recipe_fk=recipe_fk,ingredient_name=ingredient_name,
                      quantity=quantity, measure=measure)
 

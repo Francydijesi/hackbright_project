@@ -7,6 +7,8 @@ from flask_debugtoolbar import DebugToolbarExtension
 from model import (Recipe, User, Ingredient, RecipeStep, Category, RecipeUser,
                     RecipeIngredient, Meals, connect_to_db, db)
 from werkzeug import secure_filename
+
+from sqlalchemy import func
 import os
 import json
 
@@ -95,7 +97,10 @@ def enter_recipe():
     servings = request.form.get("servings")
     cooktime = request.form.get("cookTime")
     skillLevel = request.form.get("level")
-    
+    step1 = request.form.get(step1)
+    step2 = request.form.get(step2)
+    step3 = request.form.get(step3)
+
     print "Title", title
     print "Description ", description
     print "Source ", source
@@ -143,9 +148,10 @@ def enter_recipe():
     Recipe.addRecipe(title, description, filename, cat_code,
              servings, cooktime, skillLevel)
     
-    # recipefk = Recipe.query(max(Recipe.recipe_id))
-    # db.session.query(func.max(Recipe.recipe_id))
-
+    # Finds the recipe_id
+    recipefk= db.session.query(func.max(Recipe.recipe_id)).one()
+    print "RECIPE ID:  ",recipefk[0]
+ 
     # Add ingredients in 'RecipeIngredient'
     ingredients = json.loads(request.form.get("listIngr"))
 
@@ -154,10 +160,13 @@ def enter_recipe():
         qty = ingredient["qty"]
         unit = ingredient["unit"]
 
-        # Ingredient.addIngredients(recipefk, name, qty, unit)
-
-    
-
+        RecipeIngredient.addIngredients(recipefk[0], name, qty, unit)
+        Ingredient.addIngredients(name)
+       
+    # Add steps in recipe_step
+    Recipe.addRecipeStep(1,step1)
+    Recipe.addRecipeStep(2,step2)
+    Recipe.addRecipeStep(3,step3)
 
 # Enter the recipe in the recipes table
 

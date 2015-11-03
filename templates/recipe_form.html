@@ -50,7 +50,7 @@
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
-                    <option value="4" active>4</option>
+                    <option value="4" selected>4</option>
                     <option value="5">5</option>
                     <option value="6">6</option>
                     <option value="7">7</option>
@@ -125,6 +125,23 @@
             </div>
                     
   </div>  <div class="form-group">   </div>     
+            
+
+            <div class="form-group">
+                <label for="desc">STEP 1</label>
+                <textarea class="form-control" rows="3" id="step" name='step1'></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="desc">STEP 2</label>
+                <textarea class="form-control" rows="3" id="step" name='step2'></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="desc">STEP 3</label>
+                <textarea class="form-control" rows="3" id="step" name='step3'></textarea>
+            </div>
+
             <div class="form-group">
                 <button type="submit" class="btn btn-default">Submit</button>
             </div>
@@ -220,15 +237,21 @@
         //     formData.append("Ingr[]",listIngr[i]);
         // }
         // formData.append("Ingr[]",listIngr);
+        
+        if ($("#title").val().length!=0){
+            $.ajax({
+                  type: 'POST',
+                  url: '/addRecipe.json',
+                  data: formData,
+                  processData: false,
+                  contentType: false,
+                  success: refreshRecipeForm
+                });
+        } else{
+            $("#family-recipe").attr("class","form-group has-error");
+            alert("The field Title is mandatory!")
+        }
 
-        $.ajax({
-              type: 'POST',
-              url: '/addRecipe.json',
-              data: formData,
-              processData: false,
-              contentType: false,
-              success: refreshRecipeForm
-            });
     }
 
     $("#add-rec").on("submit",sendNewForm);

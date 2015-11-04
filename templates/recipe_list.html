@@ -34,7 +34,7 @@
             <option></option>
             
             {% for recipe in recipes%}
-                <option value="{{ recipe.category.cat_code }}">{{ recipe.category.cat_name }}</option>
+                <option value="{{ recipe.cat_code }}">{{ recipe.category.cat_name }}</option>
             {% endfor %}
         </select>    
         <br>

@@ -3,6 +3,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
 from datetime import datetime
+from sqlalchemy import func
 
 db = SQLAlchemy()
 
@@ -89,28 +90,47 @@ class Recipe(db.Model):
 
         return rec_dict
 
+    @classmethod
+    def getRecipeByTitle(cls, title):
+
+        recipe = Recipe.query.filter(func.lower(Recipe.title) == func.lower(title)).all()
+        print "RECIPE BY TITLE", recipe
+        return recipe
 
     @classmethod
     def addRecipe(cls, title, description, image, cat_code, servings, cooktime,
                   skillLevel):
 
         print "ADD RECIPE"
-        image_url = None
 
         if image:
-            image_url= cat_code + "_" + recipe_id + "jpg"
+            imageName = image.split(".")
+            img_extension = imageName[1]
+            print "IMAGE EXTENSION:",img_extension
 
-        new_recipe = Recipe(title=title,description=description,image_url=image_url,
+        new_recipe = Recipe(title=title,description=description,image_url=image,
                             cat_code=cat_code, servings=servings, cook_time=cooktime,
                             skill_level=skillLevel)
         
-        db.session.add(new_recipe)
-        db.session.commit()
+        if Recipe.getRecipeByTitle(title):
+            raise Exception("Recipe already in the Database")
+        else:
+            db.session.add(new_recipe)
+
         # print db.session.query(max(recipes.recipe_id))
         # print db.session.query(func.max(Recipe.recipe_id))
 
-
         # return id
+
+    @classmethod
+    def updateRecipeImg(cls, title, cat_code):
+
+        rec = Recipe.query.filter_by(title=title).first()
+
+        # Update img name in the form: CAT_ID.jpg
+        if rec.image_url:
+            extension = rec.image_url.split(".")[1]
+            rec.image_url = rec.cat_code + "_" + str(rec.recipe_id) + extension
 
 
     def __repr__(self):
@@ -130,22 +150,31 @@ class RecipeStep(db.Model):
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     recipe_fk = db.Column(db.Integer, db.ForeignKey('recipes.recipe_id'))
-    step_description = db.Column(db.Text, nullable=True) 
+    step_description = db.Column(db.Text, nullable=True)
     step_num = db.Column(db.Integer, nullable=True)
 
+    
+    # Define relationship to recipe
+    recipe = db.relationship("Recipe",
+                           backref=db.backref("recipe_steps", order_by=recipe_fk))
+
     @classmethod
-    def addRecipeStep(step_num, step_description):
-        new_recStep = RecipeStep(step_num=step_num, step_description=step_description)
+    def addRecipeStep(cls,recipe_fk, step_num, step_description):
+
+        """ Enter Steps for recipe """
+
+        new_recStep = RecipeStep(recipe_fk=recipe_fk, step_num=step_num,
+                                 step_description=step_description)
 
         db.session.add(new_recStep)
-        db.commit()
+
 
 
     def __repr__(self):
         """ Recipe Step """
 
         return "<RecipeSteps recipe= %s step_num=%s >" % ( self.recipe_fk,
-                                                           self.step_num ) 
+                                                           self.step_num )
 
 ##############################################################################
 #
@@ -183,7 +212,7 @@ class Ingredient(db.Model):
 
     @classmethod
     def getIngredientByName(cls, name):   
-        ingr = Ingredient.query.filter(Ingredient.name.like('%name%')).all()
+        ingr = Ingredient.query.filter(func.lower(Ingredient.name) == name).all()
         print "INGREDIENTS", ingr
         return ingr
 
@@ -192,7 +221,7 @@ class Ingredient(db.Model):
         if not cls.getIngredientByName(name.lower()):
             new_ingredient = Ingredient(name=name.lower())
             db.session.add(new_ingredient)
-            db.session.commit()
+            
 
     
 
@@ -316,11 +345,11 @@ class RecipeIngredient(db.Model):
     @classmethod
     def addIngredients(cls, recipe_fk, ingredient_name, quantity, measure):
 
-        recipeIngr = RecipeIngredient(recipe_fk=recipe_fk,ingredient_name=ingredient_name,
+        recipeIngr = RecipeIngredient(recipe_fk=recipe_fk,ingredient_name=ingredient_name.lower(),
                      quantity=quantity, measure=measure)
 
         db.session.add(recipeIngr)
-        db.session.commit()
+        # db.session.commit()
 
     def __repr__(self):
         """ User Ingredient Association"""

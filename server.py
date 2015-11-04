@@ -60,7 +60,7 @@ def recipe_list():
 
     print categories
 
-    return render_template("recipe_list.html", recipes=recipes, categories=groupedrecipe)
+    return render_template("recipe_list.html", recipes=groupedrecipe, categories=categories)
 
 @app.route("/addRecipesForm")
 def add_recipes():
@@ -75,20 +75,6 @@ def add_recipes():
 def enter_recipe():
     """ Add a new recipe in DB """
     
-    print "ADD RECIPE"
-    # Get the name of the uploaded file
-    # file = request.files['file']
-    # # Check if the file is one of the allowed types/extensions
-    # if file and allowed_file(file.filename):
-    #     # Make the filename safe, remove unsupported chars
-    #     filename = secure_filename(file.filename)
-    #     # Move the file form the temporal folder to
-    #     # the upload folder we setup
-    #     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-    #     # Redirect the user to the uploaded_file route, which
-    #     # will basicaly show on the browser the uploaded file
-    print "\n\n\nFILES!\n\n\n\n"
-
     title = request.form.get("title")
     description = request.form.get("description")
     source = request.form.get("source")
@@ -97,9 +83,9 @@ def enter_recipe():
     servings = request.form.get("servings")
     cooktime = request.form.get("cookTime")
     skillLevel = request.form.get("level")
-    step1 = request.form.get(step1)
-    step2 = request.form.get(step2)
-    step3 = request.form.get(step3)
+    step1 = request.form.get("step1")
+    step2 = request.form.get("step2")
+    step3 = request.form.get("step3")
 
     print "Title", title
     print "Description ", description
@@ -133,40 +119,58 @@ def enter_recipe():
     # if skillLevel:
     #     args['skill_level'] = skillLevel
 
+    try:
+        # Saves the img file in the directory
+        filename=""
 
-    # Saves the img file in the directory
-    filename=""
+        if 'Image' in request.files:
+            img_file = request.files['Image']
+            if img_file and allowed_file(img_file.filename):
+                filename = secure_filename(img_file.filename)
+                print filename
+                img_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-    if 'Image' in request.files:
-        img_file = request.files['Image']
-        if img_file and allowed_file(img_file.filename):
-            filename = secure_filename(img_file.filename)
-            print filename
-            img_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        # Add recipe in 'recipes' Table 
+        Recipe.addRecipe(title, description, filename, cat_code,
+                 servings, cooktime, skillLevel)
+        
+        # Finds the recipe_id
+        recipeIds= db.session.query(func.max(Recipe.recipe_id)).one()
+        recipeFk = recipeIds[0]
+        print "RECIPE ID:  ",recipeFk
+     
+        
+        ingredients = json.loads(request.form.get("listIngr"))
 
-    # Add recipe in 'recipes' Table 
-    Recipe.addRecipe(title, description, filename, cat_code,
-             servings, cooktime, skillLevel)
-    
-    # Finds the recipe_id
-    recipefk= db.session.query(func.max(Recipe.recipe_id)).one()
-    print "RECIPE ID:  ",recipefk[0]
- 
-    # Add ingredients in 'RecipeIngredient'
-    ingredients = json.loads(request.form.get("listIngr"))
+        for ingredient in ingredients:
+            name = ingredient["name"]
+            qty = ingredient["qty"]
+            unit = ingredient["unit"]
+            
+            # Add ingredients in 'RecipeIngredient'
+            RecipeIngredient.addIngredients(recipeFk, name, qty, unit)
+            # Add ingredients in 'Ingredients'
+            Ingredient.addIngredients(name)
+           
+        # Add steps in 'recipe_step'
+        RecipeStep.addRecipeStep(recipeFk,1,step1)
+        RecipeStep.addRecipeStep(recipeFk,2,step2)
+        RecipeStep.addRecipeStep(recipeFk,3,step3)
 
-    for ingredient in ingredients:
-        name = ingredient["name"]
-        qty = ingredient["qty"]
-        unit = ingredient["unit"]
+        db.session.commit()
 
-        RecipeIngredient.addIngredients(recipefk[0], name, qty, unit)
-        Ingredient.addIngredients(name)
-       
-    # Add steps in recipe_step
-    Recipe.addRecipeStep(1,step1)
-    Recipe.addRecipeStep(2,step2)
-    Recipe.addRecipeStep(3,step3)
+        Recipe.updateRecipeImg(title=title, cat_code=cat_code)
+        
+        message = {
+
+            'msg': "Recipe successfully added",
+            'recipeid': recipeFk
+        }
+
+        return jsonify(message)
+
+    except Exception, error:
+        return "Error: %s" % error
 
 # Enter the recipe in the recipes table
 
@@ -176,7 +180,7 @@ def enter_recipe():
 
 
     # return jsonify({"data": "pluto"})
-    return "I'M A STRING"
+    
 
 @app.route("/filtered_recipe.json")
 def filteres_recipe():

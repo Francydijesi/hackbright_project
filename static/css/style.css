@@ -177,10 +177,17 @@ p#rec-tit{
    width:600px;
    padding: 30px; 
 }
-#ingr{
+#ingr-form{
     padding:10px;
     border: 1px solid black;
 }
 #list-ingr{
     padding:20px;
+}
+#msg{
+    color: red;
+}
+#title: after{
+    display:inline;
+    content:" *"; 
 }

@@ -7,14 +7,22 @@
 <!-- <div id="form-container"> -->
 
 <div container>
-    
     <div class="col-xs-2">
     </div>
+    
     <div class="col-xs-6">
+          <!-- Hidden Box for error or success messages -->
+        <div class="form-group" id="msg-box" class="col-xs-6" style="display: none;">
+            <h4 id="msg"></h4>
+            <form id="view-rec" style="display: none;" action='#'>
+                <button type="submit" class="btn btn-default">View</button>
+            </form>    
+        </div>
+
         <form action="/addRecipeForm" id="add-rec" enctype="multipart/form-data" name="fileinfo">
 
             <div class="form-group" id="family-recipe">
-                <label for="title">Title</label>
+                <label for="title">Title *</label>
                 <input type="text" class="form-control" id="title" placeholder="Title" name='title'>
             </div>
 
@@ -70,22 +78,23 @@
                     <option value="M">Medium</option>
                     <option value="D">Difficult</option>
                 </select>    
-            <div class="form-group">
+            <div class="form-group"  id="family-recipe">
                 <label for="recipeImg">Image</label>
                 <input type="file" id="recipeImg">
                 <img id="blah" src="#" alt="family recipe" style="display:none" />
             </div>
  
     </ul>
-<div id="ingr">
-            <div class="form-group">
+<div id="ingr-form">
+            <div class="form-group"  id="family-recipe">
                 <label for="ingr">Ingredients</label>
-                <select class="form-control" name="ingredient" id="ingr-name">
+                <!-- <select class="form-control" name="ingredient" id="ingr-name">
                     <option></option>
                     {% for ingr in ingredients%}
                        <option value="{{ ingr.name }}">{{ingr.name}}</option>
                     {% endfor %}
-                </select>  
+                </select>   -->
+                <input type="text" class="form-control" name="ingredient" id="ingr-name"></input>
             </div>
             <div class="form-group">
                 
@@ -96,11 +105,11 @@
                             <input type="text" class="form-control" id="qty"></input>
                         <!-- </div> -->
                     </div>
-                    <div class="form-group" class="col-xs-2">
+                    <div class="form-group" class="col-xs-3">
                         <!-- <div class="col-xs-2">     -->
                             <label for="units">Measurements</label>
                             <select class="form-control" id="unit" name="units">
-                                <option> </option>
+                                <option value="" selected> </option>
                                 <option value="cups">cup</option>
                                 <option value="teaspoon">teaspoon</option>
                                 <option value="tablespoon">tablespoon</option>
@@ -109,14 +118,23 @@
                                 <option value="pinch">pinch</option>
                             </select>  
                         <!-- </div> -->
-                    </div>  
+                    </div> 
+                </div>  
+            </div>
+            <div class="form-group">
+                <div class="form-inline" class="col-xs-6">  
 
-                    <div class="form-group" class="col-xs-1">
-                       <!-- <div class="col-xs-1">  -->
-                    <button type="submit" class="btn btn-default" id="add-ingr">Add</button>  
-                    <!-- </div> -->
+                    <div class="form-group" class="col-xs-3">
+                        <label for="qty">More info</label>
+                        <input type="text" class="form-control" id="info"></input>
+                    </div> 
+                    
+                    <div class="form-group" class="col-xs-3">
+                      <button type="submit" class="btn btn-default" id="add-ingr">Add</button>  
                     </div>  
-
+            </div>
+            <!-- List of ingredients entered -->
+            <div class="form-group">
                     <div class="form-group" class="col-xs-6" id="list-ingr">
 
                     </div>
@@ -170,7 +188,7 @@
       
     }
 
-    // $(recipeImg).on("change", readURL);
+    $(recipeImg).on("change", readURL);
 
 // Save ingredients
 
@@ -192,9 +210,15 @@
         htmlIngr += "</ul>";
 
         $("#list-ingr").html(htmlIngr);
+        $("#ingr-name").val("");
+        $("#qty").val(""); 
+        $("#info").val(""); 
+        $("#unit").val("");
+        
     }
 
     function saveIngr(evt){
+       
         evt.preventDefault();
 
         eachIngr = {
@@ -203,8 +227,8 @@
             "unit": $("#unit").val()
           };
 
-        listIngr.push(eachIngr);
-        
+        listIngr.push(eachIngr);  
+
         showIngredients();
     }
 
@@ -213,7 +237,7 @@
 // SEND FORM
 
     function sendNewForm(evt){
-        alert("sending")
+
         evt.preventDefault();
         
         // Links the formData to the form
@@ -245,11 +269,20 @@
                   data: formData,
                   processData: false,
                   contentType: false,
-                  success: refreshRecipeForm
+                  success: refreshPage
+                  
                 });
         } else{
+            
             $("#family-recipe").attr("class","form-group has-error");
-            alert("The field Title is mandatory!")
+            msg = "The field Title is mandatory!";
+            msgHandler(msg);
+
+            
+            // $("#msg-box").toggle();
+            // $("#msg").html("The field Title is mandatory!");
+            // $('input[name=title]').focus();
+            // alert("The field Title is mandatory!")
         }
 
     }
@@ -257,13 +290,39 @@
     $("#add-rec").on("submit",sendNewForm);
 
 // SEND FORM    
-    
+    function refreshPage(results){
 
-    function refreshRecipeForm(){
-        console.log("URRA!");
-        alert("refresh");
+        $("#view-rec").toggle();
+        
+        $("#view-rec").attr("action","/recipe_page/"+results.recipeid);
+
+        msgHandler(results.msg)
+
     }
 
+    function msgHandler(results){
+        
+        // document.getElementById("add-rec").reset();
+        // Cleans all the input fields
+        $("#add-rec").trigger('reset'); 
+        $("#list-ingr").html('');
+        listIngr=[];
+        $('#blah').toggle(); 
+        
+        // Shows box-img and message and move cursor to title input field
+        $("#msg-box").toggle();
+        $("#msg").html(results);
+        $('input[name=title]').focus();
+    }
+
+    function errorHandler(){
+
+      $("#msg-box").attr("display", "inline-block");
+      $("#msg").html("An error has occurred. Your recipe has not been added");
+
+    }
+
+    
     // function sendForm(evt) {
 
     //   evt.preventDefault();

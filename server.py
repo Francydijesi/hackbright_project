@@ -11,6 +11,8 @@ from werkzeug import secure_filename
 from sqlalchemy import func
 
 from datetime import datetime
+from datetime import timedelta
+
 import os
 import json
 
@@ -394,15 +396,27 @@ def getPlanner():
 
     """ Gets the list of meals planned """
 
-    d = datetime.today()
-    currentWeek = d.strftime("%W")
+    start_date = datetime.today()
+    end_date = start_date + timedelta(days=7)
+    currentWeek = start_date.strftime("%W")
+    week_days = []
+    meal_list = []
+    meal_days = []
 
-    print "CURRENT WEEK: ",currentWeek
+    for i in range(7):
+        week_days.append(int(start_date.strftime("%w")) + i)
 
     if 'User' in session:
 
-        mealsPlanned = Meals.getMealsByWeek(currentWeek, session['User'])
-        return render_template("planner.html", meals=mealsPlanned, date=d)
+        for i in range(7):
+
+            date = start_date + timedelta(days=i)
+            mealsPlanned = Meals.getMealsByDate(date, session['User'])
+            meal_list.append({"date": date, "meals":mealsPlanned})
+
+
+        return render_template("planner.html", meals_list=meal_list,
+            week_days=week_days, start_date=start_date, end_date=end_date)
 
     else:
 

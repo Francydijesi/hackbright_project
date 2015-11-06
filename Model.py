@@ -310,10 +310,14 @@ class Meals(db.Model):
         db.session.commit()
     
     @classmethod
-    def getMealsByWeek(cls, weekNum, userid):
+    def getMealsByDate(cls, date, userid):
+        
+        print "DATE ", date
 
-        mealsPlanned = Meals.query.filter_by(user_fk=userid,
-            week_planned=weekNum).order_by("date_planned").all()
+        mealsPlanned = Meals.query.filter(Meals.user_fk==userid)\
+            .filter(func.substr(Meals.date_planned,0,11)==func.substr(date,0,11))\
+            .order_by("meal_type").all()
+        print "MEALLLLLS",mealsPlanned
 
         return mealsPlanned
 

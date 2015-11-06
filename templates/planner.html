@@ -2,7 +2,7 @@
 {% block title %}Meal planner{% endblock%}
 {% block page %} Recipes {% endblock%}
 {% block content %}
-
+<link rel="stylesheet" href="/static/css/calendar.css"></link>
 
 <body>
       
@@ -13,20 +13,30 @@
         </div>
 
         <div class="row">
-            <h3>{{ date.strftime("%B")}} {{ date.strftime("%d")}}</h3>
+            <h3>{{ start_date.strftime("%B")}} {{ start_date.strftime("%d")}} - 
+                {{ end_date.strftime("%d")}}</h3>
         </div> 
 
         <h1>Your meal planner</h1>
         <div class="grid-calendar">
             <div class="row calendar-week-header">
-                <div class="col-xs-1 grid-cell"><div><div><span>S</span></div></div></div>
-                <div class="col-xs-1 grid-cell"><div><div><span>M</span></div></div></div>
-                <div class="col-xs-1 grid-cell"><div><div><span>T</span></div></div></div>
-                <div class="col-xs-1 grid-cell"><div><div><span>W</span></div></div></div>
-                <div class="col-xs-1 grid-cell"><div><div><span>T</span></div></div></div>
-                <div class="col-xs-1 grid-cell"><div><div><span>F</span></div></div></div>
-                <div class="col-xs-1 grid-cell"><div><div><span>S</span></div></div></div>
+                {% for meals in meals_list %}
+                    <div class="col-xs-1 grid-cell"><div>
+                    <div><span>{{ meals['date'] }}</span></div>
+                    </div></div>
+                 {% endfor%}   
             </div>
+            <div class="row calendar-week"> 
+                {% for meals in meals_list %}
+                    {% for meal in meals['meals'] %}
+                       <div class="row calendar-week">
+                            {{ meal}}
+                       </div>
+                    {% endfor %}   
+
+                {% endfor %}    
+            </div>  
+
 
             <div class="row calendar-week">
                 <div class="col-xs-1 grid-cell previous-month"><div><div><span>31</span></div></div></div>
@@ -43,46 +53,3 @@
 
 {% endblock %} 
           
-<!-- 
-
-    {% if "User" in session %}
-
-        {% for meal in meals %} 
-<div class="col-xs-8">
-            <div class="row">
-                <div class="col-xs-6">{{ meal.date_planned }}</div>
-            </div>
-            <div class="row">
-                <div class="col-xs-4"><img src="static/img/recipes/{{ meal.recipe.image_url }}" id="img-planner">
-                </div> 
-                <div class="col-xs-8">{{ meal.recipe.title }}
-                </div>   
-            <div class="row">
-        
-        {% endfor %}
-
-    {% endif %}
-                
-</div> -->   
-         <!--  Hidden Box for   
-    {% if "User" in session %}
-       
-        <ul>
-       {% for meal in meals %} 
-        <li> <img src="static/img/recipes/{{ meal.recipe.image_url }}"> </li>
-        <li> <h2>Date :{{ meal.date_planned }}</H2></li>
-        <li>Type : {{ meal.meal_type }}  Recipe title: {{ meal.recipe.title }}</li>
-        
-       {% endfor %}
-
-        </ul>
-
-    {% endif %}  
-
-    <div class="flashes">
-      {% for message in get_flashed_messages()%}
-        {{ message }}
-      {% endfor %}
-   </div>  -->
-
-

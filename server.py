@@ -409,7 +409,7 @@ def getPlanner():
     if 'User' in session:
 
         for i in range(7):
-
+            mealsPlanned=''
             date = start_date + timedelta(days=i)
             mealsPlanned = Meals.getMealsByDate(date, session['User'])
             meal_list.append({"date": date, "meals":mealsPlanned})

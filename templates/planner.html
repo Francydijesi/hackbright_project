@@ -22,18 +22,24 @@
             <div class="row calendar-week-header">
                 {% for meals in meals_list %}
                     <div class="col-xs-1 grid-cell"><div>
-                    <div><span>{{ meals['date'] }}</span></div>
+                    <div><span>{{ meals['date'].strftime('%d %b') }}</span></div>
                     </div></div>
                  {% endfor%}   
             </div>
             <div class="row calendar-week"> 
                 {% for meals in meals_list %}
+                   <div class="col-xs-1 grid-cell">
                     {% for meal in meals['meals'] %}
-                       <div class="row calendar-week">
-                            {{ meal}}
+                       <div class="row calendar-week" style="display: block">
+                            <img src="static/img/recipes/{{ meal.recipe.image_url }}"
+                            class="img-responsive" class="img-thumbnail" id="img-small">
+                        <br>
+                            {{ meal.recipe.title }}
+                        
                        </div>
+                    
                     {% endfor %}   
-
+                   </div>
                 {% endfor %}    
             </div>  
 

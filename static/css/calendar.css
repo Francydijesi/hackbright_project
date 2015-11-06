@@ -51,6 +51,11 @@
   padding: 0;
   position: relative;
   width: 14.28571%;
+  font-size: 10px;
+}
+#image-small{
+
+  width: 100%;
 }
 .grid-calendar .grid-cell.previous-month {
   color: #a6a6a6;

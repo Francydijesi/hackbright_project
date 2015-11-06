@@ -2,8 +2,7 @@
 {% block title %}Meal planner{% endblock%}
 {% block page %} Recipe {% endblock%}
 {% block content %}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
 <body>
     <div class="container">
         
@@ -29,22 +28,29 @@
                     </div>
                     
                     <div class="row">
+                        <div class="col-xs-3 col-xs-offset-1">
+                            <a href="/deleteRecipe/{{ recipe.recipe_id}}" >
+                                <button type="button" class="btn btn-default">Delete
+                                </button></a>
+                        </div>    
+
                         <!-- BUTTONS -->
-                        <div class="col-xs-3 col-xs-offset-9"> 
-<!-- <button class="btn btn-default" id="add-meal" type="submit">Add to Meal</button> -->
-<!-- Trigger the modal with a button -->
-<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Add to Planner</button>
+                        <div class="col-xs-3 col-xs-offset-5"> 
+                            <!-- Trigger the modal with a button -->
+                            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Add to Planner</button>
+
 <!-- Modal -->
 <div id="myModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
     <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Planner</h4>
-      </div>
-      <div class="modal-body">
+
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Planner</h4>
+        </div>
+        <div class="modal-body">
        
             <form action="/plan-meal">
 
@@ -78,15 +84,16 @@
                 <input type="hidden" name="recipeid" value="{{ recipe.recipe_id }}" />
                 <input class="btn btn-default" type="submit" value="Submit" />
                 
-             </form>   
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
+            </form>   
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
     </div>
-
   </div>
 </div>
+
+<!-- End of Modal -->
 
                         </div>        
                     </div>    

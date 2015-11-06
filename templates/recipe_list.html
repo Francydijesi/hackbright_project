@@ -5,112 +5,151 @@
 
 
 <body>
-<!-- Filters-->
-    <div id="nav">
-        
-    <b>Filter by </b><br><br>
-    <form id="filter-form">
+    <div class="container" >
 
-        Name:
-        <select name="title" id="rec-title">
-                <option value=""></option>
-            {% for recipe in recipes%}
-                <option value="{{ recipe.title }}">{{ recipe.title }}</option>
-            {% endfor %}
-        </select>
-        <br>
-    
-        Cuisine:
-        <select name="cuisine" id="rec-cuisine">
-            <option></option>
-            {% for recipe in recipes%}
-                <option value="{{ recipe.cuisine }}">{{ recipe.cuisine }}</option>
-            {% endfor %}
-        </select>    
-        <br>
-        
-        Category:
-        <select name="category" id="rec-cat">
-            <option></option>
-            
-            {% for recipe in recipes%}
-                <option value="{{ recipe.cat_code }}">{{ recipe.category.cat_name }}</option>
-            {% endfor %}
-        </select>    
-        <br>
-      
-        Level:
-        <select name="level" id="rec-level">
-            <option></option>
-            {% for recipe in recipes%}
-                <option value="{{ recipe.skill_level }}">{{ recipe.skill_level }}</option>
-            {% endfor %}
-        </select>  
-        <br> <br>
-        
-        <input class="btn btn-default" type="submit" value="Filter">
+        <!-- Filters-->   
+        <div class="row">
+            <div class="col-xs-11">
+                <form  class="form-inline" id="filter-form">
 
-    </form>
-  
+                    <div class="form-group">    
+                        Name:
+                        <select name="title" id="rec-title">
+                                <option value=""></option>
+                            {% for recipe in recipes%}
+                                <option value="{{ recipe.title }}">{{ recipe.title }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
 
+                    <div class="form-group">
+                        Cuisine:
+                        <select name="cuisine" id="rec-cuisine">
+                            <option></option>
+                            {% for c in cuisine %}
+                                <option value="{{ c.cuisine }}">{{ c.cuisine }}</option>
+                            {% endfor %}
+                        </select>   
+                    </div>     
+                
+                    <div class="form-group">
+                        Category:
+                        <select name="category" id="rec-cat">
+                            <option></option>
+                            
+                            {% for cat in categories %}
+                                <option value="{{ cat.cat_code }}">{{ cat.cat_name }}</option>
+                            {% endfor %}
+                        </select> 
+                    </div>
+                    
+
+                    <div class="form-group">
+                        Source:
+                        <select name="source" id="rec-source">
+                            <option></option>
+                            <option></option>
+                            {% for source in sources %}
+                                <option value="{{ source[0] }}">{{ source[0] }}</option>
+                            {% endfor %}
+                            
+                        </select>  
+                    </div>
+                    
+                    <div class="form-group">    
+                    
+                        Level:
+                        <select name="level" id="rec-level">
+                            <option></option>
+                            <!-- <option value="E">Easy</option>
+                            <option value="M">Medium</option>
+                            <option value="D">Difficult</option> -->
+                            {% for level in levels%}
+                                <option value="{{ level[0] }}">{{ level[0] }}</option>
+                            {% endfor %}
+                        </select>  
+                    </div>
+
+                    <div class="form-group" id="flt-bt">
+                        <input class="btn btn-default"  type="submit" value="Filter">
+                    </div>
+                </form>
+            </div>
+            <div class="col-xs-1">    
+                <div class="form-group" id="reset">
+                    <form class="form-inline" id="reset-form" action="/recipes">
+                        <input class="btn btn-default" type="submit" id="reset-filter" 
+                        value="Reset"></input>
+                    </form>
+                </div>    
+             </div>                    
+        </div>
+
+                
+        <div class="row" id="recipe-box">
+            <!-- Recipe List-->
+           
+            {% for recipe in recipes %}
+             <form action="/recipe_page/{{ recipe.recipe_id }}" id="#rec-table">
+                <div class="row">
+                    <div class="col-xs-4">
+                        <a href="/recipe_page/{{ recipe.recipe_id }}"><img id="recipe-img" src="/static/img/recipes/{{ recipe.image_url }}"></a>
+                    </div>
+                 
+                    <div class="col-xs-8" >
+
+                        <div class="row" id="recipe-title">{{ recipe.title }}</div>
+                
+                        <div class="row" id="recipe-desc">{{ recipe.description }}</div>
+                
+                        <!-- <div class="row"><span class="glyphicon glyphicon-star" text-align="bottom" aria-hidden="true"></span>
+                        </div> -->
+                
+                        <div class="row" id="view-button"><input type="submit" value="View"></div>
+                    </div>                                                     
+                </div>
+            </form>  
+            {% endfor %}
+           
+            <!-- End of recipe list -->
+
+        </div> 
 
     </div>
-<!-- Recipe List-->
-<div id="recipe-box">
-
-  <table id="rec-table">
-    {% for recipe in recipes %}
-       
-     <form action="/recipe_page/{{ recipe.recipe_id }}">
-        <tr>
-         <td><a href="/recipe_page/{{ recipe.recipe_id }}"><img id="recipe-img" src="/static/img/recipes/{{ recipe.image_url }}"></a></td>
-         <td id="recipe-desc">
-            <table>
-                <tr><td id="recipe-title">{{ recipe.title }}</td> </tr>
-                <tr><td>{{ recipe.description }}</td></tr>
-                <tr><td></td></tr>
-                <tr><td><span class="glyphicon glyphicon-star" text-align="bottom" aria-hidden="true">
-                        </span></td></tr>
-                        <tr><td><input type="submit" value="View"></td></tr>
-            </table>
-          </td>  
-        </tr>
-      </form>  
-    {% endfor %}
-  </table>  
-</div>
-
-<div id="footer">
-
-</div>
 
 <script>
 
     function refreshRecipe(results){
-        // console.log("Results: " + results.recipes[0].recipe_id);
-        $("#rec-table").empty();        
 
-        for(k in results.recipes){ 
-
-            $("#rec-table").html(makeHtml(results.recipes[k]));  
-
-        }
+        $("#rec-table").trigger('reset'); 
+        
+        $("#recipe-box").html(makeHtml(results));     
         
     }
 
-    function makeHtml (recipe){
-        
-        console.log("MAKE HTML:"+recipe);
-        var html = "<form action='/recipe_page/" + recipe.recipe_id + "'>";
-        html += "<tr><td><a href='/recipe_page/"+ recipe["recipe_id"] +"'>";
-        html += "<img id='recipe-img' src='/static/img/recipes/"+ recipe.image_url +"'>";
-        html +="</a></td><td id='recipe-desc'><table><tr><td id='recipe-title'>";
-        html += recipe.title +"</td> </tr><tr><td>"+ recipe.description +"</td></tr>";
-        html += "<tr><td></td></tr><tr><td>";
-        html += "<span class='glyphicon glyphicon-star' text-align='bottom'";
-        html += " aria-hidden='true'></span></td></tr><tr><td><input type='submit'";
-        html += " value='View'></td></tr></table></td></tr></form>  ";
-        console.log(html);
+    function makeHtml (results){
+
+        var html=""
+
+        for(var k=0; k < results.recipes.length ; k++){
+
+            console.log(results.recipes[k]);
+            console.log("LEN"+results.recipes.length);
+            console.log("MAKE HTML:"+results.recipes[k]);
+            
+            html += "<form action='/recipe_page/" + results.recipes[k].recipe_id 
+            html += " id='#rec-table'><div class='row'><div class='col-xs-4'>"
+            html += "<a href='/recipe_page/"+ results.recipes[k].recipe_id +"'>"
+            html += "<img id='recipe-img' src='/static/img/recipes/"
+            html += results.recipes[k].image_url +"'></a></div><div class='col-xs-8'>"
+            html += "<div class='row' id='recipe-title'>"+results.recipes[k].title
+            html += "</div><div class='row' id='recipe-desc'>"
+            html += results.recipes[k].description +"</div><div class='row' id='view-button'>"
+            html += "<input type='submit' value='View'></div></div></div></form>"  
+
+            console.log(html);
+        }
+            
         return html;
 
     }
@@ -123,7 +162,7 @@
         "title": $("#rec-title").val(),
         "cuisine": $("#rec-cuisine").val(),
         "cat": $("#rec-cat").val(),
-        "rate": $("#rec-rate").val(),
+        "source": $("#rec-source").val(),
         "level": $("#rec-level").val()
       };
 
@@ -131,6 +170,59 @@
     }
 
     $("#filter-form").on("submit", submitSearch);
+
+    
+    function resetFilters(evt){
+        
+        $("#rec-title").val()="";
+        $("#rec-cuisine").val()="";
+        $("#rec-cat").val()="";
+        $("#rec-source").val()="";
+        $("#rec-level").val()="";
+
+        // $("#reset-filter").attr;
+
+        $("#reset-form").submit();
+      
+    }
+
+    $("#reset-filter").on("click",resetFilters);
+
+    
+    // function resetFilters(results){
+
+    //    html_title = "<option value=''></option>";
+
+    //    for(var k=0; k < results.cuisine.length ; k++){
+         
+    //      html_title += "<option value="+results.titles[k]+">"+results.titles[k]+"</option>"
+
+    //     }
+
+    //     $("#rec-title").trigger('reset');
+    //     $("#rec-title").html(html_title);
+    //  }
+
+    // function changeFilters(evt){
+
+    //     evt.preventDefault;
+
+    //     var filters = {
+    //     "title": $("#rec-title").val(),
+    //     "cuisine": $("#rec-cuisine").val(),
+    //     "cat": $("#rec-cat").val(),
+    //     "source": $("#rec-source").val(),
+    //     "level": $("#rec-level").val()
+    //   };
+
+    //     $.get("/changeFilters.json", filters, resetFilters)
+    // }
+
+    // $("#rec-title").on("change",changeFilters);
+    // $("#rec-cuisine").on("change",changeFilters);
+    // $("#rec-cat").on("change",changeFilters);
+    // $("#rec-source").on("change",changeFilters);
+    // $("#rec-level").on("change",changeFilters);
 
 </script>
 

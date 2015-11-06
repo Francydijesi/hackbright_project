@@ -27,6 +27,7 @@ class User(db.Model):
     name =db.Column(db.String(50), nullable=True)
     zipcode =db.Column(db.Integer, nullable=True)
 
+
     @classmethod
     def get_user_by_email_password(cls, user_email, user_password):
 
@@ -37,6 +38,24 @@ class User(db.Model):
         except Exception, error:
             print error
 
+    @classmethod
+    def get_user_by_email(cls, user_email):
+        
+        try:
+            user_login_info = cls.query.filter_by(email=user_email).one()
+            print "LOGIN", user_login_info
+            return user_login_info
+        
+        except Exception, error:
+            print error
+
+    @classmethod
+    def create_user_by_email_password(cls, user_email, user_password):
+
+        user = User(email = user_email, password = user_password)
+        print user
+        db.session.add(user)
+        db.session.commit()
 
     def __repr__(self):
         """ User profile """
@@ -99,7 +118,7 @@ class Recipe(db.Model):
 
     @classmethod
     def addRecipe(cls, title, description, image, cat_code, servings, cooktime,
-                  skillLevel):
+                  skillLevel, cuisine):
 
         print "ADD RECIPE"
 
@@ -110,7 +129,7 @@ class Recipe(db.Model):
 
         new_recipe = Recipe(title=title,description=description,image_url=image,
                             cat_code=cat_code, servings=servings, cook_time=cooktime,
-                            skill_level=skillLevel)
+                            skill_level=skillLevel, cuisine=cuisine)
         
         if Recipe.getRecipeByTitle(title):
             raise Exception("Recipe already in the Database")
@@ -121,6 +140,27 @@ class Recipe(db.Model):
         # print db.session.query(func.max(Recipe.recipe_id))
 
         # return id
+    
+
+    @classmethod
+    def deleteRecipeById(cls, recipe_id):
+
+        db.session.query(RecipeUser).filter(RecipeUser.recipe_fk==recipe_id).\
+                        delete(synchronize_session=False)
+
+        db.session.query(RecipeStep).filter(RecipeStep.recipe_fk==recipe_id).\
+                        delete(synchronize_session=False)
+
+        db.session.query(RecipeIngredient).filter(RecipeIngredient.recipe_fk==recipe_id).\
+                        delete(synchronize_session=False)
+
+        db.session.query(Meals).filter(Meals.recipe_fk==recipe_id).\
+                        delete(synchronize_session=False)
+
+        db.session.query(Recipe).filter(Recipe.recipe_id == recipe_id).\
+                        delete(synchronize_session=False)
+        
+    
 
     @classmethod
     def updateRecipeImg(cls, title, cat_code):
@@ -148,6 +188,8 @@ class RecipeStep(db.Model):
 
     __tablename__ = "recipe_steps"
 
+    print " RECIPE STEPS"
+
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     recipe_fk = db.Column(db.Integer, db.ForeignKey('recipes.recipe_id'))
     step_description = db.Column(db.Text, nullable=True)
@@ -162,6 +204,7 @@ class RecipeStep(db.Model):
     def addRecipeStep(cls,recipe_fk, step_num, step_description):
 
         """ Enter Steps for recipe """
+        print "ENTER RECIPE STEPS"
 
         new_recStep = RecipeStep(recipe_fk=recipe_fk, step_num=step_num,
                                  step_description=step_description)
@@ -218,12 +261,11 @@ class Ingredient(db.Model):
 
     @classmethod
     def addIngredients(cls, name):
+        print "ADD INGREDIENTS in Ingredients"
         if not cls.getIngredientByName(name.lower()):
             new_ingredient = Ingredient(name=name.lower())
             db.session.add(new_ingredient)
-            
 
-    
 
     def __repr__(self):
         """ Ingredients information"""
@@ -248,17 +290,32 @@ class Meals(db.Model):
     week_planned = db.Column(db.Integer, nullable=True)
     list_fk = db.Column(db.String(50), nullable=True)
 
+    recipe = db.relationship("Recipe",backref=db.backref("meals"))
+
+
     @classmethod
     def plan_meal(cls, recipe_id, meal_type, servings, user_id, date):
 
         date_planned = datetime.strptime(date,"%m/%d/%Y")
         print "\n\n\n\nDate Planned: {}".format(date_planned)
+
+        weekNum = date_planned.strftime("%W")
+
         new_meal = Meals(user_fk=user_id, recipe_fk=recipe_id,
                         meal_type=meal_type, portions=servings,
-                        date_planned=date_planned)
+                        date_planned=date_planned, week_planned=weekNum)
+
         print new_meal
         db.session.add(new_meal)
         db.session.commit()
+    
+    @classmethod
+    def getMealsByWeek(cls, weekNum, userid):
+
+        mealsPlanned = Meals.query.filter_by(user_fk=userid,
+            week_planned=weekNum).order_by("date_planned").all()
+
+        return mealsPlanned
 
 
     def __repr__(self):
@@ -299,6 +356,7 @@ class RecipeUser(db.Model):
 
     __tablename__ = "x_recipe_user"
 
+
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     user_fk = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     recipe_fk = db.Column(db.Integer, db.ForeignKey('recipes.recipe_id'))
@@ -311,6 +369,15 @@ class RecipeUser(db.Model):
     recipe = db.relationship("Recipe",
                            backref=db.backref("x_recipe_user", order_by=recipe_fk))
    
+
+
+    @classmethod
+    def addRecipeForUser(cls, recipe_fk, user_fk):
+
+        print "ADD RECIPE USER"
+
+        recRecipeUser = RecipeUser(recipe_fk=recipe_fk, user_fk=user_fk)
+        db.session.add(recRecipeUser)  
 
     def __repr__(self):
         """ Recipe User Association """
@@ -344,6 +411,7 @@ class RecipeIngredient(db.Model):
 
     @classmethod
     def addIngredients(cls, recipe_fk, ingredient_name, quantity, measure):
+        print "ADD INGREDIENTS in RecipeIngredient"
 
         recipeIngr = RecipeIngredient(recipe_fk=recipe_fk,ingredient_name=ingredient_name.lower(),
                      quantity=quantity, measure=measure)

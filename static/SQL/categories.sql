@@ -9,3 +9,4 @@ INSERT into categories (cat_code, cat_name) VALUES ('PR','Party');
 INSERT into categories (cat_code, cat_name) VALUES ('MT','Meat');
 INSERT into categories (cat_code, cat_name) VALUES ('VE','Vegan');
 INSERT into categories (cat_code, cat_name) VALUES ('FS','Fish');
+INSERT into categories (cat_code, cat_name) VALUES ('DS','Dessert');

@@ -14,7 +14,7 @@
 <script>
 function validatePassword(evt) {
     if ($("#password").val() !== $("#passwordcheck").val()) {
-        alert("Your passwords don't match");
+        alert("Your passwords doesn't match");
         evt.preventDefault();
         $("#register").trigger("reset");
     }

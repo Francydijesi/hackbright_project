@@ -9,6 +9,8 @@ from model import (Recipe, User, Ingredient, RecipeStep, Category, RecipeUser,
 from werkzeug import secure_filename
 
 from sqlalchemy import func
+
+from datetime import datetime
 import os
 import json
 
@@ -44,23 +46,127 @@ def index():
 def recipe_list():
 
     """Show list of users."""
-
+    print "BACK IN TOWN"
     # If user is logged in, search user's recipes.
-    if 'user' in session:
-        recipes = u.Recipe.query.all()
+    if 'User' in session:
+        # u_recipes = RecipeUser.query.filter_by(session['User']).all()
+        recipes = (db.session.query(Recipe).join(RecipeUser).\
+                    filter(Recipe.recipe_id == RecipeUser.recipe_fk).\
+                    filter(RecipeUser.user_fk == session['User']).all())
+ 
+        cuisine = (db.session.query(Recipe.cuisine).join(RecipeUser).\
+                    filter(Recipe.recipe_id == RecipeUser.recipe_fk).\
+                    filter(RecipeUser.user_fk == session['User']).\
+                    filter(Recipe.cuisine != None).\
+                    distinct(Recipe.cuisine).order_by(Recipe.cuisine))
+
+        sources = (db.session.query(Recipe.source).join(RecipeUser).\
+                    filter(Recipe.recipe_id == RecipeUser.recipe_fk).\
+                    filter(RecipeUser.user_fk == session['User']).\
+                    filter(Recipe.source != None).\
+                    distinct().order_by(Recipe.source))
+        
+        categories = (db.session.query(Category).join(Recipe).join(RecipeUser).\
+                    filter(Recipe.recipe_id == RecipeUser.recipe_fk).\
+                    filter(Recipe.cat_code == Category.cat_code).\
+                    filter(RecipeUser.user_fk == session['User']).\
+                    filter(Recipe.cat_code != None).\
+                    distinct().order_by(Recipe.cat_code))
+
+        levels = (db.session.query(Recipe.skill_level).join(RecipeUser).\
+                    filter(Recipe.recipe_id == RecipeUser.recipe_fk).\
+                    filter(RecipeUser.user_fk == session['User']).\
+                    filter(Recipe.skill_level != None).\
+                    distinct(Recipe.skill_level))
 
     # If user is not logged in, return all recipes
     else:
-        recipes = Recipe.query.all()
-        groupedrecipe = Recipe.query.group_by(Recipe.cat_code).group_by(Recipe.cuisine).all()
-    print "GROUPED RECIPES :{}".format(groupedrecipe)
-    # for cat in categories:    
-    #     categories = (recipe.category.cat_name)
-    categories = Category.query.distinct()
+        # recipes = Recipe.query.all()
+        recipes = Recipe.query.group_by(Recipe.cat_code).order_by(Recipe.cat_code).all()
 
-    print categories
+        cuisine = (db.session.query(Recipe.cuisine).\
+                    filter(Recipe.cuisine != None).\
+                    distinct().order_by(Recipe.cuisine))
 
-    return render_template("recipe_list.html", recipes=groupedrecipe, categories=categories)
+        sources = (db.session.query(Recipe.source).\
+                    filter(Recipe.source != None).\
+                    distinct().order_by(Recipe.source))
+
+        categories = db.session.query(Category).join(Recipe).\
+                    filter(Category.cat_code == Recipe.cat_code).\
+                    filter(Recipe.cat_code != None).distinct().order_by(Recipe.cat_code)  
+
+        levels = (db.session.query(Recipe.skill_level).\
+                    filter(Recipe.skill_level != None).\
+                    distinct())
+
+    return render_template("recipe_list.html", recipes=recipes, levels=levels,
+                            cuisine=cuisine, sources=sources, categories=categories)
+
+@app.route("/changeFilters.json", methods=['POST'])
+def change_filters():
+
+    title = request.form("title")
+    cuisine = request.form("cuisine")
+    level = request.form("level")
+    cat = request.form("cat")
+    source = request.form("source")
+
+
+    # Checks if the fields have a value and save it in a dictionary
+    args = {}
+
+    if title:
+        args['title'] = title
+
+    if cuisine:
+        args['cuisine'] = cuisine
+
+    if cat:
+        args['cat_code'] = cat
+
+    if level:
+        args['skill_level'] = level
+
+    if source:
+        args['source'] = source
+
+    cuisine = db.session.query(Recipe.cuisine).\
+                filter_by(**args).\
+                filter(Recipe.cuisine != None).\
+                distinct().order_by(Recipe.cuisine)
+
+    sources = (db.session.query(Recipe.source).\
+                filter_by(**args).\
+                filter(Recipe.source != None).\
+                distinct().order_by(Recipe.source))
+
+    categories = db.session.query(Category).join(Recipe).\
+                filter_by(**args).\
+                filter(Category.cat_code == Recipe.cat_code).\
+                filter(Recipe.cat_code != None).distinct().order_by(Recipe.cat_code)  
+
+    levels = (db.session.query(Recipe.skill_level).\
+                filter_by(**args).\
+                filter(Recipe.skill_level != None).\
+                distinct())
+
+    titles = db.session.query(Recipe.title).\
+                filter_by(**args).\
+                filter(Recipe.title != None).\
+                distinct().order_by(Recipe.title)
+
+    filters = {
+
+       "cuisine": cuisine,
+       "source" : sources,
+       "categories": categories,
+       "levels" : levels,
+       "titles" : titles
+    }
+
+    return jsonify(filters)
+
 
 @app.route("/addRecipesForm")
 def add_recipes():
@@ -68,8 +174,9 @@ def add_recipes():
     """ Get list of ingredients and return recipe form """
 
     ingredients = Ingredient.query.order_by("name").all()
-    categories = Category.query.distinct()
+    categories = Category.query.distinct().order_by("cat_name")
     return render_template("recipe_form.html", ingredients=ingredients, categories=categories)
+
 
 @app.route("/addRecipe.json", methods=['POST'])
 def enter_recipe():
@@ -132,7 +239,7 @@ def enter_recipe():
 
         # Add recipe in 'recipes' Table 
         Recipe.addRecipe(title, description, filename, cat_code,
-                 servings, cooktime, skillLevel)
+                 servings, cooktime, skillLevel,cuisine)
         
         # Finds the recipe_id
         recipeIds= db.session.query(func.max(Recipe.recipe_id)).one()
@@ -146,16 +253,19 @@ def enter_recipe():
             name = ingredient["name"]
             qty = ingredient["qty"]
             unit = ingredient["unit"]
-            
+               
             # Add ingredients in 'RecipeIngredient'
             RecipeIngredient.addIngredients(recipeFk, name, qty, unit)
             # Add ingredients in 'Ingredients'
             Ingredient.addIngredients(name)
-           
+               
         # Add steps in 'recipe_step'
         RecipeStep.addRecipeStep(recipeFk,1,step1)
         RecipeStep.addRecipeStep(recipeFk,2,step2)
         RecipeStep.addRecipeStep(recipeFk,3,step3)
+
+        if 'User' in session:
+            RecipeUser.addRecipeForUser(recipeFk,session['User'])
 
         db.session.commit()
 
@@ -180,7 +290,8 @@ def enter_recipe():
 
 
     # return jsonify({"data": "pluto"})
-    
+
+   
 
 @app.route("/filtered_recipe.json")
 def filteres_recipe():
@@ -192,6 +303,13 @@ def filteres_recipe():
     cuisine = request.args.get("cuisine")
     cat = request.args.get("cat")
     level = request.args.get("level")
+    source = request.args.get("source")
+
+    print "Title", title
+    print "Source ", source
+    print "Category ", cat
+    print "Cuisine ", cuisine
+    print "SkillLevel ", level
 
     # Checks if the fields have a value and save it in a dictionary
     args = {}
@@ -200,13 +318,18 @@ def filteres_recipe():
         args['title'] = title
 
     if cuisine:
-        args['title'] = title
+        args['cuisine'] = cuisine
 
     if cat:
         args['cat_code'] = cat
 
     if level:
         args['skill_level'] = level
+
+    if source:
+        args['source'] = source
+
+    print "CUISINE", cuisine
 
     # Execute the query and passes the values in the dictionary
     recipes = Recipe.query.filter_by(**args).all()
@@ -236,6 +359,13 @@ def recipe_page(recipeid):
     return render_template("recipe_page.html", recipe=recipe,
                       ingredients=ingredients, steps=steps)
 
+@app.route("/deleteRecipe/<int:recipeid>")
+def delete_recipe(recipeid):
+
+    Recipe.deleteRecipeById(recipeid)
+    db.session.commit()
+
+    return redirect ("/recipes")
 
 @app.route("/plan-meal")
 def plan():
@@ -247,13 +377,39 @@ def plan():
     servings = request.args.get("servings")
     recipe_id = request.args.get("recipeid")
 
-    if 'user' in session:
-        Meals.plan_meal(recipe_id, meal_type, servings, session["user"], date)
+    if 'User' in session:
+        Meals.plan_meal(recipe_id, meal_type, servings, session["User"], date)
+        db.session.commit()
+        return redirect("/recipes")
     else:
-        Meals.plan_meal(recipe_id, meal_type, servings, None, date)
+        # Meals.plan_meal(recipe_id, meal_type, servings, None, date)
+        flash=[]
+        flash="You need to login"
+        return redirect("/login")
+    
+    
 
-    db.session.commit()
-    return redirect("/recipes")
+@app.route("/planner")
+def getPlanner():
+
+    """ Gets the list of meals planned """
+
+    d = datetime.today()
+    currentWeek = d.strftime("%W")
+
+    print "CURRENT WEEK: ",currentWeek
+
+    if 'User' in session:
+
+        mealsPlanned = Meals.getMealsByWeek(currentWeek, session['User'])
+        return render_template("planner.html", meals=mealsPlanned, date=d)
+
+    else:
+
+        flash("You need to sign in")
+        return render_template("planner.html")
+
+
 
 # @app.route("/grocery")
 
@@ -264,59 +420,62 @@ def plan():
 def register_user():
     """Allows the user to sign up for an account"""
 
-    return render_template("signup_form.html")
+    return render_template("signup.html")
 
-# @app.route("/register-confirm", methods=["POST"])
-# def confirm_new_user():
-#     """Create new user"""
+@app.route("/register-confirm", methods=["POST"])
+def confirm_new_user():
+    """Create new user"""
+    print("\n\n\n\n\nUSER CONFIRM\n\n\n\n")
+    user_email = request.form.get("email")
+    user_password = request.form.get("password") 
 
-#     user_email = request.form.get("email")
-#     user_password = request.form.get("password") 
+    confirmed_user = User.get_user_by_email(user_email)
     
-#     confirmed_user = User.get_user_by_email(user_email)
+    print "USER",confirmed_user
+    if not confirmed_user:
+        User.create_user_by_email_password(user_email, user_password)
+        flash("You successfully created an account!")
+    else:
+        flash("You already have an account")
+
+    return redirect("/")
+
+@app.route("/login")
+def login_user():
+    """Logs the user in"""
+
+    return render_template("login.html")
+
+@app.route("/logout")
+def logout_user():
+    """Logs out the user"""
+    del session['User']
     
-#     if not confirmed_user:
-#         User.create_user_by_email_password(user_email, user_password)
-#         flash("You successfully created an account!")
-#     else:
-#         flash("You already have an account")
+    flash("You are logged out","loggedout")
 
-#     return redirect("/")
+    return redirect("/")    
 
-# @app.route("/login")
-# def login_user():
-#     """Logs the user in"""
 
-#     return render_template("login_form.html")
-
-# @app.route("/logout")
-# def logout_user():
-#     """Logs out the user"""
-#     del session['User']
+@app.route('/login_confirm', methods=["POST"])
+def get_login():
+    """Get user info"""
+    print "LOGIN CONFIRM"
+    user_email = request.form.get("email")
+    user_password = request.form.get("password")
     
-#     flash("You are logged out","loggedout")
+    confirmed_user = User.get_user_by_email_password(user_email, user_password)
+    print "USER: ", confirmed_user
 
-#     return redirect("/")    
+    if confirmed_user:
+        flash("You're logged in!","loggedin")
+        userid = confirmed_user.user_id
+        session["User"] = confirmed_user.user_id
 
-
-# @app.route('/login_confirm', methods=["POST"])
-# def get_login():
-#     """Get user info"""
-#     user_email = request.form.get("email")
-#     user_password = request.form.get("password")
-    
-#     confirmed_user = User.get_user_by_email_password(user_email, user_password)
-    
-#     if confirmed_user:
-#         flash("You're logged in!","loggedin")
-#         userid = confirmed_user.user_id
-#         session["User"] = userid
-
-#         print session["User"]
-#         return redirect("/")
-#     else:
-#         flash("Your email and password combination are not correct.")
-#         return redirect("/login")
+        print session["User"]
+        return redirect("/")
+    else:
+        flash("Your email and password combination are not correct.")
+        return redirect("/login")
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point

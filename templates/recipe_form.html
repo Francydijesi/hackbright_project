@@ -184,7 +184,6 @@
         };
 
         reader.readAsDataURL(input.files[0]);
-        // form_data = input.files[0];
       
     }
 
@@ -291,7 +290,7 @@
 
 // SEND FORM    
     function refreshPage(results){
-
+        alert("refresh");
         $("#view-rec").toggle();
         
         $("#view-rec").attr("action","/recipe_page/"+results.recipeid);
@@ -301,7 +300,7 @@
     }
 
     function msgHandler(results){
-        
+        alert(results);
         // document.getElementById("add-rec").reset();
         // Cleans all the input fields
         $("#add-rec").trigger('reset'); 

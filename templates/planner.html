@@ -9,52 +9,347 @@
     <div class="container">
 
         <div class="row">
+            
             <!-- DATEPICKER -->
-        </div>
-
+        
         <div class="row">
             <h3>{{ start_date.strftime("%B")}} {{ start_date.strftime("%d")}} - 
                 {{ end_date.strftime("%d")}}</h3>
         </div> 
 
         <h1>Your meal planner</h1>
+
         <div class="grid-calendar">
+
             <div class="row calendar-week-header">
-                {% for meals in meals_list %}
+
+                {% for day in meals_list %}
                     <div class="col-xs-1 grid-cell"><div>
-                    <div><span>{{ meals['date'].strftime('%d %b') }}</span></div>
+                    <div><span>{{ day['date'].strftime('%d %b') }}</span></div>
                     </div></div>
                  {% endfor%}   
+
             </div>
+
             <div class="row calendar-week"> 
-                {% for meals in meals_list %}
-                   <div class="col-xs-1 grid-cell">
-                    {% for meal in meals['meals'] %}
-                       <div class="row calendar-week" style="display: block">
-                            <img src="static/img/recipes/{{ meal.recipe.image_url }}"
-                            class="img-responsive" class="img-thumbnail" id="img-small">
-                        <br>
-                            {{ meal.recipe.title }}
+
+                <!-- For each day of the week -->
+                
+                {% for day in meals_list %}
+
+                <div class="col-xs-1 grid-cell">
+                
+                <!-- BREAKFAST -->  
+                    <!-- If there are  meals-->
+                    {% if day['b_meals']|length > 0 %}
+
+                            <div class="row calendar-week grid-cell" style="display: block" id="div-meal">
+                                {% for meal in day['b_meals'] %}
+                               
+                                    <img src="static/img/recipes/{{ meal.recipe.image_url }}"
+                                    class="img-responsive" class="img-thumbnail" id="img-small">
+                                    <br>
+                                    {{ meal.recipe.title }}{{meal.meal_type}}
+        
+                                    <button  type="button" class="btn-group btn-group-xs" role="group" data-toggle="modal" data-target="#deliteRecipe">Delete
+                                    </button>
+<!-- Modal Delete RECIPE-->
+
+        <div id="deleteRecipe" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+            
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">View Meal</h4>
+                </div>
+                <div class="modal-body">
+               
+                    <form action="/deleteMeal">
+
+                        <h2>Meal Date :{{ day['date'].strftime('%d %b') }}</h2>
+                        <br><br>
+
+                        <h1>{{meal.recipe.title}}</h1>
+                        <br><br>
+
+                        <!-- <img src="static/img/recipes/{{ meal.recipe.image_url }}"
+                            class="img-responsive" class="img-thumbnail" id="img-small"> -->
+                        <br></br>
+                        <input type="hidden" name="dateplanned" value="{{ day['date'] }}" />
+                        <input type="hidden" name="recipeid" value="{{ meal.recipe.recipe_id }}" />
+                        <input type="hidden" name="mealtype" value="{{ meal.meal_type }}" />
+
+                        <input class="btn btn-default" type="submit" value="Delete" />
                         
-                       </div>
-                    
-                    {% endfor %}   
-                   </div>
+                    </form>   
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- End of Modal -->
+
+  
+                                {% endfor %} 
+                            </div>     
+
+                    <!-- If there are no meals -->
+                    {% else%} 
+
+    <!-- <div class="row empty-data" id="add-meal" style="display: block">Add meal</div> -->
+                    <button  class="empty-data" type="button" id="add-meal" data-toggle="modal" data-target="#addRecipe"  aria-hidden="true">Add meal</button>
+                          
+                    {% endif %} 
+
+                <!-- LUNCH MEALS -->  
+                    <!-- If there are  meals-->
+                    {% if day['l_meals']|length > 0 %}
+                  
+                            <div class="row calendar-week grid-cell" style="display: block">
+                                {% for meal in day['l_meals'] %}
+                               
+                                    <img src="static/img/recipes/{{ meal.recipe.image_url }}"
+                                    class="img-responsive" class="img-thumbnail" id="img-small">
+                                    <br>
+                                    {{ meal.recipe.title }}{{meal.meal_type}}
+                                    
+                                    <button  type="button" class="btn-group btn-group-xs" 
+                                    role="group" data-toggle="modal" data-target="#editRecipe">
+                                    View
+                                    </button>
+
+                                {% endfor %} 
+                            </div>     
+
+                    <!-- If there are no meals -->
+                    {% else%} 
+
+                        <!-- <div class="row empty-data" style="display: block"></div> -->
+                        <button  class="empty-data" type="button" id="add-meal" data-toggle="modal" data-target="#addRecipe"  aria-hidden="true">Add meal</button>
+
+                    {% endif %} 
+
+
+                    <!-- DINNER -->
+
+                    {% if day['d_meals']|length > 0 %}
+                  
+                            <div class="row calendar-week grid-cell" style="display: block">
+                                {% for meal in day['d_meals'] %}
+                               
+                                    <img src="static/img/recipes/{{ meal.recipe.image_url }}"
+                                    class="img-responsive" class="img-thumbnail" id="img-small">
+                                    <br>
+                                    {{ meal.recipe.title }}{{meal.meal_type}}
+                                    <button  type="button" class="btn-group btn-group-xs" role="group" data-toggle="modal" data-target="#editRecipe">View
+                                    </button>
+
+                                {% endfor %} 
+                            </div>     
+
+                    <!-- If there are no meals -->
+                    {% else%} 
+
+                         <!-- <div class="row grid-cell empty-data" style="display: block"></div> -->
+                         <button  class="empty-data" type="button" id="add-meal" data-toggle="modal" data-target="#addRecipe"  aria-hidden="true">Add meal</button> 
+                    {% endif %} 
+
+                
+                </div>
                 {% endfor %}    
             </div>  
+        </div>
+      </div>  
+
+<!-- BUTTON to generate SHOPPING LIST -->
+    <div class="col-xs-3 col-xs-offset-5"> 
+        <!-- Trigger the modal with a button -->
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Add to Planner</button>
+    </div>   
 
 
-            <div class="row calendar-week">
-                <div class="col-xs-1 grid-cell previous-month"><div><div><span>31</span></div></div></div>
-                <div class="col-xs-1 grid-cell"><div><div><span>1</span></div></div></div>
-                <div class="col-xs-1 grid-cell"><div><div><span>2</span></div></div></div>
-                <div class="col-xs-1 grid-cell"><div><div><span>3</span></div></div></div>
-                <div class="col-xs-1 grid-cell"><div><div><span>4</span></div></div></div>
-                <div class="col-xs-1 grid-cell"><div><div><span>5</span></div></div></div>
-                <div class="col-xs-1 grid-cell"><div><div><span>6</span></div></div></div>
+
+]
+            <!-- FILTERS -->
+          <!-- <div class="row">
+            <div class="col-xs-11">
+
+                <form  class="form-inline" id="filter-form">
+                    <div class="form-group">    
+                        Name:
+                        <select name="title" id="rec-title">
+                                <option value=""></option>
+                            {% for recipe in recipes %}
+                                <option value="{{ recipe.title }}">{{ recipe.title }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        Cuisine:
+                        <select name="cuisine" id="rec-cuisine">
+                            <option></option>
+                            {% for c in cuisine %}
+                                <option value="{{ c.cuisine }}">{{ c.cuisine }}</option>
+                            {% endfor %}
+                        </select>   
+                    </div>     
+                
+                    <div class="form-group">
+                        Category:
+                        <select name="category" id="rec-cat">
+                            <option></option>
+                            
+                            {% for cat in categories %}
+                                <option value="{{ cat.cat_code }}">{{ cat.cat_name }}</option>
+                            {% endfor %}
+                        </select> 
+                    </div>
+
+                </form>
+
+                <div class="row" id="recipe-box">
+              -->   <!-- Recipe List-->
+               
+                <!-- {% for recipe in recipes %}
+                         
+                <form action="/recipe_page/{{ recipe.recipe_id }}" id="#rec-table" class="form-inline">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <a href="/recipe_page/{{ recipe.recipe_id }}"><img id="recipe-img" src="/static/img/recipes/{{ recipe.image_url }}"></a>
+                        </div>
+                     
+                    <div class="col-xs-8" >
+
+                        <div class="row" id="recipe-title">{{ recipe.title }}</div>
+                    </div>
+                    <div class="form-group" id="flt-bt">
+                        <input class="btn btn-default"  type="submit" value="Filter">
+                    </div>
+                </form>  
+
+                {% endfor %}   
+                 
             </div>
-        </div> 
+            <div> class="col-xs-1">    
+                <div class="form-group" id="reset">
+                    <form class="form-inline" id="reset-form" action="/recipes">
+                        <input class="btn btn-default" type="submit" id="reset-filter" 
+                        value="Reset"></input>
+                    </form>
+                </div>    
+             </div>  -                 
+        </div>-->
+
+<!-- Modal Add RECIPE-->
+
+<div id="addRecipe" class="modal fade" role="dialog">
+
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Add a meal</h4>
+        </div>
+
+        <div class="modal-body">
+
+            <form action="/plan-meal">
+
+                <label for="date">Name: </label>
+                <select name="title" id="rec-title">
+                        <option value=""></option>
+                    {% for recipe in recipes %}
+                        <option value="{{ recipe.title }}">{{ recipe.title }}</option>
+                    {% endfor %}
+                </select>
+
+                <img id="recipe-img" src="#" style="display:none;">
+
+                <br><br>
+        
+                <label for="date">Meal Date : </label>
+                <input type="date" id="meal-day" name="date" size="20" />
+                <br><br>
+
+                <label for="type">Meal Type : </label>
+                <select name="type">
+                    <option id="meal-type" name="type" value=""></option>
+                    <option id="meal-type" name="type" value="breakfast">Breakfast</option>
+                    <option id="meal-type" name="type" value="lunch">Lunch</option>
+                    <option id="meal-type" name="type" value="dinner">Dinner</option>
+                    <option id="meal-type" name="type" value="dinner">Snack</option>
+                </select>
+                <br><br>
+
+                <label for="servings">Number of servings : </label>
+                <select name="servings">
+                    <option id="meal-type" name="servings" value=""></option>
+                    <option id="meal-type" name="servings" value="1">1</option>
+                    <option id="meal-type" name="servings" value="2">2</option>
+                    <option id="meal-type" name="servings" value="3">3</option>
+                    <option id="meal-type" name="servings" value="4">4</option>
+                    <option id="meal-type" name="servings" value="5">5</option>
+                    <option id="meal-type" name="servings" value="6">6</option>
+                    <option id="meal-type" name="servings" value="7">7</option>
+                    <option id="meal-type" name="servings" value="8">8</option>
+                </select>
+                <br><br>
+                
+                <input class="btn btn-default" type="submit" value="Add" />
+                
+            </form>   
+        </div>
+        <div class="modal-footer">
+            <button id="close-butt" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
     </div>
+  </div>
+</div>
+
+<!-- End of Modal -->
+
+<script>
+  
+    function displayImg(result){
+
+        alert("DISPLAY"+result);
+        $("#recipe-img").css({display: "block"});
+
+        $("#recipe-img").attr("src", "/static/img/recipes/"+result);
+                
+    }
+
+    // $("#rec-title").on('change',displayImg); 
+
+    function findImg(){
+
+        $.get('/getRecipeImg.json', {'title': $('#rec-title').val()}, displayImg)
+    }
+
+    $("#rec-title").change(findImg); 
+
+
+
+    function resetFilters(){
+        alert("REFRESH");
+        $("#rec-title").val("");
+        $("#recipe-img").css({display: "none"});
+
+    }
+
+    $("#close-butt").on('click',resetFilters);
+
+</script>
+
 </body>
 
 {% endblock %} 

@@ -290,6 +290,7 @@ class Meals(db.Model):
     week_planned = db.Column(db.Integer, nullable=True)
     list_fk = db.Column(db.String(50), nullable=True)
 
+
     recipe = db.relationship("Recipe",backref=db.backref("meals"))
 
 
@@ -308,19 +309,61 @@ class Meals(db.Model):
         print new_meal
         db.session.add(new_meal)
         db.session.commit()
-    
-    @classmethod
-    def getMealsByDate(cls, date, userid):
-        
-        print "DATE ", date
 
-        mealsPlanned = Meals.query.filter(Meals.user_fk==userid)\
-            .filter(func.substr(Meals.date_planned,0,11)==func.substr(date,0,11))\
-            .order_by("meal_type").all()
-        print "MEALLLLLS",mealsPlanned
+    @classmethod
+    def deleteMeal(cls, date, user, meal_type, recipe):
+
+        db.session.query(Meals).\
+            filter(func.substr(Meals.date_planned,0,11)==func.substr(date,0,11)).\
+            filter(Meals.user_fk==user).\
+            filter(Meals.meal_type==meal_type).\
+            filter(Meals.recipe_fk==recipe).\
+            delete(synchronize_session=False)
+
+
+    @classmethod
+    def getMealByDateByRecipe(cls, date, user, recipe):
+
+        meal = db.session.query(Meals).filter(Meals.user_fk==user).\
+            filter(Meals.recipe_fk==recipe).\
+            filter(func.substr(Meals.date_planned,0,11)==func.substr(date,0,11)).\
+            all()
+        print "\n\n\n\nELEMENT ALREADY EXISTS"
+
+
+    @classmethod
+    def getMealsByDate(cls, date, user):
+
+        mealsPlanned = db.session.query(Meals).filter(Meals.user_fk==user).\
+            filter(func.substr(Meals.date_planned,0,11)==func.substr(date,0,11)).\
+            all()
 
         return mealsPlanned
 
+    @classmethod
+    def getMealsByDateByType(cls, date, user, type):
+
+        mealsPlanned = db.session.query(Meals).filter(Meals.user_fk==user).\
+            filter(Meals.meal_type==type).\
+            filter(func.substr(Meals.date_planned,0,11)==func.substr(date,0,11)).\
+            all()
+
+        return mealsPlanned    
+
+    @classmethod
+    def getMealsByFutureDate(cls, user):
+
+        meals_list = db.session.query(Meals).join(Recipe).join(RecipeIngredient).\
+            join(Ingredient).\
+            filter(Meals.recipe_fk==Recipe.recipe_id).\
+            filter(Recipe.recipe_id==RecipeIngredient.recipe_fk).\
+            filter(RecipeIngredient.ingredient_name==Ingredient.name).\
+            filter(Meals.user_fk==user).\
+            group_by(Meals.date_planned).\
+            having(Meals.date_planned > datetime.today()).\
+            order_by(Meals.date_planned).all()
+
+        return meals_list
 
     def __repr__(self):
         """ Meals list"""
@@ -333,23 +376,58 @@ class Meals(db.Model):
 #
 ### SHOPPING LIST ###
 
-# class ShoppingList(db.Model):
-#     """Shopping list"""
+class ShoppingList(db.Model):
+    """Shopping list"""
 
-#     __tablename__ = "shop_lists"
+    __tablename__ = "shop_lists"
 
-#     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-#     name = db.Column(db.String(50), nullable=true)
-#     ingredient_fk = db.Column(db.Integer, db.ForeignKey('ingredients.id'))
-#     user_fk = db.Column(db.Integer, db.ForeignKey('user.user_id'))
-#     date = db.Column(db.Timestamp, nullable=False)
-#     qty = db.Column(db.String(20), nullable=True)
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    name = db.Column(db.String(50), nullable=True)
+    ingredient_fk = db.Column(db.Integer, db.ForeignKey('ingredients.id'))
+    qty = db.Column(db.String(20), nullable=True)
+    user_fk = db.Column(db.Integer, db.ForeignKey('user.user_id'))
+    date_created = db.Column(db.DateTime, nullable=False)
 
-#     def __repr__(self):
-#         """ Shopping list"""
 
-#         return "<Shopping list name=%s ingredient=%s date=%s>" % ( self.name,
-#                                             self.ingredient_fk, date_planned )
+    @classmethod
+    def addItem(cls, ingredient_fk, qty, user, name):
+
+        shopping_item = ShoppingList(name=name, ingredient_fk=ingredient_fk, user_fk=user,
+                            qty=qty)
+
+        db.session.add(shopping_item)
+        # db.session.commit()
+
+
+    @classmethod
+    def getShoppingListByName(cls, name):
+
+        s_list = ShoppingList.query.filter_by(name).all()
+
+        return s_list
+
+    @classmethod
+    def getLatestShoppingList(cls, user):
+
+        s_list =  ShoppingList.query.filter_by(user_fk=user).\
+                group_by(date_created).having(max(date_created)).all()
+
+        return s_list
+
+    @classmethod
+    def deleteItemByDate(cls, ingredient_fk, user, date_created):
+
+        db.session.query(ShoppingList).\
+                        filter(ShoppingList.ingredient_fk==ingredient_fk).\
+                        filter(ShoppingList.user==user).\
+                        filter(ShoppingList.date_created==date_created).\
+                        delete(synchronize_session=False)
+
+    def __repr__(self):
+        """ Shopping list"""
+
+        return "<Shopping list name=%s ingredient=%s date=%s>" % ( self.name,
+                                            self.ingredient_fk, date_planned )
 
 ###############################################################################
 #
@@ -373,7 +451,6 @@ class RecipeUser(db.Model):
     recipe = db.relationship("Recipe",
                            backref=db.backref("x_recipe_user", order_by=recipe_fk))
    
-
 
     @classmethod
     def addRecipeForUser(cls, recipe_fk, user_fk):

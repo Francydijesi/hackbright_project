@@ -5,7 +5,7 @@ from flask import Flask, render_template, redirect, request, flash, session, jso
 from flask_debugtoolbar import DebugToolbarExtension
 
 from model import (Recipe, User, Ingredient, RecipeStep, Category, RecipeUser,
-                    RecipeIngredient, Meals, connect_to_db, db)
+                    ShoppingList, RecipeIngredient, Meals, connect_to_db, db)
 from werkzeug import secure_filename
 
 from sqlalchemy import func
@@ -48,7 +48,7 @@ def index():
 def recipe_list():
 
     """Show list of users."""
-    print "BACK IN TOWN"
+    print "SEARCH RECIPES"
     # If user is logged in, search user's recipes.
     if 'User' in session:
         # u_recipes = RecipeUser.query.filter_by(session['User']).all()
@@ -183,7 +183,7 @@ def add_recipes():
 @app.route("/addRecipe.json", methods=['POST'])
 def enter_recipe():
     """ Add a new recipe in DB """
-    
+
     title = request.form.get("title")
     description = request.form.get("description")
     source = request.form.get("source")
@@ -196,38 +196,6 @@ def enter_recipe():
     step2 = request.form.get("step2")
     step3 = request.form.get("step3")
 
-    print "Title", title
-    print "Description ", description
-    print "Source ", source
-    print "Category ", cat_code
-    print "Cuisine ", cuisine
-    print "Servings ", servings
-    print "SkillLevel ", skillLevel
-
-    # # Checks if the fields have a value and save it in a dictionary
-    # args = {}
-
-    # if title:
-    #     args['title'] = title
-
-    # if description:
-    #     args['description'] = description
-
-    # if source:
-    #     args['source'] = source
-
-    # if cat_code:
-    #     args['cat_code'] = cat_code
-
-    # if cuisine:
-    #     args['cuisine'] = cuisine
-
-    # if Servings:
-    #     args['Servings'] = Servings
-
-    # if skillLevel:
-    #     args['skill_level'] = skillLevel
-
     try:
         # Saves the img file in the directory
         filename=""
@@ -239,28 +207,27 @@ def enter_recipe():
                 print filename
                 img_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-        # Add recipe in 'recipes' Table 
+        # Add recipe in 'recipes' Table
         Recipe.addRecipe(title, description, filename, cat_code,
                  servings, cooktime, skillLevel,cuisine)
-        
+
         # Finds the recipe_id
         recipeIds= db.session.query(func.max(Recipe.recipe_id)).one()
         recipeFk = recipeIds[0]
         print "RECIPE ID:  ",recipeFk
-     
-        
+
         ingredients = json.loads(request.form.get("listIngr"))
 
         for ingredient in ingredients:
             name = ingredient["name"]
             qty = ingredient["qty"]
             unit = ingredient["unit"]
-               
+
             # Add ingredients in 'RecipeIngredient'
             RecipeIngredient.addIngredients(recipeFk, name, qty, unit)
             # Add ingredients in 'Ingredients'
             Ingredient.addIngredients(name)
-               
+
         # Add steps in 'recipe_step'
         RecipeStep.addRecipeStep(recipeFk,1,step1)
         RecipeStep.addRecipeStep(recipeFk,2,step2)
@@ -272,7 +239,7 @@ def enter_recipe():
         db.session.commit()
 
         Recipe.updateRecipeImg(title=title, cat_code=cat_code)
-        
+
         message = {
 
             'msg': "Recipe successfully added",
@@ -306,12 +273,6 @@ def filteres_recipe():
     cat = request.args.get("cat")
     level = request.args.get("level")
     source = request.args.get("source")
-
-    print "Title", title
-    print "Source ", source
-    print "Category ", cat
-    print "Cuisine ", cuisine
-    print "SkillLevel ", level
 
     # Checks if the fields have a value and save it in a dictionary
     args = {}
@@ -380,16 +341,17 @@ def plan():
     recipe_id = request.args.get("recipeid")
 
     if 'User' in session:
-        Meals.plan_meal(recipe_id, meal_type, servings, session["User"], date)
-        db.session.commit()
+
+        if not Meals.getMealByDateByRecipe(date, session['User'],recipe_id):
+            Meals.plan_meal(recipe_id, meal_type, servings, session["User"], date)
+            db.session.commit()
         return redirect("/recipes")
     else:
         # Meals.plan_meal(recipe_id, meal_type, servings, None, date)
-        flash=[]
-        flash="You need to login"
+        flash = []
+        flash = "You need to login"
         return redirect("/login")
-    
-    
+
 
 @app.route("/planner")
 def getPlanner():
@@ -403,6 +365,23 @@ def getPlanner():
     meal_list = []
     meal_days = []
 
+    recipes = (db.session.query(Recipe).join(RecipeUser).\
+            filter(Recipe.recipe_id == RecipeUser.recipe_fk).\
+            filter(RecipeUser.user_fk == session['User']).all())
+
+    cuisine = (db.session.query(Recipe.cuisine).join(RecipeUser).\
+            filter(Recipe.recipe_id == RecipeUser.recipe_fk).\
+            filter(RecipeUser.user_fk == session['User']).\
+            filter(Recipe.cuisine != None).\
+            distinct(Recipe.cuisine).order_by(Recipe.cuisine))
+
+    categories = (db.session.query(Category).join(Recipe).join(RecipeUser).\
+            filter(Recipe.recipe_id == RecipeUser.recipe_fk).\
+            filter(Recipe.cat_code == Category.cat_code).\
+            filter(RecipeUser.user_fk == session['User']).\
+            filter(Recipe.cat_code != None).\
+            distinct().order_by(Recipe.cat_code))
+
     for i in range(7):
         week_days.append(int(start_date.strftime("%w")) + i)
 
@@ -411,21 +390,88 @@ def getPlanner():
         for i in range(7):
             mealsPlanned=''
             date = start_date + timedelta(days=i)
-            mealsPlanned = Meals.getMealsByDate(date, session['User'])
-            meal_list.append({"date": date, "meals":mealsPlanned})
-
+            # mealsPlanned = Meals.getMealsByDate(date, session['User'])
+            b_meals = Meals.getMealsByDateByType(date, session['User'], 'breakfast')
+            l_meals = Meals.getMealsByDateByType(date, session['User'], 'lunch')
+            d_meals = Meals.getMealsByDateByType(date, session['User'], 'dinner')
+            s_meals = Meals.getMealsByDateByType(date, session['User'], 'snack')
+            # print "BREAKFAST",b_meals
+            meal_list.append({"date": date,
+                              "b_meals":b_meals,
+                              "l_meals":l_meals,
+                              "d_meals":d_meals,
+                              "s_meals":s_meals})
 
         return render_template("planner.html", meals_list=meal_list,
-            week_days=week_days, start_date=start_date, end_date=end_date)
+            week_days=week_days, start_date=start_date, end_date=end_date,
+            recipes=recipes, cuisine=cuisine, categories=categories)
 
     else:
 
         flash("You need to sign in")
         return render_template("planner.html")
 
+@app.route("/getRecipeImg.json")
+def getImg():
+
+    title=request.args.get('title')
+    imgurl = db.session.query(Recipe.image_url).filter_by(title=title).all()
+
+    recipe_img={'url': imgurl}
+
+    return jsonify(recipe_img)
+
+@app.route("/deleteMeal")
+def deleteMeal():
+
+    print "Delete MEAL"
+    recipe_fk = request.args.get("recipeid")
+    meal_type = request.args.get("mealtype")
+    date_planned = request.args.get("dateplanned")
+
+    print "RECIPE",recipe_fk, meal_type, date_planned
 
 
-# @app.route("/grocery")
+    Meals.deleteMeal(date=date_planned, user=session['User'], meal_type=meal_type,
+             recipe=recipe_fk)
+
+    db.session.commit()
+
+    # except Exception, error:
+
+    #     flash("Meal couldn't be deleted: error %s" % error)
+
+    return redirect("/planner")
+
+@app.route("/grocery")
+def create_shopping_list():
+
+    i_list = {}
+
+    if 'User' in session:
+
+        meals = Meals.getMealsByFutureDate(user=session['User'])
+
+        for meal in meals:
+
+            print meal
+
+            # for ingredient in meal.ingredient.id:
+
+            #     if ingredient.id not in i_list.keys():
+
+            #         i_list[ingredient.id] = [ingredient.name, ingredient.qty]
+
+            #     else:
+
+            #         i_list[ingredient.id][1] += ingredient.qty
+
+
+    # ShoppingList.addItem(ingredient.id, recipeIngredient.qty, user, name)
+
+
+    return render_template("grocery_list.html", list=i_list)
+
 
 # ##############################################################################
 # # REGISTER - LOGIN - LOGOUT

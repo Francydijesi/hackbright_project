@@ -40,23 +40,35 @@
   background-color: #f6f6f6;
   border: 1px solid #fff;
 }
+.empty-data{
+  
+  height: 133px;
+  background-color: #f6f6f6;
+  border: 1px solid #fff;
+  text-align:center;
+  font-size: 15px;
+  padding: 50px;
+  position: relative;
+}
 .grid-calendar .calendar-week-header .grid-cell > div > div {
   padding-bottom: 10px;
-  height: auto;
+  /*height: auto;*/
+  height: 133px;
 }
 .grid-calendar .grid-cell {
   display: inline-block;
-  float: left;
+  /*float: left;*/
   min-height: 1px;
   padding: 0;
   position: relative;
   width: 14.28571%;
-  font-size: 10px;
+  font-size: 12px;
 }
 #image-small{
 
   width: 100%;
 }
+
 .grid-calendar .grid-cell.previous-month {
   color: #a6a6a6;
 }
@@ -64,12 +76,38 @@
   background-color: #e1e1e1;
 }
 .grid-calendar .grid-cell > div {
-  display: flex;
-  justify-content: center;
+  /*display: flex;*/
+  /*justify-content: center;*/
   width: 100%;
 }
 .grid-calendar .grid-cell > div > div {
-  height: 0;
+  /*height: 0;*/
+  height: 133px;
   padding: 50% 0;
+}
+.meal-type{
+/*  -webkit-transform: rotate(271deg);
+-moz-transform: rotate(271deg);
+-o-transform: rotate(271deg);
+writing-mode: lr-tb;
+*/
+-webkit-transform: rotate(90deg); 
+     -moz-transform: rotate(90deg); 
+      -ms-transform: rotate(90deg); 
+       -o-transform: rotate(90deg); 
+          transform: rotate(90deg);
+            color: #000;
+            font-size: 22px;                
+            height: 200px;
+            width: 200px;
+            float: left;        
+            vertical-align:top;  
+
+}
+
+#editRecipe{
+  top:5%;
+  right:50%;
+  outline: none;
 }
 

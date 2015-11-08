@@ -104,7 +104,7 @@ div#reset{
 }
 
 div#flt-bt{
-    padding-left: 160px;
+    padding-left: 80px;
 }
 
 .form-inline > * {
@@ -228,4 +228,21 @@ p#rec-tit{
 #img-planner{
 
     height: 100px;
+}
+
+/* Modal ADD */
+div#title-box{
+    font-size: 8px;
+    font-family: 'Brush Script MT';
+}
+
+img#recipe-img{
+    width: 100%;
+    padding-right: 25px;
+    padding-bottom: 20px;
+}
+/*Shopping List*/
+input#notepad{
+
+    background-image: url('/static/img/notepad.png');
 }

@@ -340,14 +340,16 @@ def plan():
     servings = request.args.get("servings")
     recipe_id = request.args.get("recipeid")
 
+    print "PARAMS",date, meal_type, servings, recipe_id
+    # import pdb;
     if 'User' in session:
 
         if not Meals.getMealByDateByRecipe(date, session['User'],recipe_id):
+            print "Meal is not in planner"
             Meals.plan_meal(recipe_id, meal_type, servings, session["User"], date)
             db.session.commit()
         return redirect("/recipes")
     else:
-        # Meals.plan_meal(recipe_id, meal_type, servings, None, date)
         flash = []
         flash = "You need to login"
         return redirect("/login")
@@ -414,12 +416,19 @@ def getPlanner():
 @app.route("/getRecipeImg.json")
 def getImg():
 
-    title=request.args.get('title')
-    imgurl = db.session.query(Recipe.image_url).filter_by(title=title).all()
+    recipe_id=request.args.get('recipeid')
+    print "ID RICETTA",recipe_id
+    rec = db.session.query(Recipe.image_url, Recipe.title).filter_by(recipe_id=recipe_id).all()
+    print "IMG ", rec[0][0]
+    
+    recipe_info={
+          
+        'img_url': rec[0][0],
+        'title' : rec[0][1]
 
-    recipe_img={'url': imgurl}
+        }
 
-    return jsonify(recipe_img)
+    return jsonify(recipe_info)
 
 @app.route("/deleteMeal")
 def deleteMeal():
@@ -450,28 +459,61 @@ def create_shopping_list():
 
     if 'User' in session:
 
-        meals = Meals.getMealsByFutureDate(user=session['User'])
+        # meals = Meals.getMealsByFutureDate(user=session['User'])
+        list_ingr = db.session.query(RecipeIngredient).join(Recipe).join(Meals).\
+            join(Ingredient).\
+            filter(func.substr(Meals.date_planned,0,11) >= func.substr(datetime.today(),0,11)).\
+            filter(Meals.recipe_fk==Recipe.recipe_id).\
+            filter(Recipe.recipe_id==RecipeIngredient.recipe_fk).\
+            filter(RecipeIngredient.ingredient_name==Ingredient.name).\
+            filter(Meals.user_fk==session['User']).\
+            order_by(Meals.date_planned).all()
 
-        for meal in meals:
+        print "MEALS", list_ingr  
 
-            print meal
+        for ingr in list_ingr:
+            if ingr.ingredient_name not in i_list.keys():
 
-            # for ingredient in meal.ingredient.id:
+                i_list.append[ingr.ingredient_name] = {"qty": ingr.quantity,
+                                                       "unit":ingr.measure
 
-            #     if ingredient.id not in i_list.keys():
+            else:
 
-            #         i_list[ingredient.id] = [ingredient.name, ingredient.qty]
+                to_add = { "qty": ingr.quantity,"unit": ingr.measure }
 
-            #     else:
+                new_value = calculateQuantity(i_list[ingr.ingredient_name],to_add )
+                i_list[ingr.ingredient_name] = new_value
+                # i_list[ingr.ingredient_name]["unit"] = new_qty
+                # ingr.quantity
 
-            #         i_list[ingredient.id][1] += ingredient.qty
 
-
+    print "LIST", i_list
     # ShoppingList.addItem(ingredient.id, recipeIngredient.qty, user, name)
 
 
     return render_template("grocery_list.html", list=i_list)
 
+def calculateQuantity(old_qty, add_qty):
+
+    new_value={}
+
+    qty1 = old_qty['qty']
+    unit1 = old_qty['unit']
+
+    qty2 = add_qty['qty']
+    unit2 = add_qty['unit']
+
+    new_qty = 0
+
+    if unit1==unit2:
+        new_qty = qty1+qty2
+
+    else:
+        new_qty = convert(qty1,qty2)
+
+    new_value
+
+    return new_value={}
 
 # ##############################################################################
 # # REGISTER - LOGIN - LOGOUT

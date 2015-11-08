@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Meal planner{% endblock%}
+{% block page %} Shopping List {% endblock%}
+{% block content %}
+
+<body>
+
+<div container>
+    <br><br>
+    <div class="row">
+        <div class="col-xs-6 col-xs-offset-4" >
+            <form action='/deleteItem' id="notepad">
+                {% for ingr, qty in list.iteritems() %}
+                    <h3>
+                    <input type="checkbox" name="ingr"> {{qty }} {{ ingr }} <br>
+                    </h3>    
+                {% endfor %}
+            </form>
+        </div>
+    </div>    
+</div>
+</body>
+{% endblock %}

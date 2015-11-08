@@ -74,7 +74,7 @@ class Recipe(db.Model):
 
     recipe_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     title = db.Column(db.String(64), nullable=False)
-    description = db.Column(db.String(300), nullable=True)
+    description = db.Column(db.Text, nullable=True)
     image_url = db.Column(db.String(100), nullable=True)
     cat_code = db.Column(db.String(50), db.ForeignKey('categories.cat_code'))
     cuisine = db.Column(db.String(50), nullable=True)
@@ -306,7 +306,7 @@ class Meals(db.Model):
                         meal_type=meal_type, portions=servings,
                         date_planned=date_planned, week_planned=weekNum)
 
-        print new_meal
+        print "NEW MEAL",new_meal
         db.session.add(new_meal)
         db.session.commit()
 
@@ -328,7 +328,7 @@ class Meals(db.Model):
             filter(Meals.recipe_fk==recipe).\
             filter(func.substr(Meals.date_planned,0,11)==func.substr(date,0,11)).\
             all()
-        print "\n\n\n\nELEMENT ALREADY EXISTS"
+        print "\n\n\n\nELEMENT ALREADY EXISTS:", meal
 
 
     @classmethod
@@ -352,15 +352,14 @@ class Meals(db.Model):
 
     @classmethod
     def getMealsByFutureDate(cls, user):
-
+        print "TODAY", datetime.today()
         meals_list = db.session.query(Meals).join(Recipe).join(RecipeIngredient).\
             join(Ingredient).\
+            filter(func.substr(Meals.date_planned,0,11) >= func.substr(datetime.today(),0,11)).\
             filter(Meals.recipe_fk==Recipe.recipe_id).\
             filter(Recipe.recipe_id==RecipeIngredient.recipe_fk).\
             filter(RecipeIngredient.ingredient_name==Ingredient.name).\
             filter(Meals.user_fk==user).\
-            group_by(Meals.date_planned).\
-            having(Meals.date_planned > datetime.today()).\
             order_by(Meals.date_planned).all()
 
         return meals_list
@@ -385,7 +384,7 @@ class ShoppingList(db.Model):
     name = db.Column(db.String(50), nullable=True)
     ingredient_fk = db.Column(db.Integer, db.ForeignKey('ingredients.id'))
     qty = db.Column(db.String(20), nullable=True)
-    user_fk = db.Column(db.Integer, db.ForeignKey('user.user_id'))
+    user_fk = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     date_created = db.Column(db.DateTime, nullable=False)
 
 
@@ -514,6 +513,7 @@ def connect_to_db(app):
 
     # Configure to use our SQLite database
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///recipes.db'
+    # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/Ricette'
     app.config['SQLALCHEMY_ECHO'] = True
     db.app = app
     db.init_app(app)

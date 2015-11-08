@@ -1,6 +1,6 @@
 /*CALENDAR*/
 
-* {
+*{
   box-sizing: border-box;
 }
 
@@ -42,7 +42,18 @@
 }
 .empty-data{
   
-  height: 133px;
+  height: 149px;
+  background-color: #f6f6f6;
+  border: 1px solid #fff;
+  text-align:center;
+  font-size: 15px;
+  padding: 50px;
+  position: relative;
+}
+
+.day-grid{
+  
+  height: 50px;
   background-color: #f6f6f6;
   border: 1px solid #fff;
   text-align:center;
@@ -53,7 +64,6 @@
 .grid-calendar .calendar-week-header .grid-cell > div > div {
   padding-bottom: 10px;
   /*height: auto;*/
-  height: 133px;
 }
 .grid-calendar .grid-cell {
   display: inline-block;
@@ -62,8 +72,10 @@
   padding: 0;
   position: relative;
   width: 14.28571%;
+  height: 149px;
   font-size: 12px;
 }
+
 #image-small{
 
   width: 100%;
@@ -110,4 +122,16 @@ writing-mode: lr-tb;
   right:50%;
   outline: none;
 }
+input#del{
 
+  position: absolute;
+  right:    0;
+  bottom:   0;
+}
+span#day{
+
+  font-size: 15px;
+  text-align: center;
+  padding-left: 10px;
+
+}

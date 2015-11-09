@@ -10,6 +10,8 @@ from werkzeug import secure_filename
 
 from sqlalchemy import func
 
+import math
+
 from datetime import datetime
 from datetime import timedelta
 
@@ -169,6 +171,16 @@ def change_filters():
 
     return jsonify(filters)
 
+@app.route("/importForm")
+def getImportForm():
+
+    return render_template("/import_form.html")
+
+@app.route("/importRecipe")
+def import_rec():
+
+
+    pass
 
 @app.route("/addRecipesForm")
 def add_recipes():
@@ -319,8 +331,9 @@ def recipe_page(recipeid):
 
     steps = RecipeStep.query.filter_by(recipe_fk=recipeid)
 
+
     return render_template("recipe_page.html", recipe=recipe,
-                      ingredients=ingredients, steps=steps)
+                                          ingredients=ingredients, steps=steps)
 
 @app.route("/deleteRecipe/<int:recipeid>")
 def delete_recipe(recipeid):
@@ -348,7 +361,10 @@ def plan():
             print "Meal is not in planner"
             Meals.plan_meal(recipe_id, meal_type, servings, session["User"], date)
             db.session.commit()
-        return redirect("/recipes")
+        if request.args.get('flag') == 'planner':
+            return redirect("/planner")  
+        else:     
+            return redirect("/recipes")
     else:
         flash = []
         flash = "You need to login"
@@ -469,33 +485,41 @@ def create_shopping_list():
             filter(Meals.user_fk==session['User']).\
             order_by(Meals.date_planned).all()
 
-        print "MEALS", list_ingr  
+        print "MEALS", list_ingr
 
         for ingr in list_ingr:
+
+            qty = convertToInt(ingr.quantity)
+
             if ingr.ingredient_name not in i_list.keys():
 
-                i_list.append[ingr.ingredient_name] = {"qty": ingr.quantity,
-                                                       "unit":ingr.measure
+                
+                i_list[ingr.ingredient_name] = {"qty": qty,
+                                                "unit":ingr.measure}
 
             else:
 
-                to_add = { "qty": ingr.quantity,"unit": ingr.measure }
+                to_add = { "qty": qty,"unit": ingr.measure }
 
-                new_value = calculateQuantity(i_list[ingr.ingredient_name],to_add )
-                i_list[ingr.ingredient_name] = new_value
-                # i_list[ingr.ingredient_name]["unit"] = new_qty
-                # ingr.quantity
+                if ingr.measure and ingr.measure!='' \
+                    and i_list[ingr.ingredient_name]['unit']!='':
 
+                    new_value = calculateQuantity(i_list[ingr.ingredient_name],
+                                                to_add, ingr.ingredient_name)
+                    i_list[ingr.ingredient_name] = new_value
+
+                else:
+
+                    i_list[ingr.ingredient_name]['qty'] += qty
 
     print "LIST", i_list
     # ShoppingList.addItem(ingredient.id, recipeIngredient.qty, user, name)
 
-
     return render_template("grocery_list.html", list=i_list)
 
-def calculateQuantity(old_qty, add_qty):
-
-    new_value={}
+def calculateQuantity(old_qty, add_qty, ingr):
+    print "CALCULATE QUANTITY", old_qty, add_qty, ingr
+    new_value = {}
 
     qty1 = old_qty['qty']
     unit1 = old_qty['unit']
@@ -505,15 +529,178 @@ def calculateQuantity(old_qty, add_qty):
 
     new_qty = 0
 
+# If the measure units are the same, it adds up the qty
     if unit1==unit2:
-        new_qty = qty1+qty2
+
+        new_qty = qty1 + qty2
+
+        new_unit = unit1
+
+#  If the measure units are not the same, it converts them to the lowest
+#  unit and then it adds them up
+    else:
+        new_unit = compare(unit1, unit2)
+
+        if unit1 != new_unit:
+
+            qty1 = convert(qty1 , unit1, new_unit, ingr)
+        else:
+            qty2 = convert(qty2, unit2, new_unit, ingr)
+
+        new_qty = qty1 + qty2
+
+# Checks if the measure unit needs to be converted to the next greater one
+    new_value = checkUnit(new_qty, new_unit, ingr)
+
+    return new_value
+
+def compare(unit1, unit2):
+
+    new_unit = ''
+
+    volume_measures = ['gallon', 'flounce', 'cup', 'tablespoon', 'teaspoon']
+    weight_measures = ['pound', 'ounce', 'cup', 'tablespoon', 'teaspoon']
+
+    if volume_measures.index(unit1) > volume_measures.index(unit2) or \
+       weight_measures.index(unit1) > weight_measures.index(unit2):
+
+       new_unit = unit2
 
     else:
-        new_qty = convert(qty1,qty2)
+        new_unit = unit1
 
-    new_value
+    return new_unit 
 
-    return new_value={}
+def convert(qty, old_unit, new_unit, ingr):
+
+    new_qty = qty
+
+    # Unit of baking
+
+    if old_unit == 'flounce':
+
+        if new_qty == 'cup':
+            new_qty == qty * 8
+
+    # if old_unit == 'ounce':
+    #     if new_qty == 'cup':
+    #         new_qty == qty * 8
+
+    if old_unit == 'cup':
+
+        if new_unit == 'tablespoon':
+            new_qty = qty * 16
+        elif new_unit == 'teaspoon':
+            new_qty = qty * 48
+
+    elif old_unit == 'tablespoon' and new_unit == 'teaspoon':
+        new_qty = qty * 3
+
+    # Unit of volume
+    if old_unit == 'gallon':
+
+        if new_unit == 'cup':
+            new_qty = qty * 16
+        elif new_unit == 'tablespoon':
+            new_qty = qty * 256
+        elif new_qty == 'teaspoon':
+            new_qty = qty * 768
+
+    elif old_unit == 'cup':
+        if new_unit == 'tablespoon':
+            new_qty = qty * 16
+        elif new_unit == 'teaspoon':
+            new_qty = qty * 48
+
+    elif old_unit == 'tablespoon':
+        if new_unit == 'teaspoon':
+            new_qty = qty * 3  
+
+    # Unit of weight
+    if old_unit == 'pound':
+        if new_unit == 'ounce':
+           new_qty = qty * 16  
+
+        elif new_unit == 'cup' and ('flour') in ingr:
+            new_qty = qty * 3.63  
+
+    return new_qty
+
+def checkUnit(t_qty, unit, ingr):
+
+    max_n_tsp = 3
+    max_n_tbls = 16
+    max_n_ounces = 16
+    max_n_flounces = 128
+    max_n_flcup = 8
+    max_n_cup_flour = 3.63
+    max_n_cup_sugar = 3.75
+
+    liquid = ['water', 'milk', 'extra-virgin olive oil']
+    
+    qty = t_qty
+    unit = unit
+
+    print "QUANTITY ", qty, t_qty, ingr, unit
+
+    if unit == 'teaspoon' and qty > max_n_tsp:
+        qty = math.ceil(qty / max_n_tsp)
+        unit = 'tablespoon'
+
+    elif unit == 'tablespoon' and qty > max_n_tbls:
+        qty = math.ceil(qty / max_n_tbls)
+        unit = 'cup'
+
+    elif unit == 'ounce' and qty > max_n_ounces:
+        qty = math.ceil(qty / max_n_ounces)
+        unit = 'pound'
+
+    elif unit == 'cup' and qty > max_n_flcup and ingr in liquid:
+        qty = math.ceil(qty / max_n_flcup)
+        unit = 'flounce'
+
+    elif unit == 'flounce' and qty > max_n_flounces and ingr in liquid:
+        qty = math.ceil(qty / max_n_flcup)
+        unit = 'gallon'
+
+    elif unit == 'cup' and qty > max_n_cup_flour and ingr.find('flour')!= -1 :
+        qty = math.ceil(qty / max_n_cup_flour)
+        unit = 'pound'
+
+    elif unit == 'cup' and qty > max_n_cup_flour and ingr.find('sugar')!= -1 :
+        qty = math.ceil(qty / max_n_cup_sugar)
+        unit = 'pound'
+
+    return {'qty': qty, 'unit':unit}
+
+def convertToInt(stringNum):
+
+    new_num = 0
+
+    " ".join(stringNum.split())
+
+    if stringNum.find('to')!= -1:
+
+        l_range = stringNum.split('to')
+
+        new_num = (int(l_range[0]) + int(l_range[1]))/2
+
+    l_num = stringNum.split()
+
+    for num in l_num:
+
+        if num.find('/') != -1 :
+
+            num_parts = num.split('/')
+
+            new_num += int(num_parts[0])/int(num_parts[1])
+
+        else: 
+            print "NUM ", num
+            print "NEW NUM ", new_num
+            new_num += int(num)
+
+    return  new_num
 
 # ##############################################################################
 # # REGISTER - LOGIN - LOGOUT

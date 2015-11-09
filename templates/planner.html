@@ -31,6 +31,8 @@
             <div class="row calendar-week-header"> 
 
                 {% for day in meals_list %}
+
+                <!-- DAYS -->
                     <div class="col-xs-1 grid-cell"><div>
                         <div>
                         {% if day['date'].strftime('%d')[-1]==1 %}
@@ -63,9 +65,10 @@
                             <div class="row calendar-week grid-cell" style="display: block" id="div-meal">
                                 {% for meal in day['b_meals'] %}
                                  <form action="/deleteMeal">
+                                    <a href='/recipe_page/{{ meal.recipe.recipe_id }}'>
                                     <img src="static/img/recipes/{{ meal.recipe.image_url }}"
                                     class="img-responsive" class="img-thumbnail" id="img-small">
-                                    
+                                    </a>
                                     {{ meal.recipe.title }}
                                     <br>
                                     <input type="hidden" name="dateplanned" value="{{ day['date'] }}" />
@@ -240,7 +243,7 @@
                             <option id="meal-type" name="servings" value="8">8</option>
                         </select>
                         <br><br>
-                        
+                    <input type="hidden" name="flag" value="planner"/>    
                     <input class="btn btn-default" id="add-rec" type="submit" value="Add" />
                     </div>
                     <div class="col-xs-6">

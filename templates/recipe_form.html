@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}Meal planner{% endblock%}
-{% block page %} Family Recipe {% endblock%}
+{% block page %} Import Recipe {% endblock%}
 {% block content %}
 
 <body>
@@ -11,6 +11,25 @@
     </div>
     
     <div class="col-xs-6">
+        <br><br>
+        <!-- IMPORT RECIPE FROM NYT -->
+        <form action = '/importRecipe'>
+
+                <div class="form-group">
+                    <label for="url"><h4>Import recipe from <a href='http://cooking.nytimes.com'> New York Times</a></h4></label>
+                    <input type="text" class="form-control" id="url" placeholder="New York Time URL" name='url'>
+                    </input>
+                </div>
+
+        </form>
+        <br><br>
+
+        <div class="form-group"><label> <h4> Create a recipe manually:</h4></label> </div>
+
+
+
+
+
           <!-- Hidden Box for error or success messages -->
         <div class="form-group" id="msg-box" class="col-xs-6" style="display: none;">
             <h4 id="msg"></h4>
@@ -110,12 +129,14 @@
                             <label for="units">Measurements</label>
                             <select class="form-control" id="unit" name="units">
                                 <option value="" selected> </option>
-                                <option value="cups">cup</option>
-                                <option value="teaspoon">teaspoon</option>
-                                <option value="tablespoon">tablespoon</option>
                                 <option value="pound">pound</option>
                                 <option value="ounces">ounce</option>
+                                <option value="flounce">fluid ounce</option>
+                                <option value="cup">cup</option>
+                                <option value="tablespoon">tablespoon</option>
+                                <option value="teaspoon">teaspoon</option>
                                 <option value="pinch">pinch</option>
+                                <option value="clove">clove</option>   
                             </select>  
                         <!-- </div> -->
                     </div> 

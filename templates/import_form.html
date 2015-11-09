@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Meal planner{% endblock%}
+{% block page %} Recipes {% endblock%}
+{% block content %}
+
+<body>
+<div container>
+
+    <div class='row'></div>
+    <div class = 'row'>
+        <div class = 'col-xs-5 col-xs-offset-3'>
+            <form action = '/importRecipe'>
+
+                <div class="form-group">
+                    <label for="url"><a href='http://cooking.nytimes.com'>Import recipe from New York Times</label>
+                    <input type="text" class="form-control" id="name" placeholder="New York Time URL" name='url'>
+                    </input>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</body>
+{% endblock %}

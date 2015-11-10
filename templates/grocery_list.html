@@ -5,52 +5,161 @@
 
 <body>
 
-<div container>
-    <br><br>
-    <div class="row">
-        <div class="col-xs-4 col-xs-offset-3" >
-            <form action='/saveShoppingList' id="notepad">
+    <div container>
+        <br><br>
+        <div class="row">
+            <div class="col-xs-4 col-xs-offset-3" id="list-box">
+                <form action='/saveShoppingList' id="notepad">
 
-                <div class="form-group">
-                    <label for="name"></label>
-                    <input type="text" class="form-control" id="name" placeholder="List name" name='Name'>
-                </div>
+                    <!-- LIST NAME -->
+                    <div class="form-group">
+                        <label for="name"></label>
+                        <input type="text" class="form-control" id="name" placeholder="List name" name='name'>
+                    </div>
 
-                <div class="form-group">
-                    <label for="name"></label>
-                    <input type="submit" value='Save'>
-                </div>
+                    <div class="row">
 
-                {% for ingr, qty in list.iteritems() %}
+                    <!-- SAVE BUTTON  -->
+                        <div class="col-xs-6"><h4>Select ingredients:</h4></div>
+                        <div class="col-xs-2 col-xs-offset-4">
+                            <div class="form-group">
+                                <label for="name"></label>
+                                <input type="submit" id="send-form" value='Save'>
+                            </div>
+                        </div>   
 
-                <div class="form-group">
+                    </div>
 
-                    <input type="hidden" name="ingredient" id="ingr" value="{{ingr}}">
-                    <label for="name"></label>
-                    <button class="glyphicon glyphicon-trash" id='del-ingr' ></button>
-                    <button class="glyphicon glyphicon-pencil" id='edit-ingr'></button>
-                     {{ qty['qty']}} {{ qty['unit'] }} {{ ingr }}
-                 </div>    
-                {% endfor %}
-            </form>
-        </div>
-    </div>    
-</div>
+                    <!-- AISLE -->
 
-<script>
+                    {% for aisle in list.keys() %}
 
-function deleteIngr(evt){
+                        <div><h4> {{ aisle}} </h4></div>
 
-    evt.preventDefault();
+                        <!-- INGREDIENT -->
+
+                        {% for ingr in list[aisle]%}
+
+                            <div class="form-group">
+                                <input type="checkbox" name="ingredient" value="{{ ingr }}" id="checkAll"> 
+
+                                {{ingr}}
+
+                                 </input>
+                            </div>    
+                                
+                         {% endfor %} <br><br>
+
+                    {% endfor %}
+   
+                    <!-- <input type="hidden" name="list" value="{{ list }}"> -->
+                </form>
+            </div>
+        </div>    
+    </div>
+
+    <script>
 
 
-    alert("HI"+ $("#ingr"));
 
-    $.get('/')
-}
+    function reloadPage(params){
 
-$('#del-ingr').on('click', deleteIngr)
+        alert("RELOADING");
 
-</script>
+        $("#notepad").trigger('reset'); 
+        
+        $("#list-box").html(makeHtml(params));  
+
+    }  
+
+
+    function makeHtml (params){
+
+        var html = ""
+        var name = params['name'];
+        var list = params['list'];
+        var ingredients = params['ingredients'];
+        console.log("LIST"+ list);
+
+//         for(var k=0; k < list.length ; k++){
+
+//             html += "<form action='#' id='notepad'><div class='form-group'>";
+//             html += "<label for='name'></label><input type='text' class='form-control' ";
+//             html += "id='name' placeholder='List name' name='name'></div>";
+//             html += "<div class='row'>";
+// console.log("List"+ list);
+            // for (aisle in list){
+            //     html += " <div><h4>" + aisle +"</h4></div>";
+
+            //     for (ingr in list[aisle]){
+
+            //         if (ingr in ingredients){
+
+            //             html += "<div class='form-group'>"+ ingr + "<div>";
+
+            //         }
+  
+            //     }
+
+            //     html += "<br><br></form>"
+
+            // }
+
+
+        //     console.log(html);
+        // }
+            
+        return html;
+
+    }
+
+    function displayList(result){
+
+        alert("DATA");
+        // Display a message
+
+    }
+
+    function sendForm(evt){
+
+        evt.preventDefault();
+
+        // To get all of selected checkboxes values
+
+        var checkedValues = $('input:checkbox:checked').map(function() {
+                            return this.value;}).get();
+
+        var params = {
+
+            'name': $("#name").val(),
+            'ingredients':checkedValues,
+            'list':"{{ list }}"
+        }
+
+        reloadPage(params);
+
+        $.post('/saveShoppingList', params, displayList);
+
+    }
+
+
+    $("#send-form").on('click', sendForm);
+
+// to check all of the check boxes at once 
+
+    $('#checkAll').click(function(){
+        
+        if($(this).attr('checked')){
+            
+            $('input:checkbox').attr('checked',false);
+        }
+        
+        else {
+            
+            $('input:checkbox').attr('checked',true);
+        }
+    });
+
+    </script>
 </body>
 {% endblock %}

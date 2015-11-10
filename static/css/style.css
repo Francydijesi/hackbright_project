@@ -246,3 +246,16 @@ input#notepad{
 
     background-image: url('/static/img/notepad.png');
 }
+div#view-ingr{
+
+    font-size: 25px;
+    font-family: 'Brush Script MT', cursive;
+
+}
+div#view-aisle{
+
+    font-size: 30px;
+    font-family: 'Brush Script MT', cursive;
+    color: blue;
+
+}

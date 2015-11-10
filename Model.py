@@ -382,45 +382,121 @@ class ShoppingList(db.Model):
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     name = db.Column(db.String(50), nullable=True)
-    ingredient_fk = db.Column(db.Integer, db.ForeignKey('ingredients.id'))
+    ingredient_fk = db.Column(db.Integer, db.ForeignKey('ingredients.name'))
     qty = db.Column(db.String(20), nullable=True)
     user_fk = db.Column(db.Integer, db.ForeignKey('users.user_id'))
-    date_created = db.Column(db.DateTime, nullable=False)
+    date_created = db.Column(db.DateTime, default=datetime.utcnow(), nullable=False)
 
 
     @classmethod
-    def addItem(cls, ingredient_fk, qty, user, name):
+    def addItem(cls, ingredient_fk, user, name):
 
-        shopping_item = ShoppingList(name=name, ingredient_fk=ingredient_fk, user_fk=user,
-                            qty=qty)
+        shopping_item = ShoppingList(name=name, ingredient_fk=ingredient_fk, user_fk=user)
 
         db.session.add(shopping_item)
-        # db.session.commit()
+        db.session.commit()
 
+
+    # @classmethod
+    # def getShoppingListByName(cls, name):
+
+    #     s_list = ShoppingList.query.filter_by(name).all()
+
+    #     return s_list
+
+    # @classmethod
+    # def getLatestShoppingList(cls, user):
+
+    #     s_list =  ShoppingList.query.filter_by(user_fk=user).\
+    #             group_by(date_created).having(max(date_created)).all()
+
+    #     return s_list
+
+    # @classmethod
+    # def deleteItemByDate(cls, ingredient_fk, user, date_created):
+
+    #     db.session.query(ShoppingList).\
+    #                     filter(ShoppingList.ingredient_fk==ingredient_fk).\
+    #                     filter(ShoppingList.user==user).\
+    #                     filter(ShoppingList.date_created==date_created).\
+    #                     delete(synchronize_session=False)
 
     @classmethod
-    def getShoppingListByName(cls, name):
+    def getShoppingListByName(cls, name, user):
+        
+        """ Gets the shopping list saved in shop_lists with that name """
 
-        s_list = ShoppingList.query.filter_by(name).all()
+        shop_list = db.session.query(Ingredient).join(ShoppingList).\
+                    filter(ShoppingList.ingredient_fk == Ingredient.name).\
+                    filter(ShoppingList.name == name).\
+                    filter(ShoppingList.user_fk == user).all()
 
-        return s_list
+        return shop_list
 
     @classmethod
     def getLatestShoppingList(cls, user):
 
-        s_list =  ShoppingList.query.filter_by(user_fk=user).\
-                group_by(date_created).having(max(date_created)).all()
+        """ Gets the most recent shopping list """
 
-        return s_list
+        shop_list = db.session.query(Ingredient).join(ShoppingList).\
+                    filter(ShoppingList.ingredient_fk == Ingredient.name).\
+                    filter(ShoppingList.user_fk == user).\
+                    group_by(date_created).having(max(date_created)).all()
+
 
     @classmethod
-    def deleteItemByDate(cls, ingredient_fk, user, date_created):
+    def getListIngr(cls):
+
+        """ Creates a list of ingredients for the recipes in the meal planner that have 
+            a planned date greater than today's date
+
+        """
+
+        # meals = Meals.getMealsByFutureDate(user=session['User'])
+        list_ingr = db.session.query(RecipeIngredient).join(Recipe).join(Meals).\
+            join(Ingredient).\
+            filter(func.substr(Meals.date_planned,0,11) >= func.substr(datetime.today(),0,11)).\
+            filter(Meals.recipe_fk==Recipe.recipe_id).\
+            filter(Recipe.recipe_id==RecipeIngredient.recipe_fk).\
+            filter(RecipeIngredient.ingredient_name==Ingredient.name).\
+            filter(Meals.user_fk==session['User']).\
+            order_by(Meals.date_planned).all()
+
+        return list_ingr
+
+    @classmethod
+    def getListIngrName(cls, user):
+
+        """ Creates a dictionary of ingredients for the recipes in the meal planner that have 
+            a planned date greater than today's date.
+
+            list_ingr = {aisle: [ingr1, ingr2, ...], ...}
+
+        """
+
+        # meals = Meals.getMealsByFutureDate(user=session['User'])
+        list_ingr = db.session.query(RecipeIngredient).join(Recipe).join(Meals).\
+            join(Ingredient).\
+            filter(func.substr(Meals.date_planned,0,11) >= func.substr(datetime.today(),0,11)).\
+            filter(Meals.recipe_fk==Recipe.recipe_id).\
+            filter(Recipe.recipe_id==RecipeIngredient.recipe_fk).\
+            filter(RecipeIngredient.ingredient_name==Ingredient.name).\
+            filter(Meals.user_fk==user).\
+            order_by(Ingredient.aisle).all()
+            # order_by(Meals.date_planned).all()
+        print "LIST INGREDIENT", list_ingr
+        return list_ingr
+
+
+    @classmethod
+    def deleteShoppingList(cls, name, user, date_created):
 
         db.session.query(ShoppingList).\
-                        filter(ShoppingList.ingredient_fk==ingredient_fk).\
-                        filter(ShoppingList.user==user).\
-                        filter(ShoppingList.date_created==date_created).\
-                        delete(synchronize_session=False)
+                    filter(ShoppingList.name == name).\
+                    filter(ShoppingList.user == user).\
+                    filter(ShoppingList.date_created == date_created).\
+                    delete(synchronize_session=False)
+                    
 
     def __repr__(self):
         """ Shopping list"""

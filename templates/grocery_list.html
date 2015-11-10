@@ -9,7 +9,7 @@
         <br><br>
         <div class="row">
             <div class="col-xs-4 col-xs-offset-3" id="list-box">
-                <form action='/saveShoppingList' id="notepad">
+                <form action='/saveShoppingList' id="notepad" method="POST">
 
                     <!-- LIST NAME -->
                     <div class="form-group">
@@ -62,57 +62,7 @@
 
 
 
-    function reloadPage(params){
-
-        alert("RELOADING");
-
-        $("#notepad").trigger('reset'); 
-        
-        $("#list-box").html(makeHtml(params));  
-
-    }  
-
-
-    function makeHtml (params){
-
-        var html = ""
-        var name = params['name'];
-        var list = params['list'];
-        var ingredients = params['ingredients'];
-        console.log("LIST"+ list);
-
-//         for(var k=0; k < list.length ; k++){
-
-//             html += "<form action='#' id='notepad'><div class='form-group'>";
-//             html += "<label for='name'></label><input type='text' class='form-control' ";
-//             html += "id='name' placeholder='List name' name='name'></div>";
-//             html += "<div class='row'>";
-// console.log("List"+ list);
-            // for (aisle in list){
-            //     html += " <div><h4>" + aisle +"</h4></div>";
-
-            //     for (ingr in list[aisle]){
-
-            //         if (ingr in ingredients){
-
-            //             html += "<div class='form-group'>"+ ingr + "<div>";
-
-            //         }
-  
-            //     }
-
-            //     html += "<br><br></form>"
-
-            // }
-
-
-        //     console.log(html);
-        // }
-            
-        return html;
-
-    }
-
+   
     function displayList(result){
 
         alert("DATA");
@@ -129,16 +79,11 @@
         var checkedValues = $('input:checkbox:checked').map(function() {
                             return this.value;}).get();
 
-        var params = {
+        var input = $("<input>").attr("type", "hidden").attr("name", "ingredients").
+                       val(checkedValues);
+        $('#notepad').append($(input));
+        $('#notepad').submit();
 
-            'name': $("#name").val(),
-            'ingredients':checkedValues,
-            'list':"{{ list }}"
-        }
-
-        reloadPage(params);
-
-        $.post('/saveShoppingList', params, displayList);
 
     }
 

@@ -12,7 +12,7 @@ from sqlalchemy import func
 
 import math
 
-from ingredients import Ingredients
+import helpFunctions
 
 from datetime import datetime
 from datetime import timedelta
@@ -482,9 +482,9 @@ def create_shopping_list():
 
     if 'User' in session:
 
-        list_ingr = Ingredients.getListIngrName()
+        list_ingr = ShoppingList.getListIngrName(session['User'])
 
-        i_ingr = Ingredients.makeShoppingListNoQty(list_ingr)
+        i_ingr = helpFunctions.makeShoppingListNoQty(list_ingr)
 
     return render_template("grocery_list.html", list=i_ingr)
 
@@ -494,16 +494,61 @@ def create_shopping_list():
 def saveShoppingList():
 
     list_name = request.form.get('name')
-    ingredients = request.form.get('ingredient')
+    ingredients = request.form.get('ingredients')
     ingr_aisles = request.form.get('list')
+
+    list_ingredients = ingredients.split(",")
 
     print "TO SAVE ", list_name, ingredients, ingr_aisles
 
+# Saves each ingredient in the shop_lists table
+    for ingr in list_ingredients:
+
+        ShoppingList.addItem(ingr, session['User'], list_name)
+
+    db.session.commit    
 
 
-    return redirect("/")
+    return redirect("/getShoppingLists/"+list_name)
 
-       
+
+@app.route("/getShoppingLists/<name>")
+def getShoppingList(name):
+
+    print "VIEW SHOPPING LISTS"
+
+    shop_list = ''
+
+    if 'User' in session:
+
+        if name:
+
+            shop_list = ShoppingList.getShoppingListByName(name, session['User'])
+
+        else:
+
+            shop_list = ShoppingList.getLatestShoppingList()
+        
+        print 'SHOP_LIST', shop_list
+        i_list = helpFunctions.makeShoppingList(shop_list)
+        print "SHOPPING LIST",shop_list    
+        return render_template("view_shopping_list.html", list = i_list,
+                                                           name=name )
+
+    else:
+
+        flash = []
+        flash = "You need to login"
+        return redirect("/login")
+
+@app.route("/deleteShoppingList/<name><date>")
+def deleteShopList(name, date):
+
+    if 'User' in session:
+
+        ShoppingList.deleteShoppingList(name, session['User'], date_created)
+
+
 # ##############################################################################
 # # REGISTER - LOGIN - LOGOUT
 # ##############################################################################

@@ -259,3 +259,10 @@ div#view-aisle{
     color: blue;
 
 }
+div#list-box{
+
+    /*background-image: url('/static/img/notepad.png'); */
+    background-size: 80% 100%;
+    background-repeat: no-repeat;
+
+}

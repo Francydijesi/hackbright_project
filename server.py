@@ -14,6 +14,8 @@ import math
 
 import helpFunctions
 
+import scraper
+
 from datetime import datetime
 from datetime import timedelta
 
@@ -178,11 +180,17 @@ def getImportForm():
 
     return render_template("/import_form.html")
 
-@app.route("/importRecipe")
+
+@app.route("/importRecipe", methods=['POST'])
 def import_rec():
 
+    url = request.form.get("url")
 
-    pass
+    print "URL ", url
+
+    scraper.url_scraper(url)
+
+    return redirect('/addRecipesForm')
 
 @app.route("/addRecipesForm")
 def add_recipes():
@@ -518,22 +526,30 @@ def getShoppingList(name):
     print "VIEW SHOPPING LISTS"
 
     shop_list = ''
+    all_names = ''
 
     if 'User' in session:
 
         if name:
 
             shop_list = ShoppingList.getShoppingListByName(name, session['User'])
-
+            
         else:
 
             shop_list = ShoppingList.getLatestShoppingList()
         
         print 'SHOP_LIST', shop_list
+
+        date_created = shop_list[0].date_created
+
+        all_names = ShoppingList.getShoppingListNames(session['User'])
+
         i_list = helpFunctions.makeShoppingList(shop_list)
-        print "SHOPPING LIST",shop_list    
-        return render_template("view_shopping_list.html", list = i_list,
-                                                           name=name )
+
+        print "SHOPPING LIST",shop_list, date_created ,all_names  
+
+        return render_template("view_shopping_list.html", list=i_list,
+                    names=all_names, date_created=date_created, name=name )
 
     else:
 
@@ -541,12 +557,32 @@ def getShoppingList(name):
         flash = "You need to login"
         return redirect("/login")
 
-@app.route("/deleteShoppingList/<name><date>")
-def deleteShopList(name, date):
+@app.route("/deleteShoppingList/")
+def deleteShopList():
+
+    name = request.args.get("lname")
+    date_created = request.args.get("date")
+    all_names = ''
+
+    print "PARAMS", name, date_created
 
     if 'User' in session:
 
         ShoppingList.deleteShoppingList(name, session['User'], date_created)
+
+        all_names = ShoppingList.getShoppingListNames(session['User'])
+
+        print "NAMES", all_names
+
+        # return render_template('display_shopping_list.html', names=all_names)
+        return redirect ('/getShoppingLists')
+
+    else:
+
+        flash = []
+        flash = "You need to login"
+        return redirect("/login")
+        
 
 
 # ##############################################################################

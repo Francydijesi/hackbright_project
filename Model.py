@@ -422,11 +422,23 @@ class ShoppingList(db.Model):
     #                     delete(synchronize_session=False)
 
     @classmethod
+    def getShoppingListNames(cls, user):
+
+        shop_list_names = db.session.query(ShoppingList.name).\
+                            filter_by(user_fk=user).\
+                            group_by(ShoppingList.name).all()
+
+        return shop_list_names
+
+
+
+    @classmethod
     def getShoppingListByName(cls, name, user):
         
         """ Gets the shopping list saved in shop_lists with that name """
 
-        shop_list = db.session.query(Ingredient).join(ShoppingList).\
+        shop_list = db.session.query(Ingredient.aisle,Ingredient.name,ShoppingList.date_created).\
+                    join(ShoppingList).\
                     filter(ShoppingList.ingredient_fk == Ingredient.name).\
                     filter(ShoppingList.name == name).\
                     filter(ShoppingList.user_fk == user).all()
@@ -438,7 +450,8 @@ class ShoppingList(db.Model):
 
         """ Gets the most recent shopping list """
 
-        shop_list = db.session.query(Ingredient).join(ShoppingList).\
+        shop_list = db.session.query(Ingredient.aisle,Ingredient.name,ShoppingList.date_created)\
+                    .join(ShoppingList).\
                     filter(ShoppingList.ingredient_fk == Ingredient.name).\
                     filter(ShoppingList.user_fk == user).\
                     group_by(date_created).having(max(date_created)).all()
@@ -493,9 +506,11 @@ class ShoppingList(db.Model):
 
         db.session.query(ShoppingList).\
                     filter(ShoppingList.name == name).\
-                    filter(ShoppingList.user == user).\
+                    filter(ShoppingList.user_fk == user).\
                     filter(ShoppingList.date_created == date_created).\
                     delete(synchronize_session=False)
+
+        db.session.commit()            
                     
 
     def __repr__(self):

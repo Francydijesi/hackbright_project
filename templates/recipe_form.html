@@ -13,13 +13,16 @@
     <div class="col-xs-6">
         <br><br>
         <!-- IMPORT RECIPE FROM NYT -->
-        <form action = '/importRecipe'>
+        <form action = '/importRecipe' method='POST'>
 
-                <div class="form-group">
-                    <label for="url"><h4>Import recipe from <a href='http://cooking.nytimes.com'> New York Times</a></h4></label>
-                    <input type="text" class="form-control" id="url" placeholder="New York Time URL" name='url'>
-                    </input>
-                </div>
+            <div class="form-group">
+                <label for="url"><h4>Import recipe from <a href='http://cooking.nytimes.com'> New York Times</a></h4></label>
+                <input type="text" class="form-control" id="url" placeholder="New York Time URL" name='url'>
+                </input>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="import"/>
+            </div>    
 
         </form>
         <br><br>

@@ -33,22 +33,22 @@
                     <!-- AISLE -->
 
                     {% for aisle in list.keys() %}
+                        
+                            <div><h4> {{ aisle}} </h4></div>
 
-                        <div><h4> {{ aisle}} </h4></div>
+                            <!-- INGREDIENT -->
 
-                        <!-- INGREDIENT -->
+                            {% for ingr in list[aisle]%}
 
-                        {% for ingr in list[aisle]%}
+                                <div class="form-group">
+                                    <input type="checkbox" name="ingredient" value="{{ ingr }}" id="checkAll"> 
 
-                            <div class="form-group">
-                                <input type="checkbox" name="ingredient" value="{{ ingr }}" id="checkAll"> 
+                                    {{ingr}}
 
-                                {{ingr}}
-
-                                 </input>
-                            </div>    
-                                
-                         {% endfor %} <br><br>
+                                     </input>
+                                </div>    
+                                    
+                             {% endfor %} <br><br>
 
                     {% endfor %}
    

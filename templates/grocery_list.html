@@ -9,12 +9,20 @@
         <br><br>
         <div class="row">
             <div class="col-xs-4 col-xs-offset-3" id="list-box">
+
+                 <!-- Hidden Box for error or success messages -->
+        <div class="form-group" id="msg-box" class="col-xs-6" style="display: none;">
+            <h4 id="msg"></h4>
+            <form id="view-rec" style="display: none;" action='#'>
+                <button type="submit" class="btn btn-default">View</button>
+            </form>    
+        </div>
                 <form action='/saveShoppingList' id="notepad" method="POST">
 
                     <!-- LIST NAME -->
                     <div class="form-group">
                         <label for="name"></label>
-                        <input type="text" class="form-control" id="name" placeholder="List name" name='name'>
+                        <input type="text" class="form-control" id="name" placeholder="List name *" name='name'>
                     </div>
 
                     <div class="row">
@@ -82,7 +90,20 @@
         var input = $("<input>").attr("type", "hidden").attr("name", "ingredients").
                        val(checkedValues);
         $('#notepad').append($(input));
-        $('#notepad').submit();
+
+        if ($("#name").val().length!=0){
+            $('#notepad').submit();
+
+        } else {
+
+            $("#name").attr("class","form-group has-error");
+            msg = "The field Title is mandatory!";
+            
+            $("#msg-box").toggle();
+            $("#msg").html(msg);
+            $('input[name=name]').focus();
+
+        }   
 
 
     }

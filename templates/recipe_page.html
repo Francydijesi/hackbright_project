@@ -12,8 +12,17 @@
 
         <div class="row">
             <!-- RECIPE IMG -->
-            <div class="col-xs-6">   
-                <img id="recipe-page" src="/static/img/recipes/{{ recipe.image_url }}">
+            <div class="col-xs-6"> 
+            {% if 'http' in recipe.image_url %}   
+                         
+             <img id="recipe-page" src="{{ recipe.image_url }}">
+             
+             {% else %}
+
+             <img id="recipe-page" src="/static/img/recipes/{{ recipe.image_url }}">
+
+            {% endif %}  
+                <!-- <img id="recipe-page" src="/static/img/recipes/{{ recipe.image_url }}"> -->
             </div>   
             
             <!-- RECIPE DESCRIPTION + BUTTONS -->

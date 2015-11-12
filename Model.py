@@ -264,6 +264,7 @@ class Ingredient(db.Model):
         print "ADD INGREDIENTS in Ingredients"
         if not cls.getIngredientByName(name.lower()):
             new_ingredient = Ingredient(name=name.lower())
+            print "NEW_INGRIDIENT", new_ingredient
             db.session.add(new_ingredient)
 
 
@@ -404,13 +405,21 @@ class ShoppingList(db.Model):
 
     #     return s_list
 
-    # @classmethod
-    # def getLatestShoppingList(cls, user):
+    @classmethod
+    def getLatestShoppingList(cls, user):
 
-    #     s_list =  ShoppingList.query.filter_by(user_fk=user).\
-    #             group_by(date_created).having(max(date_created)).all()
+        s_list = db.session.query(Ingredient.aisle,Ingredient.name,ShoppingList.date_created).\
+                    join(ShoppingList).\
+                    filter(ShoppingList.ingredient_fk == Ingredient.name).\
+                    filter(ShoppingList.user_fk == user).\
+                    group_by(ShoppingList.date_created).\
+                    having(ShoppingList.date_created==func.max(ShoppingList.date_created)).all()
+                    # filter(ShoppingList.date_created == func.max(ShoppingList.date_created)).all()
 
-    #     return s_list
+        # s_list =  ShoppingList.query.filter_by(user_fk=user).\
+        #         group_by(ShoppingList.date_created).having(max(ShoppingList.date_created)).all()
+
+        return s_list
 
     # @classmethod
     # def deleteItemByDate(cls, ingredient_fk, user, date_created):
@@ -445,16 +454,16 @@ class ShoppingList(db.Model):
 
         return shop_list
 
-    @classmethod
-    def getLatestShoppingList(cls, user):
+    # @classmethod
+    # def getLatestShoppingList(cls, user):
 
-        """ Gets the most recent shopping list """
+    #     """ Gets the most recent shopping list """
 
-        shop_list = db.session.query(Ingredient.aisle,Ingredient.name,ShoppingList.date_created)\
-                    .join(ShoppingList).\
-                    filter(ShoppingList.ingredient_fk == Ingredient.name).\
-                    filter(ShoppingList.user_fk == user).\
-                    group_by(date_created).having(max(date_created)).all()
+    #     shop_list = db.session.query(Ingredient.aisle,Ingredient.name,ShoppingList.date_created)\
+    #                 .join(ShoppingList).\
+    #                 filter(ShoppingList.ingredient_fk == Ingredient.name).\
+    #                 filter(ShoppingList.user_fk == user).\
+    #                 group_by(date_created).having(max(date_created)).all()
 
 
     @classmethod
@@ -499,6 +508,17 @@ class ShoppingList(db.Model):
             # order_by(Meals.date_planned).all()
         print "LIST INGREDIENT", list_ingr
         return list_ingr
+
+    @classmethod
+    def deleteShoppingListByDate(cls, name, user, date_created):
+
+        db.session.query(ShoppingList).\
+                filter(ShoppingList.user_fk == user).\
+                filter(ShoppingList.date_created == date_created).\
+                delete(synchronize_session=False)
+
+        db.session.commit()    
+
 
 
     @classmethod

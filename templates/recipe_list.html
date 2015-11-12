@@ -93,7 +93,18 @@
              <form action="/recipe_page/{{ recipe.recipe_id }}" id="#rec-table">
                 <div class="row">
                     <div class="col-xs-4">
-                        <a href="/recipe_page/{{ recipe.recipe_id }}"><img id="recipe-img" src="/static/img/recipes/{{ recipe.image_url }}"></a>
+                        <a href="/recipe_page/{{ recipe.recipe_id }}">
+
+                         {% if 'http' in recipe.image_url %}   
+                         
+                         <img id="recipe-img" src="{{ recipe.image_url }}">
+                         
+                         {% else %}
+
+                         <img id="recipe-img" src="/static/img/recipes/{{ recipe.image_url }}">
+
+                        {% endif %}
+                        </a>
                     </div>
                  
                     <div class="col-xs-8" >

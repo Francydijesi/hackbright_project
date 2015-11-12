@@ -185,12 +185,24 @@ def getImportForm():
 def import_rec():
 
     url = request.form.get("url")
+    user = ''
 
     print "URL ", url
 
-    scraper.url_scraper(url)
+    if 'User' in session:
+        user = session['User']
 
-    return redirect('/addRecipesForm')
+    message = scraper.url_scraper(url, user)
+
+    if message!= "Error":
+
+        return redirect('/recipe_page/'+ message)
+
+    else:
+
+        flash = []
+        flash = "Your recipe could not be loaded"
+        return redirect('/addRecipesForm')
 
 @app.route("/addRecipesForm")
 def add_recipes():
@@ -218,12 +230,20 @@ def enter_recipe():
     step2 = request.form.get("step2")
     step3 = request.form.get("step3")
 
+    json.loads(request.form.get("listIngr"))
+
+    if 'Image' in request.files:
+
+        img_file = request.files['Image']
+
     try:
         # Saves the img file in the directory
         filename=""
 
         if 'Image' in request.files:
             img_file = request.files['Image']
+
+            print 'IMAGE' , img_file
             if img_file and allowed_file(img_file.filename):
                 filename = secure_filename(img_file.filename)
                 print filename
@@ -519,14 +539,16 @@ def saveShoppingList():
 
     return redirect("/getShoppingLists/"+list_name)
 
-
 @app.route("/getShoppingLists/<name>")
-def getShoppingList(name):
+@app.route("/getShoppingLists")
+def getShoppingList(name=None):
 
     print "VIEW SHOPPING LISTS"
 
     shop_list = ''
     all_names = ''
+    i_list = {}
+    date_created = ''
 
     if 'User' in session:
 
@@ -536,17 +558,19 @@ def getShoppingList(name):
             
         else:
 
-            shop_list = ShoppingList.getLatestShoppingList()
+            shop_list = ShoppingList.getLatestShoppingList(session['User'])
         
         print 'SHOP_LIST', shop_list
 
-        date_created = shop_list[0].date_created
+        if len(shop_list) > 0:
 
-        all_names = ShoppingList.getShoppingListNames(session['User'])
+            date_created = shop_list[0].date_created
 
-        i_list = helpFunctions.makeShoppingList(shop_list)
+            all_names = ShoppingList.getShoppingListNames(session['User'])
 
-        print "SHOPPING LIST",shop_list, date_created ,all_names  
+            i_list = helpFunctions.makeShoppingList(shop_list)
+
+            print "SHOPPING LIST",shop_list, date_created ,all_names  
 
         return render_template("view_shopping_list.html", list=i_list,
                     names=all_names, date_created=date_created, name=name )
@@ -568,7 +592,12 @@ def deleteShopList():
 
     if 'User' in session:
 
-        ShoppingList.deleteShoppingList(name, session['User'], date_created)
+        if name is not None:
+
+            ShoppingList.deleteShoppingList(name, session['User'], date_created)
+
+        else:
+            ShoppingList.deleteShoppingListByDate(session['User'], date_created)
 
         all_names = ShoppingList.getShoppingListNames(session['User'])
 

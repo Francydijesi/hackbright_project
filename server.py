@@ -196,7 +196,7 @@ def import_rec():
 
     if message!= "Error":
 
-        return redirect('/recipe_page/'+ message)
+        return redirect('/recipe_page/'+ str(message))
 
     else:
 

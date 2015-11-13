@@ -610,11 +610,22 @@ class RecipeIngredient(db.Model):
         db.session.add(recipeIngr)
         # db.session.commit()
 
+    @classmethod
+    def getAllIngredients(cls):
+
+        recipeIngr = db.query(RecipeIngredient.ingredient_name).\
+                     order_by(RecipeIngredient.recipe_fk).all() 
+
+        return recipeIngr 
+        
+            
+
     def __repr__(self):
         """ User Ingredient Association"""
 
         return "<RecipeIngredient ingredient_id= %s name=%s>" % ( self.id,
                                                              self.ingredient_name )
+
 
 ##############################################################################
 # Helper functions

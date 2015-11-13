@@ -94,16 +94,24 @@
                 <div class="row">
                     <div class="col-xs-4">
                         <a href="/recipe_page/{{ recipe.recipe_id }}">
+                         {% if recipe.image_url%}   
 
-                         {% if 'http' in recipe.image_url %}   
-                         
-                         <img id="recipe-img" src="{{ recipe.image_url }}">
-                         
-                         {% else %}
+                             {% if 'http' in recipe.image_url %}   
+                             
+                             <img id="recipe-img" src="{{ recipe.image_url }}">
+                             
+                             {% else %}
 
-                         <img id="recipe-img" src="/static/img/recipes/{{ recipe.image_url }}">
+                             <img id="recipe-img" src="/static/img/recipes/{{ recipe.image_url }}">
 
+                            {% endif %}
+
+                        {% else %} 
+
+                            <img id="recipe-page" src='#'>   
+    
                         {% endif %}
+
                         </a>
                     </div>
                  
@@ -142,7 +150,7 @@
 
         var html=""
 
-        for(var k=0; k < results.recipes.length ; k++){
+        for(var k = 0; k < results.recipes.length ; k++){
 
             console.log(results.recipes[k]);
             console.log("LEN"+results.recipes.length);
@@ -151,7 +159,18 @@
             html += "<form action='/recipe_page/" + results.recipes[k].recipe_id 
             html += " id='#rec-table'><div class='row'><div class='col-xs-4'>"
             html += "<a href='/recipe_page/"+ results.recipes[k].recipe_id +"'>"
-            html += "<img id='recipe-img' src='/static/img/recipes/"
+            html += "<img id='recipe-img'"
+ 
+            if (results.recipes[k].image_url.indexOf('http') != -1){
+
+                html += "src='"
+            
+            } else {
+            
+                html += "src='/static/img/recipes/"
+            
+            }
+
             html += results.recipes[k].image_url +"'></a></div><div class='col-xs-8'>"
             html += "<div class='row' id='recipe-title'>"+results.recipes[k].title
             html += "</div><div class='row' id='recipe-desc'>"

@@ -13,15 +13,25 @@
         <div class="row">
             <!-- RECIPE IMG -->
             <div class="col-xs-6"> 
-            {% if 'http' in recipe.image_url %}   
-                         
-             <img id="recipe-page" src="{{ recipe.image_url }}">
-             
-             {% else %}
 
-             <img id="recipe-page" src="/static/img/recipes/{{ recipe.image_url }}">
+            {% if recipe.image_url%}
+                
+                {% if 'http' in recipe.image_url %}   
+                             
+                 <img id="recipe-page" src="{{ recipe.image_url }}">
+                 
+                 {% else %}
+
+                 <img id="recipe-page" src="/static/img/recipes/{{ recipe.image_url }}">
+
+                {% endif %} 
+
+            {% else %} 
+
+                <img id="recipe-page" src='#'>   
 
             {% endif %}  
+
                 <!-- <img id="recipe-page" src="/static/img/recipes/{{ recipe.image_url }}"> -->
             </div>   
             

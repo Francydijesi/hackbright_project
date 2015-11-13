@@ -374,6 +374,30 @@ def delete_recipe(recipeid):
 
     return redirect ("/recipes")
 
+@app.route("/createRecipe")
+def generateRecipe():
+
+    """ Calls Markov chains to generate a new recipe """
+
+    # List of ingredients list, one for each recipe
+
+    recipe_lists = getListIngredient
+
+
+    # Gets a dictionary of matched ingredients for ingredient 
+
+    ingr_dict = makeDict(ingredient, recipe_lists)  
+
+          
+
+
+    pass    
+
+
+###############################################################################    
+#                   MEAL PLANNER
+###############################################################################
+
 @app.route("/plan-meal")
 def plan():
 

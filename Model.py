@@ -172,6 +172,13 @@ class Recipe(db.Model):
             extension = rec.image_url.split(".")[1]
             rec.image_url = rec.cat_code + "_" + str(rec.recipe_id) + extension
 
+    @classmethod
+    def getAllRecipes(cls):
+
+        rec = db.session.query(Recipe).all()      
+
+
+        return rec
 
     def __repr__(self):
         """ Recipe information"""
@@ -539,6 +546,61 @@ class ShoppingList(db.Model):
         return "<Shopping list name=%s ingredient=%s date=%s>" % ( self.name,
                                             self.ingredient_fk, date_planned )
 
+class Expence(db.Model):
+    """ User Expenses """
+
+    __tablename__ = "expences"
+
+
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    user_fk = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    total = db.Column(db.Float)
+    store = db.Column(db.String(50))
+    date_of_purchase = db.Column(db.DateTime, default=datetime.utcnow(), nullable=False)
+
+    # Define relationship to user
+    # user = db.relationship("User",
+    #                        backref=db.backref("expences", order_by=user_fk))
+
+    @classmethod
+    def addExpence (cls, date, store, total, user):
+
+        expence = Expence(date_of_purchase=date, store=store, total=total, user_fk=user)
+
+        db.session.add(expence)
+
+        db.session.commit()
+
+    @classmethod
+    def getExpencesGroupedByDate(cls, user, month):
+
+        expences = db.session.query(Expence).\
+                    filter(func.substr(Expence.date_of_purchase,6,2)>=month).\
+                    filter(Expence.user_fk==user).\
+                    order_by(Expence.date_of_purchase).all()
+                    # %m month num. 
+
+        return expences
+
+    @classmethod
+    def getExpencesByStore(cls, user, month):
+
+        expences = db.session.query(Expence.store, func.sum(Expence.total)).\
+                    filter(func.substr(Expence.date_of_purchase,6,2)>=month).\
+                    filter(Expence.user_fk==user).group_by(Expence.store).all() 
+
+        print "Expences by store", expences
+
+        return expences  
+
+
+    def __repr__(self):
+
+        """ Expence """
+
+        return "<Expence total=%s  user=%d>" % ( self.total, self.user_fk )
+
+
 ###############################################################################
 #
 ### ASSOCIATION TABLE RECIPES-USERS ###
@@ -613,12 +675,10 @@ class RecipeIngredient(db.Model):
     @classmethod
     def getAllIngredients(cls):
 
-        recipeIngr = db.query(RecipeIngredient.ingredient_name).\
+        recipeIngr = db.session.query(RecipeIngredient).\
                      order_by(RecipeIngredient.recipe_fk).all() 
 
-        return recipeIngr 
-        
-            
+        return recipeIngr     
 
     def __repr__(self):
         """ User Ingredient Association"""

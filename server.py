@@ -5,7 +5,7 @@ from flask import Flask, render_template, redirect, request, flash, session, jso
 from flask_debugtoolbar import DebugToolbarExtension
 
 from model import (Recipe, User, Ingredient, RecipeStep, Category, RecipeUser,
-                    ShoppingList, RecipeIngredient, Meals, connect_to_db, db)
+            Expence, ShoppingList, RecipeIngredient, Meals, connect_to_db, db)
 from werkzeug import secure_filename
 
 from sqlalchemy import func
@@ -374,21 +374,19 @@ def delete_recipe(recipeid):
 
     return redirect ("/recipes")
 
-@app.route("/createRecipe")
-def generateRecipe():
+@app.route("/createRecipe/<ingredient>")
+def generateRecipe(ingredient):
 
     """ Calls Markov chains to generate a new recipe """
 
     # List of ingredients list, one for each recipe
 
-    recipe_lists = getListIngredient
+    recipe_lists = helpFunctions.getListIngredient()
 
 
-    # Gets a dictionary of matched ingredients for ingredient 
+    # Gets a dictionary of matched ingredients for i 
 
-    ingr_dict = makeDict(ingredient, recipe_lists)  
-
-          
+    ingr_dict = helpFunctions.makeDict(ingredient, recipe_lists)        
 
 
     pass    
@@ -635,8 +633,73 @@ def deleteShopList():
         flash = []
         flash = "You need to login"
         return redirect("/login")
-        
 
+@app.route("/save-expence", methods=['POST'])
+def saveExpence():
+
+    date = request.form.get('date')
+    store = request.form.get('store')
+    total = request.form.get('sum')
+
+    date_of_purchase = datetime.strptime(date,"%m/%d/%Y")
+
+    Expence.addExpence(date=date_of_purchase, store=store, total=total, user=session['User'])  
+
+    return redirect('/viewExpences')     
+
+@app.route("/viewExpences")
+def viewExpences():
+
+    return render_template('/display_expences.html')
+
+@app.route("/getExpences/<month>")
+@app.route("/getExpences")
+def getExpences(month=None):
+
+    month = request.args.get('month')
+
+    current_month = datetime.today().strftime('%m')
+
+    if not month:
+
+        month = current_month
+
+    else:
+
+        month = current_month - month
+
+        print "MONTH", month
+
+    if 'User' in session:
+        
+        expences = Expence.getExpencesGroupedByDate(session['User'], month)
+
+        expences_by_store = Expence.getExpencesByStore(session['User'], month)
+
+        print 'EXPENCES', expences
+
+        data_expences = helpFunctions.setDisplayData(expences, expences_by_store)
+
+        print "DATA", data_expences
+
+        return jsonify(data_expences)
+
+    else:
+
+        flash = []
+        flash = "You need to login"
+        return redirect("/login")
+
+# @app.route("/getExpencesByStore")
+# def getExpencesByStore():
+
+
+
+
+    # data_expences = {}
+
+    # for expence in expences:
+    #     data_expence
 
 # ##############################################################################
 # # REGISTER - LOGIN - LOGOUT

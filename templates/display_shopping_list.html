@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Meal planner{% endblock%}
+{% block page %} Shopping List {% endblock%}
+{% block content %}
+
+<body>
+
+    <div container>
+        <br><br>
+        <div class="row">
+            <div class="col-xs-4 col-xs-offset-3" id="list-box">
+
+                {% for name in names %}
+
+                <a href="/getShoppingLists/{{name[0]}}">
+                    {{name[0]}}
+                    <button value="View">View</button>
+                </a>
+
+                {% endfor %}
+
+             </div>
+        </div>
+
+    </div>
+    
+</body>
+
+{% endblock %}               

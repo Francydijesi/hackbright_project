@@ -13,6 +13,7 @@
                 <form action="/deleteShoppingList">
                 
                     <!-- LIST NAME -->
+                  {% if name%}  
                     <div class="row">   
                         <div class="col-xs-4">
                             <h3>{{ name }}<h3>
@@ -21,7 +22,8 @@
                             <input type="submit" class='btn btn-default'
                              value="Delete List" />   
                         </div>
-                    </div>    
+                    </div>
+                  {% endif %}      
 
                     <input type='hidden' name='date' value='{{date_created}}'/>
                     
@@ -66,8 +68,12 @@
 
                     </div>  <br>  
                 {% endfor %}
+
+                
             </div>
-        </div>              
-    </div>
+        </div>  
+
+        
+
 </body>
 {% endblock %}

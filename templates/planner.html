@@ -62,25 +62,38 @@
                     <!-- If there are  meals-->
                     {% if day['b_meals']|length > 0 %}
 
-                            <div class="row calendar-week grid-cell" style="display: block" id="div-meal">
-                                {% for meal in day['b_meals'] %}
-                                 <form action="/deleteMeal">
-                                    <a href='/recipe_page/{{ meal.recipe.recipe_id }}'>
-                                    <img src="static/img/recipes/{{ meal.recipe.image_url }}"
-                                    class="img-responsive" class="img-thumbnail" id="img-small">
-                                    </a>
-                                    {{ meal.recipe.title }}
-                                    <br>
-                                    <input type="hidden" name="dateplanned" value="{{ day['date'] }}" />
-                                    <input type="hidden" name="recipeid" value="{{ meal.recipe.recipe_id }}" />
-                                    <input type="hidden" name="mealtype" value="{{ meal.meal_type }}" />
+                    <div class="row calendar-week grid-cell" style="display: block" id="div-meal">
+                        {% for meal in day['b_meals'] %}
+                            <form action="/deleteMeal">
+                                <a href='/recipe_page/{{ meal.recipe.recipe_id }}'>
+                                {% if meal.recipe.image_url %}   
 
-                                    <input class="btn-group btn-group-xs" id="del" type="submit" value="Delete" />
-                                 </form>   
-                          
+                                    {% if 'http' in meal.recipe.image_url %} 
+
+                                        <img src="{{ meal.recipe.image_url }}"class="img-responsive" class="img-thumbnail" id="img-small">
+
+                                    {% else %}
+
+                                        <img src="static/img/recipes/{{ meal.recipe.image_url }}"class="img-responsive" class="img-thumbnail" id="img-small">
+                                     
+                                    {% endif %}   
+
+                                {% endif %}   
+                            
+                                </a>
+
+                                {{ meal.recipe.title }}<br>
+
+                                <input type="hidden" name="dateplanned" value="{{ day['date'] }}" />
+                                <input type="hidden" name="recipeid" value="{{ meal.recipe.recipe_id }}" />
+                                <input type="hidden" name="mealtype" value="{{ meal.   meal_type }}" />
+
+                                <input class="btn-group btn-group-xs" id="del" type="submit" value="Delete" />
+                            </form>   
+                  
  
-                                {% endfor %} 
-                            </div>     
+                        {% endfor %} 
+                    </div>     
 
                     <!-- If there are no meals -->
                     {% else%} 
@@ -94,12 +107,30 @@
                     <!-- If there are  meals-->
                     {% if day['l_meals']|length > 0 %}
                   
-                            <div class="row calendar-week grid-cell" style="display: block">
-                                {% for meal in day['l_meals'] %}
+                        <div class="row calendar-week grid-cell" style="display: block">
+
+                            {% for meal in day['l_meals'] %}
+
                                 <form action="/deleteMeal">
-                                    <img src="static/img/recipes/{{ meal.recipe.image_url }}"
-                                    class="img-responsive" class="img-thumbnail" id="img-small">
                                     
+                                    <a href='/recipe_page/{{ meal.recipe.recipe_id }}'>
+                                    
+                                    {% if meal.recipe.image_url %}   
+
+                                        {% if 'http' in meal.recipe.image_url %} 
+
+                                            <img src="{{ meal.recipe.image_url }}"class="img-responsive" class="img-thumbnail" id="img-small">
+
+                                        {% else %}
+
+                                            <img src="static/img/recipes/{{ meal.recipe.image_url }}"class="img-responsive" class="img-thumbnail" id="img-small">
+                                     
+                                        {% endif %}  
+
+                                    {% endif %}      
+                            
+                                    </a>
+
                                     {{ meal.recipe.title }}
                                     <br>
                                     <input type="hidden" name="dateplanned" value="{{ day['date'] }}" />
@@ -129,8 +160,23 @@
                                 {% for meal in day['d_meals'] %}
                                     
                                 <form action="/deleteMeal">
-                                    <img src="static/img/recipes/{{ meal.recipe.image_url }}"
-                                    class="img-responsive" class="img-thumbnail" id="img-small">
+                                    <a href='/recipe_page/{{ meal.recipe.recipe_id }}'>
+                                    
+                                    {% if meal.recipe.image_url %}   
+
+                                        {% if 'http' in meal.recipe.image_url %} 
+
+                                            <img src="{{ meal.recipe.image_url }}"class="img-responsive" class="img-thumbnail" id="img-small">
+
+                                        {% else %}
+
+                                            <img src="static/img/recipes/{{ meal.recipe.image_url }}"class="img-responsive" class="img-thumbnail" id="img-small">
+                                     
+                                        {% endif %}  
+
+                                    {% endif %}      
+                            
+                                    </a>
                                     
                                     {{ meal.recipe.title }}
                                     <br>
@@ -159,8 +205,23 @@
                                 {% for meal in day['s_meals'] %}
                                     
                                 <form action="/deleteMeal">
-                                    <img src="static/img/recipes/{{ meal.recipe.image_url }}"
-                                    class="img-responsive" class="img-thumbnail" id="img-small">
+                                    <a href='/recipe_page/{{ meal.recipe.recipe_id }}'>
+                                    
+                                    {% if meal.recipe.image_url %}   
+
+                                        {% if 'http' in meal.recipe.image_url %} 
+
+                                            <img src="{{ meal.recipe.image_url }}"class="img-responsive" class="img-thumbnail" id="img-small">
+
+                                        {% else %}
+
+                                            <img src="static/img/recipes/{{ meal.recipe.image_url }}"class="img-responsive" class="img-thumbnail" id="img-small">
+                                     
+                                        {% endif %}  
+
+                                    {% endif %}      
+                            
+                                    </a>
                                     
                                     {{ meal.recipe.title }}
                                     <br>
@@ -272,7 +333,25 @@
 
         $("#recipe-img").css({display: "block"});
         $("#title-box").html("<h3>"+result['title']+"</h3>");
-        $("#recipe-img").attr("src", "/static/img/recipes/"+result['img_url']);
+
+        console.log(result['img_url'].indexOf('http'));
+        
+        if (result['img_url'].indexOf('http') != -1){
+
+            alert("IMAGE FROM HTTP");
+
+            $("#recipe-img").attr("src", result['img_url']);
+
+            
+        } else {
+            
+            $("#recipe-img").attr("src", "/static/img/recipes/"+result['img_url']);
+            
+        }
+
+
+
+        // $("#recipe-img").attr("src", "/static/img/recipes/"+result['img_url']);
                 
     }
 

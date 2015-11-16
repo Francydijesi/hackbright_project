@@ -266,3 +266,15 @@ div#list-box{
     background-repeat: no-repeat;
 
 }
+
+/*Expences*/
+div#month{
+
+    font-size: 30px;
+}
+div#set-month{
+
+    vertical-align: bottom;
+    font-size: 20;
+    padding-top: 14px;
+}

@@ -8,7 +8,8 @@
   <script src="https://code.jquery.com/jquery.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/css/bootstrap.min.css"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.js"></script>
+  <script src="https://cdnjs.com/libraries/Chart.js"></script>
 </head>
 
 <body>
@@ -60,13 +61,23 @@
       </a>
       <ul class="dropdown-menu">
         <li><a href="/recipes">View</a></li>
-        <li><a href="/importForm">Import<a></li>
-        <li><a href="/addRecipesForm">Manual</a></li>
+        <!-- <li><a href="/importForm">Import<a></li> -->
+        <li><a href="/addRecipesForm">Import</a></li>
       </ul>
   </li>
 
   <li role="presentation"><a href="/planner">Plan Meals</a></li>
-  <li role="presentation"><a href="/getShoppingLists">Shopping Lists</a></li>
+  <!-- <li role="presentation"><a href="/grocery"> Grocery List</a></li> -->
+   <li role="presentation" class="dropdown">
+      <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" 
+         aria-haspopup="true" aria-expanded="false">Grocery<span class="caret"></span>
+      </a>
+      <ul class="dropdown-menu">
+        <li><a href="/grocery">Create List</a></li>
+        <!-- <li><a href="/importForm">Import<a></li> -->
+        <li><a href="/viewExpences">Expences</a></li>
+      </ul>
+  </li>
 </ul>
 
   {% block content %} {% endblock %}

@@ -302,6 +302,32 @@ def enter_recipe():
 
     # return jsonify({"data": "pluto"})
 
+@app.route("/search_by_ingr.json")
+def search_by_ingr():
+
+    """ Search recipes by ingredients """
+
+    # Gets the values of the ingredient
+    ingredient = request.args.get("ingredient")
+
+    if 'User' in session:
+
+        recipes = Recipe.getRecipeByIngrByUser(ingredient, session['User'])
+
+    else:
+
+        recipes = Recipe.getRecipeByIngrByUser(ingredient)
+
+    print "RECIPES" , recipes
+    # Creates a list of recipe in a json format
+    list_of_recipe_dictionaries = [r.json() for r in recipes]
+
+    # Creates a dictionary of jsonified recipes
+    recipe_info = {
+        'recipes': list_of_recipe_dictionaries
+    }
+
+    return jsonify(recipe_info)
    
 
 @app.route("/filtered_recipe.json")
@@ -581,6 +607,7 @@ def getShoppingList(name=None):
         else:
 
             shop_list = ShoppingList.getLatestShoppingList(session['User'])
+            name = shop_list[0].list_name
         
         print 'SHOP_LIST', shop_list
 
@@ -652,12 +679,13 @@ def viewExpences():
 
     return render_template('/display_expences.html')
 
-@app.route("/getExpences/<month>")
 @app.route("/getExpences")
-def getExpences(month=None):
+
+def getExpences():
 
     month = request.args.get('month')
 
+    print "SET MONTH ", month
     current_month = datetime.today().strftime('%m')
 
     if not month:
@@ -666,7 +694,7 @@ def getExpences(month=None):
 
     else:
 
-        month = current_month - month
+        month = int(current_month) - int(month)
 
         print "MONTH", month
 

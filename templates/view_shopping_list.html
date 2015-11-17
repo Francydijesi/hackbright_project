@@ -8,17 +8,17 @@
     <div container>
         <br><br>
         <div class="row" >
-            <div class="col-xs-4 col-xs-offset-3" id="list-box" >
+            <div class="col-xs-6 col-xs-offset-1" id="list-box" >
 
                 <form action="/deleteShoppingList">
                 
                     <!-- LIST NAME -->
                   {% if name%}  
                     <div class="row">   
-                        <div class="col-xs-4">
+                        <div class="col-xs-6">
                             <h3>{{ name }}<h3>
                         </div>   
-                        <div class="col-xs-5 col-xs-offset-3"> 
+                        <div class="col-xs-6" id="delete-btn"> 
                             <input type="submit" class='btn btn-default'
                              value="Delete List" />   
                         </div>

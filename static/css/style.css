@@ -234,6 +234,7 @@ p#rec-tit{
 div#title-box{
     font-size: 8px;
     font-family: 'Brush Script MT';
+    text-align: center;
 }
 
 img#recipe-img{
@@ -266,11 +267,15 @@ div#list-box{
     background-repeat: no-repeat;
 
 }
+div#delete-btn{
+
+    padding-top: 20px;
+}
 
 /*Expences*/
 div#month{
 
-    font-size: 30px;
+    font-size: 20px;
 }
 div#set-month{
 

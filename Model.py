@@ -180,6 +180,19 @@ class Recipe(db.Model):
 
         return rec
 
+
+    @classmethod
+    def getRecipeByIngrByUser(cls,ingredient, user):
+
+        recipes = db.session.query(Recipe).join(RecipeIngredient).join(RecipeUser).\
+                    filter(Recipe.recipe_id==RecipeIngredient.recipe_fk).\
+                    filter(RecipeUser.recipe_fk==Recipe.recipe_id).\
+                    filter(RecipeUser.user_fk==user).\
+                    filter(RecipeIngredient.ingredient_name.like('%'+ingredient+'%')).\
+                    all()
+
+        return recipes  
+
     def __repr__(self):
         """ Recipe information"""
 
@@ -415,13 +428,18 @@ class ShoppingList(db.Model):
     @classmethod
     def getLatestShoppingList(cls, user):
 
-        s_list = db.session.query(Ingredient.aisle,Ingredient.name,ShoppingList.date_created).\
+        t = db.session.query(ShoppingList.user_fk,\
+                             func.max(ShoppingList.date_created).label('max_date')).\
+            group_by(ShoppingList.name).subquery('t')
+    
+
+        s_list = db.session.query(Ingredient.aisle,Ingredient.name,ShoppingList.date_created,
+                                    ShoppingList.name.label('list_name')).\
                     join(ShoppingList).\
                     filter(ShoppingList.ingredient_fk == Ingredient.name).\
                     filter(ShoppingList.user_fk == user).\
-                    group_by(ShoppingList.date_created).\
-                    having(ShoppingList.date_created==func.max(ShoppingList.date_created)).all()
-                    # filter(ShoppingList.date_created == func.max(ShoppingList.date_created)).all()
+                    filter(ShoppingList.date_created == t.c.max_date).\
+                    filter(ShoppingList.user_fk == t.c.user_fk).all()
 
         # s_list =  ShoppingList.query.filter_by(user_fk=user).\
         #         group_by(ShoppingList.date_created).having(max(ShoppingList.date_created)).all()

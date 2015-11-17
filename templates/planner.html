@@ -308,6 +308,7 @@
                     <input class="btn btn-default" id="add-rec" type="submit" value="Add" />
                     </div>
                     <div class="col-xs-6">
+                        <div class="row"></div>
                         <div class="row">
                             <div id="title-box"></div>
                         </div>
@@ -337,8 +338,6 @@
         console.log(result['img_url'].indexOf('http'));
         
         if (result['img_url'].indexOf('http') != -1){
-
-            alert("IMAGE FROM HTTP");
 
             $("#recipe-img").attr("src", result['img_url']);
 

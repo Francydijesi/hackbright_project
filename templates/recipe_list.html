@@ -84,10 +84,30 @@
                 </div>    
              </div>                    
         </div>
+        <!-- Search box -->
 
-                
+        <div class="row">
+
+            <div class='col-xs-6'>
+
+                <form class="form-inline" id="search-form">
+                    <div class="form-group"> 
+                    Search by ingredients: <input type="text" name='search-ingr' id='search-field'>
+                    </div>
+
+                    <div class="form-group">
+                        <input type='submit' value='submit' id="sub-search">
+                    </div>
+
+                </form>   
+
+            </div>
+        </div>
+
+        <!-- Recipe List-->
+
         <div class="row" id="recipe-box">
-            <!-- Recipe List-->
+        
            
             {% for recipe in recipes %}
              <form action="/recipe_page/{{ recipe.recipe_id }}" id="#rec-table">
@@ -218,7 +238,23 @@
 
     $("#reset-filter").on("click",resetFilters);
 
-    
+    function sendSearchByIngr(evt) {
+
+        alert("Search")
+     
+      evt.preventDefault();
+
+      var formInputs = {
+        "ingredient": $("#search-field").val()
+      };
+
+      $.get("/search_by_ingr.json", formInputs, refreshRecipe);
+    }
+
+
+    $("#search-form").on("submit",sendSearchByIngr);
+
+
     // function resetFilters(results){
 
     //    html_title = "<option value=''></option>";

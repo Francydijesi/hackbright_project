@@ -235,14 +235,16 @@ def calculateCategory(text):
     cat_fish_FS = set(['shrimps', 'cod', 'salmon', 'tilapia', ''])
     cat_dessert_DS = set(['sugar', 'brown sugar', 'flour', 'eggs', 'dessert', 'cookies', 'cake', 'tart',
                 'icecream', 'panettone', 'pudding'])
-    cat_pizzaBread_BK = set(['pizza', 'bread', 'calzone', 'ciabatta', 'sandwich'])
+    cat_pizzaBread_BK = set(['pizza', 'loaf', 'calzone', 'ciabatta', 'sandwich'])
+
+    cat_vegan_VE = set(['vegan'])
 
     words_set = text
 
     # is_pasta = words_set & cat_pasta_PS
 
     if words_set & cat_pasta_PS:
-        cat_code = 'PT'
+        cat_code = 'PS'
 
     elif words_set & cat_party_PR:
         cat_code = 'PR'
@@ -251,7 +253,7 @@ def calculateCategory(text):
         cat_code = 'HL'
 
     elif words_set & cat_pizzaBread_BK:
-        cat_code = 'BK'
+        cat_code = 'BP'
 
     elif words_set & cat_meat_MT:
         cat_code = 'MT'
@@ -264,6 +266,9 @@ def calculateCategory(text):
 
     elif words_set & cat_soup_SP:
         cat_code = 'SP'
+
+    elif words_set & cat_soup_VE:
+        cat_code = 'VE'
 
     else:
         cat_code = 'VG'

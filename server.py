@@ -6,21 +6,15 @@ from flask_debugtoolbar import DebugToolbarExtension
 
 from model import (Recipe, User, Ingredient, RecipeStep, Category, RecipeUser,
             Expence, ShoppingList, RecipeIngredient, Meals, connect_to_db, db)
+
 from werkzeug import secure_filename
 
 from sqlalchemy import func
 
-import math
+from datetime import datetime, timedelta
 
-import helpFunctions
+import math, helpFunctions, scraper, os, json
 
-import scraper
-
-from datetime import datetime
-from datetime import timedelta
-
-import os
-import json
 
 app = Flask(__name__)
 
@@ -42,6 +36,7 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
 
+############################## HOMEPAGE ########################################
 
 @app.route('/')
 def index():
@@ -50,70 +45,67 @@ def index():
 
     return render_template("homepage.html")
 
+
+############################## RECIPE VIEW #####################################
+
 @app.route("/recipes")
 def recipe_list():
 
-    """Show list of users."""
-    print "SEARCH RECIPES"
+    """ It searches all the Recipes:
+
+        Returns: list of recipes (list of objects)
+                 list of cuisine (list of strings)
+                 list of sources (list of strings)
+                 list of categories (list of strings)
+                 list of levels (list of strings)
+    """  
+
     # If user is logged in, search user's recipes.
     if 'User' in session:
-        # u_recipes = RecipeUser.query.filter_by(session['User']).all()
-        recipes = (db.session.query(Recipe).join(RecipeUser).\
-                    filter(Recipe.recipe_id == RecipeUser.recipe_fk).\
-                    filter(RecipeUser.user_fk == session['User']).all())
+
+        recipes = Recipe.getRecipesByUser(session['User'])
  
-        cuisine = (db.session.query(Recipe.cuisine).join(RecipeUser).\
-                    filter(Recipe.recipe_id == RecipeUser.recipe_fk).\
-                    filter(RecipeUser.user_fk == session['User']).\
-                    filter(Recipe.cuisine != None).\
-                    distinct(Recipe.cuisine).order_by(Recipe.cuisine))
-
-        sources = (db.session.query(Recipe.source).join(RecipeUser).\
-                    filter(Recipe.recipe_id == RecipeUser.recipe_fk).\
-                    filter(RecipeUser.user_fk == session['User']).\
-                    filter(Recipe.source != None).\
-                    distinct().order_by(Recipe.source))
+        cuisine = Recipe.getCuisineForRecipesByUser(session['User'])
         
-        categories = (db.session.query(Category).join(Recipe).join(RecipeUser).\
-                    filter(Recipe.recipe_id == RecipeUser.recipe_fk).\
-                    filter(Recipe.cat_code == Category.cat_code).\
-                    filter(RecipeUser.user_fk == session['User']).\
-                    filter(Recipe.cat_code != None).\
-                    distinct().order_by(Recipe.cat_code))
+        sources = Recipe.getSourceForRecipesByUser(session['User'])
+        
+        categories = Recipe.getCatForRecipesByUser(session['User'])
 
-        levels = (db.session.query(Recipe.skill_level).join(RecipeUser).\
-                    filter(Recipe.recipe_id == RecipeUser.recipe_fk).\
-                    filter(RecipeUser.user_fk == session['User']).\
-                    filter(Recipe.skill_level != None).\
-                    distinct(Recipe.skill_level))
+        levels = Recipe.getLevelsForRecipesByUser(session['User'])
 
     # If user is not logged in, return all recipes
     else:
-        # recipes = Recipe.query.all()
-        recipes = Recipe.query.group_by(Recipe.cat_code).order_by(Recipe.cat_code).all()
 
-        cuisine = (db.session.query(Recipe.cuisine).\
-                    filter(Recipe.cuisine != None).\
-                    distinct().order_by(Recipe.cuisine))
+        recipes = Recipe.getAllRecipes()
+ 
+        cuisine = Recipe.getCuisineForRecipesByUser()
+        
+        sources = Recipe.getSourceForRecipesByUser()
+        
+        categories = Recipe.getCatForRecipesByUser()
 
-        sources = (db.session.query(Recipe.source).\
-                    filter(Recipe.source != None).\
-                    distinct().order_by(Recipe.source))
-
-        categories = db.session.query(Category).join(Recipe).\
-                    filter(Category.cat_code == Recipe.cat_code).\
-                    filter(Recipe.cat_code != None).distinct().order_by(Recipe.cat_code)  
-
-        levels = (db.session.query(Recipe.skill_level).\
-                    filter(Recipe.skill_level != None).\
-                    distinct())
+        levels = Recipe.getLevelsForRecipesByUser()
+        
 
     return render_template("recipe_list.html", recipes=recipes, levels=levels,
                             cuisine=cuisine, sources=sources, categories=categories)
 
+
+
 @app.route("/changeFilters.json", methods=['POST'])
 def change_filters():
 
+    """ It searches recipes by filters.
+
+        Gets a lists of filters.
+
+        Returns: list of recipes (list of objects)
+                 list of cuisine (list of strings)
+                 list of sources (list of strings)
+                 list of categories (list of strings)
+                 list of levels (list of strings
+    """
+    # Saves the parameters
     title = request.form("title")
     cuisine = request.form("cuisine")
     level = request.form("level")
@@ -121,7 +113,7 @@ def change_filters():
     source = request.form("source")
 
 
-    # Checks if the fields have a value and save it in a dictionary
+    # Checks if the fields have a value and save them in a dictionary
     args = {}
 
     if title:
@@ -138,32 +130,19 @@ def change_filters():
 
     if source:
         args['source'] = source
+   
+    # Calls the db functions to get lists of cuisine, sources, categories, titles
+    cuisine = Recipe.getCuisineByFilter(**args)
 
-    cuisine = db.session.query(Recipe.cuisine).\
-                filter_by(**args).\
-                filter(Recipe.cuisine != None).\
-                distinct().order_by(Recipe.cuisine)
+    sources = Recipe.getSourcesByFilter(**args)
 
-    sources = (db.session.query(Recipe.source).\
-                filter_by(**args).\
-                filter(Recipe.source != None).\
-                distinct().order_by(Recipe.source))
+    categories = Recipe.getCatByFilter(**args)
 
-    categories = db.session.query(Category).join(Recipe).\
-                filter_by(**args).\
-                filter(Category.cat_code == Recipe.cat_code).\
-                filter(Recipe.cat_code != None).distinct().order_by(Recipe.cat_code)  
+    levels = Recipe.getLevelsByFilter(**args)
 
-    levels = (db.session.query(Recipe.skill_level).\
-                filter_by(**args).\
-                filter(Recipe.skill_level != None).\
-                distinct())
+    titles = Recipe.getTitlesByFilter(**args)
 
-    titles = db.session.query(Recipe.title).\
-                filter_by(**args).\
-                filter(Recipe.title != None).\
-                distinct().order_by(Recipe.title)
-
+    # Puts the data in a json format
     filters = {
 
        "cuisine": cuisine,
@@ -175,132 +154,6 @@ def change_filters():
 
     return jsonify(filters)
 
-@app.route("/importForm")
-def getImportForm():
-
-    return render_template("/import_form.html")
-
-
-@app.route("/importRecipe", methods=['POST'])
-def import_rec():
-
-    url = request.form.get("url")
-    user = ''
-
-    print "URL ", url
-
-    if 'User' in session:
-        user = session['User']
-
-    message = scraper.url_scraper(url, user)
-
-    if message!= "Error":
-
-        return redirect('/recipe_page/'+ str(message))
-
-    else:
-
-        flash = []
-        flash = "Your recipe could not be loaded"
-        return redirect('/addRecipesForm')
-
-@app.route("/addRecipesForm")
-def add_recipes():
-
-    """ Get list of ingredients and return recipe form """
-
-    ingredients = Ingredient.query.order_by("name").all()
-    categories = Category.query.distinct().order_by("cat_name")
-    return render_template("recipe_form.html", ingredients=ingredients, categories=categories)
-
-
-@app.route("/addRecipe.json", methods=['POST'])
-def enter_recipe():
-    """ Add a new recipe in DB """
-
-    title = request.form.get("title")
-    description = request.form.get("description")
-    source = request.form.get("source")
-    cat_code = request.form.get("category")
-    cuisine = request.form.get("cuisine")
-    servings = request.form.get("servings")
-    cooktime = request.form.get("cookTime")
-    skillLevel = request.form.get("level")
-    step1 = request.form.get("step1")
-    step2 = request.form.get("step2")
-    step3 = request.form.get("step3")
-
-    json.loads(request.form.get("listIngr"))
-
-    if 'Image' in request.files:
-
-        img_file = request.files['Image']
-
-    try:
-        # Saves the img file in the directory
-        filename=""
-
-        if 'Image' in request.files:
-            img_file = request.files['Image']
-
-            print 'IMAGE' , img_file
-            if img_file and allowed_file(img_file.filename):
-                filename = secure_filename(img_file.filename)
-                print filename
-                img_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-
-        # Add recipe in 'recipes' Table
-        Recipe.addRecipe(title, description, filename, cat_code,
-                 servings, cooktime, skillLevel,cuisine)
-
-        # Finds the recipe_id
-        recipeIds= db.session.query(func.max(Recipe.recipe_id)).one()
-        recipeFk = recipeIds[0]
-        print "RECIPE ID:  ",recipeFk
-
-        ingredients = json.loads(request.form.get("listIngr"))
-
-        for ingredient in ingredients:
-            name = ingredient["name"]
-            qty = ingredient["qty"]
-            unit = ingredient["unit"]
-
-            # Add ingredients in 'RecipeIngredient'
-            RecipeIngredient.addIngredients(recipeFk, name, qty, unit)
-            # Add ingredients in 'Ingredients'
-            Ingredient.addIngredients(name)
-
-        # Add steps in 'recipe_step'
-        RecipeStep.addRecipeStep(recipeFk,1,step1)
-        RecipeStep.addRecipeStep(recipeFk,2,step2)
-        RecipeStep.addRecipeStep(recipeFk,3,step3)
-
-        if 'User' in session:
-            RecipeUser.addRecipeForUser(recipeFk,session['User'])
-
-        db.session.commit()
-
-        Recipe.updateRecipeImg(title=title, cat_code=cat_code)
-
-        message = {
-
-            'msg': "Recipe successfully added",
-            'recipeid': recipeFk
-        }
-
-        return jsonify(message)
-
-    except Exception, error:
-        return "Error: %s" % error
-
-# Enter the recipe in the recipes table
-
-
-    # print("INGREDIENT: {}".format(type(ingredients)))
-    # print("INGREDIENT NAME: {}".format(ingredients.name))
-
-
-    # return jsonify({"data": "pluto"})
 
 @app.route("/search_by_ingr.json")
 def search_by_ingr():
@@ -318,7 +171,6 @@ def search_by_ingr():
 
         recipes = Recipe.getRecipeByIngrByUser(ingredient)
 
-    print "RECIPES" , recipes
     # Creates a list of recipe in a json format
     list_of_recipe_dictionaries = [r.json() for r in recipes]
 
@@ -376,11 +228,114 @@ def filteres_recipe():
     return jsonify(recipe_info)
 
 
+############################## RECIPE IMPORT ##################################
+
+@app.route("/importForm")
+def getImportForm():
+
+    return render_template("/import_form.html")
+
+
+@app.route("/importRecipe", methods=['POST'])
+def import_rec():
+
+    """ It scrapes recipe from a url 
+
+        If successfull redirects to recipe_page
+
+        If not successfull redirects to form with an error message
+
+    """
+
+    url = request.form.get("url")
+    user = ''
+
+    if 'User' in session:
+        user = session['User']
+
+    message = scraper.url_scraper(url, user)
+
+    if message!= "Error":
+
+        return redirect('/recipe_page/'+ str(message))
+
+    else:
+
+        flash = []
+        flash = "Your recipe could not be loaded"
+        return redirect('/addRecipesForm')
+
+
+@app.route("/addRecipesForm")
+def add_recipes():
+
+    """ Get list of categories for recipe form """
+
+    # ingredients = Ingredient.query.order_by("name").all()
+    categories = Category.query.distinct().order_by("cat_name")
+    
+    return render_template("recipe_form.html", categories=categories)
+
+
+@app.route("/addRecipe.json", methods=['POST'])
+def enter_recipe():
+    """ Add a new recipe in DB """
+
+    title = request.form.get("title")
+    description = request.form.get("description")
+    source = request.form.get("source")
+    cat_code = request.form.get("category")
+    cuisine = request.form.get("cuisine")
+    servings = request.form.get("servings")
+    cooktime = request.form.get("cookTime")
+    skillLevel = request.form.get("level")
+    step1 = request.form.get("step1")
+    step2 = request.form.get("step2")
+    step3 = request.form.get("step3")
+    steps = [step1, step2, step3]
+
+    # json.loads(request.form.get("listIngr"))
+    ingredients = json.loads(request.form.get("listIngr"))
+
+
+    img_file = ''
+    user = ''
+
+    if 'User' in session:
+
+        user = session['User']
+
+    if 'Image' in request.files:
+
+        img_file = request.files['Image']
+
+    value = helpFunctions.addRecipe(img_file, title, description, cat_code, servings,
+             cooktime, skillLevel, cuisine, ingredients, steps, user)
+
+    
+    if  type(value) == int:
+
+        message = {
+
+            'msg': "Recipe successfully added",
+            'recipeid': value
+        }
+
+    else:
+
+        message = {
+
+            'msg': value
+        }
+
+    return jsonify(message)
+
+############################ RECIPE PAGE #####################################
+
 @app.route("/recipe_page/<int:recipeid>")
 def recipe_page(recipeid):
 
     """ Show recipe details """
-    # print "RECIPE TYPE {}".format(type(recipeid))
 
     recipe = Recipe.query.filter_by(recipe_id=recipeid).first()
 
@@ -400,43 +355,43 @@ def delete_recipe(recipeid):
 
     return redirect ("/recipes")
 
-@app.route("/create")
-def create():
+# @app.route("/create")
+# def create():
 
-    ingredients = Ingredient.getAllIngredient()
+#     ingredients = Ingredient.getAllIngredient()
 
-    # return render_template('/create_recipe.html', ingredients=ingredients)
-    return render_template("ingredients_graph.html")
+#     # return render_template('/create_recipe.html', ingredients=ingredients)
+#     return render_template("ingredients_graph.html")
 
-@app.route('/miserables.json')
-def createGraph():
+# @app.route('/miserables.json')
+# def createGraph():
 
-    graph = helpFunctions.createGraph()       
-
-
-    return jsonify(graph) 
+#     graph = helpFunctions.createGraph()       
 
 
-
-@app.route("/createRecipe")
-def generateRecipe():
-
-    """ Generate a new recipe """
-
-    ingredient = request.args.get("ingredient")
-
-    print "INGREDIENT", ingredient
-
-    # List of ingredients list, one for each recipe
-
-    # recipe_lists = helpFunctions.getListIngredient()
-
-    recipe_lists = RecipeIngredient.getAllMatchingRecipe(ingredient)
+#     return jsonify(graph) 
 
 
-    # Gets a dictionary of matched ingredients for i 
 
-    ingr_dict = helpFunctions.makeDict(ingredient, recipe_lists)
+# @app.route("/createRecipe")
+# def generateRecipe():
+
+#     """ Generate a new recipe """
+
+#     ingredient = request.args.get("ingredient")
+
+#     print "INGREDIENT", ingredient
+
+#     # List of ingredients list, one for each recipe
+
+#     # recipe_lists = helpFunctions.getListIngredient()
+
+#     recipe_lists = RecipeIngredient.getAllMatchingRecipe(ingredient)
+
+
+#     # Gets a dictionary of matched ingredients for i 
+
+#     ingr_dict = helpFunctions.makeDict(ingredient, recipe_lists)
 
      
 
@@ -455,22 +410,24 @@ def plan():
     servings = request.args.get("servings")
     recipe_id = request.args.get("recipeid")
 
-    print "PARAMS",date, meal_type, servings, recipe_id
     # import pdb;
     if 'User' in session:
 
         if not Meals.getMealByDateByRecipe(date, session['User'],recipe_id):
-            print "Meal is not in planner"
+            
             Meals.plan_meal(recipe_id, meal_type, servings, session["User"], date)
             db.session.commit()
-        if request.args.get('flag') == 'planner':
-            return redirect("/planner")  
-        else:     
+        
+        if request.args.get('flag') == 'planner':           
+            return redirect("/planner")         
+        else:                 
             return redirect("/recipes")
     else:
+        
         flash = []
         flash = "You need to login"
         return redirect("/login")
+
 
 @app.route("/planner/<date>/<num>")
 @app.route("/planner")
@@ -480,54 +437,36 @@ def getPlanner(date=None, num=None):
 
     start_date = ''  
 
-    # date = request.args.get('date')
-    # num = request.args.get('operation') 
-
-    print "Date", date
-
-
+    # It sets the START DATE. 
     if date and num =='-':
 
-
         start_date = datetime.strptime(date,'%Y-%m-%d %H:%M:%S.%f') - timedelta(days=7)
-        print "DATE", date, start_date
 
     elif date and num == '+':
         
         start_date = datetime.strptime(date,'%Y-%m-%d %H:%M:%S.%f') + timedelta(days=7)
 
-        print "DATE", date, start_date
-
     if not start_date:
         start_date = datetime.today()
 
+    # It sets the END DATE 
     end_date = start_date + timedelta(days=7)
     currentWeek = start_date.strftime("%W")
+    
     week_days = []
     meal_list = []
     meal_days = []
 
-    recipes = (db.session.query(Recipe).join(RecipeUser).\
-            filter(Recipe.recipe_id == RecipeUser.recipe_fk).\
-            filter(RecipeUser.user_fk == session['User']).all())
-
-    cuisine = (db.session.query(Recipe.cuisine).join(RecipeUser).\
-            filter(Recipe.recipe_id == RecipeUser.recipe_fk).\
-            filter(RecipeUser.user_fk == session['User']).\
-            filter(Recipe.cuisine != None).\
-            distinct(Recipe.cuisine).order_by(Recipe.cuisine))
-
-    categories = (db.session.query(Category).join(Recipe).join(RecipeUser).\
-            filter(Recipe.recipe_id == RecipeUser.recipe_fk).\
-            filter(Recipe.cat_code == Category.cat_code).\
-            filter(RecipeUser.user_fk == session['User']).\
-            filter(Recipe.cat_code != None).\
-            distinct().order_by(Recipe.cat_code))
-
-    for i in range(7):
-        week_days.append(int(start_date.strftime("%w")) + i)
-
     if 'User' in session:
+
+        recipes = Recipe.getRecipesByUser(session['User'])
+
+        cuisine = Recipe.getCuisineForRecipesByUser(session['User'])
+
+        categories = Recipe.getCatForRecipesByUser(session['User'])
+
+        for i in range(7):
+            week_days.append(int(start_date.strftime("%w")) + i)
 
         for i in range(7):
             mealsPlanned=''
@@ -544,6 +483,7 @@ def getPlanner(date=None, num=None):
                               "d_meals":d_meals,
                               "s_meals":s_meals})
 
+        print 'DATA', date
         return render_template("planner.html", meals_list=meal_list,
             week_days=week_days, start_date=start_date, end_date=end_date,
             recipes=recipes, cuisine=cuisine, categories=categories)
@@ -551,7 +491,7 @@ def getPlanner(date=None, num=None):
     else:
 
         flash("You need to sign in")
-        return render_template("planner.html")
+        return render_template("error.html")
 
 @app.route("/getRecipeImg.json")
 def getImg():

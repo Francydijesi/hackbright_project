@@ -172,14 +172,7 @@ class Recipe(db.Model):
             extension = rec.image_url.split(".")[1]
             rec.image_url = rec.cat_code + "_" + str(rec.recipe_id) + extension
 
-    @classmethod
-    def getAllRecipes(cls):
-
-        rec = db.session.query(Recipe).all()      
-
-
-        return rec
-
+    
 
     @classmethod
     def getRecipeByIngrByUser(cls,ingredient, user):
@@ -191,7 +184,149 @@ class Recipe(db.Model):
                     filter(RecipeIngredient.ingredient_name.like('%'+ingredient+'%')).\
                     all()
 
-        return recipes  
+        return recipes
+
+    ##################### View Recipes #########################################
+
+    @classmethod
+    def getAllRecipes(cls):
+        """ Returns all the recipes ordered by categories code """
+
+        rec = db.session.query(Recipe).order_by(Recipe.cat_code).all()      
+
+        return rec
+
+    @classmethod
+    def getRecipesByUser(cls, user=None):
+        """ Returns all the recipes associated to the user """
+
+        recipes = (db.session.query(Recipe).join(RecipeUser).\
+                    filter(Recipe.recipe_id == RecipeUser.recipe_fk).\
+                    filter(RecipeUser.user_fk == user).all())
+
+        return recipes
+
+    @classmethod
+    def getCuisineForRecipesByUser(cls, user=None):
+        """ Returns a list of cuisine for the recipes associated to the user """
+
+        if user:
+            cuisine = (db.session.query(Recipe.cuisine).join(RecipeUser).\
+                        filter(Recipe.recipe_id == RecipeUser.recipe_fk).\
+                        filter(RecipeUser.user_fk == user).\
+                        filter(Recipe.cuisine != None).\
+                        distinct(Recipe.cuisine).order_by(Recipe.cuisine))
+        else:
+            cuisine = (db.session.query(Recipe.cuisine).\
+                        filter(Recipe.cuisine != None).\
+                        distinct().order_by(Recipe.cuisine))    
+
+        return cuisine
+
+    @classmethod
+    def getSourceForRecipesByUser(cls, user=None):
+        """ Returns a list of Sources for the recipes associated to the user """    
+
+        if user:
+            sources = (db.session.query(Recipe.source).join(RecipeUser).\
+                        filter(Recipe.recipe_id == RecipeUser.recipe_fk).\
+                        filter(RecipeUser.user_fk == user).\
+                        filter(Recipe.source != None).\
+                        distinct().order_by(Recipe.source))
+        else:
+            sources = (db.session.query(Recipe.source).\
+                        filter(Recipe.source != None).\
+                        distinct().order_by(Recipe.source))
+
+            
+        return sources
+
+    @classmethod
+    def getCatForRecipesByUser(cls, user=None):
+        """ Returns a list of Categories for the recipes associated to the user """
+
+        if user:
+            categories = (db.session.query(Category).join(Recipe).join(RecipeUser).\
+                        filter(Recipe.recipe_id == RecipeUser.recipe_fk).\
+                        filter(Recipe.cat_code == Category.cat_code).\
+                        filter(RecipeUser.user_fk == user).\
+                        filter(Recipe.cat_code != None).\
+                        distinct().order_by(Recipe.cat_code))
+        else:
+            categories = db.session.query(Category).join(Recipe).\
+                        filter(Category.cat_code == Recipe.cat_code).\
+                        filter(Recipe.cat_code != None).distinct().order_by(Recipe.cat_code)  
+
+
+        return categories
+
+    @classmethod
+    def getLevelsForRecipesByUser(cls, user=None):
+        """ Returns a list of Levels for the recipes associated to the user """
+
+        if user:
+            levels = (db.session.query(Recipe.skill_level).join(RecipeUser).\
+                        filter(Recipe.recipe_id == RecipeUser.recipe_fk).\
+                        filter(RecipeUser.user_fk == user).\
+                        filter(Recipe.skill_level != None).\
+                        distinct(Recipe.skill_level))
+        else:
+            levels = (db.session.query(Recipe.skill_level).\
+                        filter(Recipe.skill_level != None).\
+                        distinct())
+
+        return levels
+
+    #########################Search by Filters##################################
+
+    @classmethod
+    def getCuisineByFilter(cls, args):
+
+        cuisine = db.session.query(Recipe.cuisine).\
+                filter_by(args).\
+                filter(Recipe.cuisine != None).\
+                distinct().order_by(Recipe.cuisine)
+
+        return cuisine
+
+    @classmethod
+    def getSourcesByFilter(cls, args):
+
+        sources = (db.session.query(Recipe.source).\
+                    filter_by(args).\
+                    filter(Recipe.source != None).\
+                    distinct().order_by(Recipe.source))
+
+        return sources
+
+    @classmethod
+    def getCatByFilter(cls, args):
+
+        categories = db.session.query(Category).join(Recipe).\
+                    filter_by(args).\
+                    filter(Category.cat_code == Recipe.cat_code).\
+                    filter(Recipe.cat_code != None).distinct().order_by(Recipe.cat_code)
+
+        return categories  
+
+    @classmethod
+    def getLevelsByFilter(cls, args):
+
+        levels = (db.session.query(Recipe.skill_level).\
+                    filter_by(**args).\
+                    filter(Recipe.skill_level != None).\
+                    distinct())
+        return levels        
+
+    @classmethod
+    def getTitlesByFilter(cls, args):
+        titles = db.session.query(Recipe.title).\
+                    filter_by(args).\
+                    filter(Recipe.title != None).\
+                    distinct().order_by(Recipe.title)
+
+        return titles
+
 
     def __repr__(self):
         """ Recipe information"""

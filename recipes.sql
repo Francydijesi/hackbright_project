@@ -85,108 +85,108 @@ INSERT INTO "ingredients" VALUES(62,'broccoli rabe',NULL,NULL,NULL,'Produce');
 INSERT INTO "ingredients" VALUES(63,'ricotta',NULL,NULL,NULL,'Dairy');
 INSERT INTO "ingredients" VALUES(64,'lemon',NULL,NULL,NULL,'Produce');
 INSERT INTO "ingredients" VALUES(65,'dried red chiles',NULL,NULL,NULL,'Spices');
-INSERT INTO "ingredients" VALUES(66,'chuck steak',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(67,'olive oil',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(68,'onions',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(69,'dry red wine',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(70,'cloves',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(71,'bay leaf',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(72,'thyme',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(73,'carrots',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(74,'chickpea flour',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(75,'fine cornmeal',NULL,NULL,NULL,NULL);
+INSERT INTO "ingredients" VALUES(66,'chuck steak',NULL,NULL,NULL,'Meat Fish Poultry');
+INSERT INTO "ingredients" VALUES(67,'olive oil',NULL,NULL,NULL,'Condiments');
+INSERT INTO "ingredients" VALUES(68,'onions',NULL,NULL,NULL,'Produce');
+INSERT INTO "ingredients" VALUES(69,'dry red wine',NULL,NULL,NULL,'Drinks');
+INSERT INTO "ingredients" VALUES(70,'cloves',NULL,NULL,NULL,'Spices');
+INSERT INTO "ingredients" VALUES(71,'bay leaf',NULL,NULL,NULL,'Spices');
+INSERT INTO "ingredients" VALUES(72,'thyme',NULL,NULL,NULL,'Produce');
+INSERT INTO "ingredients" VALUES(73,'carrots',NULL,NULL,NULL,'Produce');
+INSERT INTO "ingredients" VALUES(74,'chickpea flour',NULL,NULL,NULL,'Baking');
+INSERT INTO "ingredients" VALUES(75,'fine cornmeal',NULL,NULL,NULL,'Baking');
 INSERT INTO "ingredients" VALUES(76,'kosher salt',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(77,'baking powder',NULL,NULL,NULL,NULL);
+INSERT INTO "ingredients" VALUES(77,'baking powder',NULL,NULL,NULL,'Baking');
 INSERT INTO "ingredients" VALUES(78,'turmeric powder',NULL,NULL,NULL,NULL);
 INSERT INTO "ingredients" VALUES(79,'fresh corn kernels',NULL,NULL,NULL,NULL);
 INSERT INTO "ingredients" VALUES(80,'cumin seeds',NULL,NULL,NULL,NULL);
 INSERT INTO "ingredients" VALUES(81,'fennel seeds',NULL,NULL,NULL,NULL);
 INSERT INTO "ingredients" VALUES(82,'mustard seeds',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(83,'chopped fresh red or green chile',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(84,'chopped scallions',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(85,'chopped cilantro',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(86,'grated ginger',NULL,NULL,NULL,NULL);
+INSERT INTO "ingredients" VALUES(83,'chopped fresh red or green chile',NULL,NULL,NULL,'Produce');
+INSERT INTO "ingredients" VALUES(84,'chopped scallions',NULL,NULL,NULL,'Produce');
+INSERT INTO "ingredients" VALUES(85,'chopped cilantro',NULL,NULL,NULL,'Produce');
+INSERT INTO "ingredients" VALUES(86,'grated ginger',NULL,NULL,NULL,'Produce');
 INSERT INTO "ingredients" VALUES(87,'vegetable oil, for frying',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(88,'lime wedges',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(89,'mango-tamarind chutney',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(90,'fresh asparagus, medium thickness',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(91,'minced shallots',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(92,'heavy cream',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(93,'fresh lemon juice',NULL,NULL,NULL,NULL);
+INSERT INTO "ingredients" VALUES(88,'lime wedges',NULL,NULL,NULL,'Produce');
+INSERT INTO "ingredients" VALUES(89,'mango-tamarind chutney',NULL,NULL,NULL,'Produce');
+INSERT INTO "ingredients" VALUES(90,'fresh asparagus, medium thickness',NULL,NULL,NULL,'Produce');
+INSERT INTO "ingredients" VALUES(91,'minced shallots',NULL,NULL,NULL,'Produce');
+INSERT INTO "ingredients" VALUES(92,'heavy cream',NULL,NULL,NULL,'Dairy');
+INSERT INTO "ingredients" VALUES(93,'fresh lemon juice',NULL,NULL,NULL,'Produce');
 INSERT INTO "ingredients" VALUES(94,'minced fresh dill',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(95,'cherry tomatoes',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(96,'eggplants',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(97,'ricotta salata',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(98,'basil',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(99,'porcini or shiitake mushrooms',NULL,NULL,NULL,NULL);
+INSERT INTO "ingredients" VALUES(95,'cherry tomatoes',NULL,NULL,NULL,'Produce');
+INSERT INTO "ingredients" VALUES(96,'eggplants',NULL,NULL,NULL,'Produce');
+INSERT INTO "ingredients" VALUES(97,'ricotta salata',NULL,NULL,NULL,'Dairy');
+INSERT INTO "ingredients" VALUES(98,'basil',NULL,NULL,NULL,'Produce');
+INSERT INTO "ingredients" VALUES(99,'porcini or shiitake mushrooms',NULL,NULL,NULL,'Produce');
 INSERT INTO "ingredients" VALUES(100,'extra virgin olive oil',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(101,'shallots',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(102,'cremini mushrooms',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(103,'fruity red wine',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(104,'thyme leaves',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(105,'shallot or onion',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(106,'milk',NULL,NULL,NULL,NULL);
+INSERT INTO "ingredients" VALUES(101,'shallots',NULL,NULL,NULL,'Produce');
+INSERT INTO "ingredients" VALUES(102,'cremini mushrooms',NULL,NULL,NULL,'Produce');
+INSERT INTO "ingredients" VALUES(103,'fruity red wine',NULL,NULL,NULL,'Drinks');
+INSERT INTO "ingredients" VALUES(104,'thyme leaves',NULL,NULL,NULL,'Produce');
+INSERT INTO "ingredients" VALUES(105,'shallot or onion',NULL,NULL,NULL,'Produce');
+INSERT INTO "ingredients" VALUES(106,'milk',NULL,NULL,NULL,'Dairy');
 INSERT INTO "ingredients" VALUES(107,'no-boil lasagna noodles',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(108,'parmesan cheese',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(109,'egg',NULL,NULL,NULL,NULL);
+INSERT INTO "ingredients" VALUES(108,'parmesan cheese',NULL,NULL,NULL,'Dairy');
+INSERT INTO "ingredients" VALUES(109,'egg',NULL,NULL,NULL,'Dairy');
 INSERT INTO "ingredients" VALUES(110,'bittersweet chocolate',NULL,NULL,NULL,NULL);
 INSERT INTO "ingredients" VALUES(111,'vanilla extract',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(112,'whole milk',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(113,'brown sugar',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(114,'unsweetened cocoa powder',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(115,'cornstarch',NULL,NULL,NULL,NULL);
+INSERT INTO "ingredients" VALUES(112,'whole milk',NULL,NULL,NULL,'Dairy');
+INSERT INTO "ingredients" VALUES(113,'brown sugar',NULL,NULL,NULL,'Baking');
+INSERT INTO "ingredients" VALUES(114,'unsweetened cocoa powder',NULL,NULL,NULL,'Baking');
+INSERT INTO "ingredients" VALUES(115,'cornstarch',NULL,NULL,NULL,'Baking');
 INSERT INTO "ingredients" VALUES(116,'fine sea salt',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(117,'whipped cream',NULL,NULL,NULL,NULL);
+INSERT INTO "ingredients" VALUES(117,'whipped cream',NULL,NULL,NULL,'Dairy');
 INSERT INTO "ingredients" VALUES(118,'chocolate shavings',NULL,NULL,NULL,NULL);
 INSERT INTO "ingredients" VALUES(119,'flaky sea salt',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(120,'skinless chicken breast',NULL,NULL,NULL,NULL);
+INSERT INTO "ingredients" VALUES(120,'skinless chicken breast',NULL,NULL,NULL,'Meat Fish Poultry');
 INSERT INTO "ingredients" VALUES(121,'egg white',NULL,NULL,NULL,NULL);
 INSERT INTO "ingredients" VALUES(122,'rice wine',NULL,NULL,NULL,NULL);
 INSERT INTO "ingredients" VALUES(123,'sugar',NULL,NULL,NULL,NULL);
 INSERT INTO "ingredients" VALUES(124,'hoisin sauce',NULL,NULL,NULL,NULL);
 INSERT INTO "ingredients" VALUES(125,'soy sauce',NULL,NULL,NULL,NULL);
 INSERT INTO "ingredients" VALUES(126,'peanut oil',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(127,'green peppers',NULL,NULL,NULL,NULL);
+INSERT INTO "ingredients" VALUES(127,'green peppers',NULL,NULL,NULL,'Produce');
 INSERT INTO "ingredients" VALUES(128,'cashew',NULL,NULL,NULL,NULL);
 INSERT INTO "ingredients" VALUES(129,'dried hominy',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(130,'dried red new mexico chiles',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(131,'fresh pork belly',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(132,'pork shoulder',NULL,NULL,NULL,NULL);
+INSERT INTO "ingredients" VALUES(130,'dried red new mexico chiles',NULL,NULL,NULL,'Produce');
+INSERT INTO "ingredients" VALUES(131,'fresh pork belly',NULL,NULL,NULL,'Meat Fish Poultry');
+INSERT INTO "ingredients" VALUES(132,'pork shoulder',NULL,NULL,NULL,'Meat Fish Poultry');
 INSERT INTO "ingredients" VALUES(133,'salt and pepper',NULL,NULL,NULL,NULL);
 INSERT INTO "ingredients" VALUES(134,'chopped garlic',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(135,'finely diced white onion',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(136,'pork chops',NULL,NULL,NULL,NULL);
+INSERT INTO "ingredients" VALUES(135,'finely diced white onion',NULL,NULL,NULL,'Produce');
+INSERT INTO "ingredients" VALUES(136,'pork chops',NULL,NULL,NULL,'Meat Fish Poultry');
 INSERT INTO "ingredients" VALUES(137,'dijon mustard',NULL,NULL,NULL,NULL);
 INSERT INTO "ingredients" VALUES(138,'black pepper',NULL,NULL,NULL,NULL);
 INSERT INTO "ingredients" VALUES(139,'canola oil',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(140,'pork loin',NULL,NULL,NULL,NULL);
+INSERT INTO "ingredients" VALUES(140,'pork loin',NULL,NULL,NULL,'Meat Fish Poultry');
 INSERT INTO "ingredients" VALUES(141,'red onion',NULL,NULL,NULL,NULL);
 INSERT INTO "ingredients" VALUES(142,'rosemary sprigs',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(143,'plum tomatoes',NULL,NULL,NULL,NULL);
+INSERT INTO "ingredients" VALUES(143,'plum tomatoes',NULL,NULL,NULL,'Produce');
 INSERT INTO "ingredients" VALUES(144,'anchovy fillets',NULL,NULL,NULL,NULL);
 INSERT INTO "ingredients" VALUES(145,'polenta, noodles or rice',NULL,NULL,NULL,NULL);
 INSERT INTO "ingredients" VALUES(146,'pine nuts',NULL,NULL,NULL,NULL);
 INSERT INTO "ingredients" VALUES(147,'pea shoots',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(148,'cilantro leaves',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(149,'bone-in pork chops',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(150,'arugula',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(151,'shallot',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(152,'lemon juice',NULL,NULL,NULL,NULL);
+INSERT INTO "ingredients" VALUES(148,'cilantro leaves',NULL,NULL,NULL,'Produce');
+INSERT INTO "ingredients" VALUES(149,'bone-in pork chops',NULL,NULL,NULL,'Meat Fish Poultry');
+INSERT INTO "ingredients" VALUES(150,'arugula',NULL,NULL,NULL,'Produce');
+INSERT INTO "ingredients" VALUES(151,'shallot',NULL,NULL,NULL,'Produce');
+INSERT INTO "ingredients" VALUES(152,'lemon juice',NULL,NULL,NULL,'Produce');
 INSERT INTO "ingredients" VALUES(153,'coarse sea salt',NULL,NULL,NULL,NULL);
 INSERT INTO "ingredients" VALUES(154,'extra-virgin olive oil',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(155,'yellow onion',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(156,'ground lamb',NULL,NULL,NULL,NULL);
+INSERT INTO "ingredients" VALUES(155,'yellow onion',NULL,NULL,NULL,'Produce');
+INSERT INTO "ingredients" VALUES(156,'ground lamb',NULL,NULL,NULL,'Meat Fish Poultry');
 INSERT INTO "ingredients" VALUES(157,'cinnamon',NULL,NULL,NULL,NULL);
 INSERT INTO "ingredients" VALUES(158,'tomato sauce',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(159,'mozzarella',NULL,NULL,NULL,NULL);
+INSERT INTO "ingredients" VALUES(159,'mozzarella',NULL,NULL,NULL,'Dairy');
 INSERT INTO "ingredients" VALUES(160,'sea salt',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(161,'chicken',NULL,NULL,NULL,NULL);
+INSERT INTO "ingredients" VALUES(161,'chicken',NULL,NULL,NULL,'Meat Fish Poultry');
 INSERT INTO "ingredients" VALUES(162,'couscous',NULL,NULL,NULL,NULL);
 INSERT INTO "ingredients" VALUES(163,'almonds',NULL,NULL,NULL,NULL);
 INSERT INTO "ingredients" VALUES(164,'orange blossom water',NULL,NULL,NULL,NULL);
 INSERT INTO "ingredients" VALUES(165,'honey',NULL,NULL,NULL,NULL);
 INSERT INTO "ingredients" VALUES(166,'mint',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(167,'cauliflower',NULL,NULL,NULL,NULL);
+INSERT INTO "ingredients" VALUES(167,'cauliflower',NULL,NULL,NULL,'Produce');
 INSERT INTO "ingredients" VALUES(168,'anchovies',NULL,NULL,NULL,NULL);
 INSERT INTO "ingredients" VALUES(169,'rosemary leaves',NULL,NULL,NULL,NULL);
 INSERT INTO "ingredients" VALUES(170,'tomatoes',NULL,NULL,NULL,NULL);
@@ -196,17 +196,17 @@ INSERT INTO "ingredients" VALUES(173,'flaky salt',NULL,NULL,NULL,NULL);
 INSERT INTO "ingredients" VALUES(174,'chervil',NULL,NULL,NULL,NULL);
 INSERT INTO "ingredients" VALUES(175,'salmon',NULL,NULL,NULL,NULL);
 INSERT INTO "ingredients" VALUES(176,'lemon wedges',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(177,'boneless chicken thighs',NULL,NULL,NULL,NULL);
+INSERT INTO "ingredients" VALUES(177,'boneless chicken thighs',NULL,NULL,NULL,'Meat Fish Poultry');
 INSERT INTO "ingredients" VALUES(178,'bread crumbs',NULL,NULL,NULL,NULL);
 INSERT INTO "ingredients" VALUES(179,'dry white wine',NULL,NULL,NULL,NULL);
 INSERT INTO "ingredients" VALUES(180,'chicken or vegetable stock',NULL,NULL,NULL,NULL);
 INSERT INTO "ingredients" VALUES(181,'granulated sugar',NULL,NULL,NULL,NULL);
 INSERT INTO "ingredients" VALUES(182,'pineapple juice',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(183,'chicken thighs',NULL,NULL,NULL,NULL);
+INSERT INTO "ingredients" VALUES(183,'chicken thighs',NULL,NULL,NULL,'Meat Fish Poultry');
 INSERT INTO "ingredients" VALUES(184,'parsley leaves',NULL,NULL,NULL,NULL);
 INSERT INTO "ingredients" VALUES(185,'fresh ginger',NULL,NULL,NULL,NULL);
 INSERT INTO "ingredients" VALUES(186,'cayenne pepper',NULL,NULL,NULL,NULL);
-INSERT INTO "ingredients" VALUES(187,'plain whole-milk yogurt',NULL,NULL,NULL,NULL);
+INSERT INTO "ingredients" VALUES(187,'plain whole-milk yogurt',NULL,NULL,NULL,'Dairy');
 INSERT INTO "ingredients" VALUES(188,'oil',NULL,NULL,NULL,NULL);
 INSERT INTO "ingredients" VALUES(189,'walnut',NULL,NULL,NULL,NULL);
 CREATE TABLE categories (
@@ -925,483 +925,3 @@ INSERT INTO "expences" VALUES(6,'Safeway',47.36,'2015-11-10 00:00:00.000000',1);
 INSERT INTO "expences" VALUES(7,'Trader''s Joe',106.0,'2015-11-03 00:00:00.000000',1);
 INSERT INTO "expences" VALUES(8,'Safeway',250.0,'2015-10-14 00:00:00.000000',1);
 COMMIT;
-175|16|cherry tomatoes||20 to 30|
-176|16|olive oil||
-|
-177|16|salt||
-|
-178|16|garlic||2|cloves
-179|16|eggplants||12|
-180|16|pasta||300|
-181|16|ricotta salata||2 to 3|
-182|16|basil||20|
-175|16|cherry tomatoes||20 to 30|
-176|16|olive oil||
-|
-177|16|salt||
-|
-178|16|garlic||2|cloves
-179|16|eggplants||12|
-180|16|pasta||300|
-181|16|ricotta salata||2 to 3|
-182|16|basil||20|
-37|19|Parmesan|||
-38|19|cilantro||1|tablespoon
-39|20|Parmesan|||
-40|21|Parmesan|||
-41|22|Parmesan|||
-42|23|Parmesan|||
-43|24|Parmesan|||
-46|4|yellow fleshed potatoes||2|cup
-47|4|garlic||8|
-48|4|salt|||
-49|4|extra-virgin olive oil ||1/4|cup
-50|5|extra-virgin olive oil ||1 1/2|tablespoon
-51|5|onion||1|
-52|5|garlic||1|
-53|5|butternut squash||1|
-54|5|zucchini||1|
-55|5|red bell pepper||1|
-56|5|fresh oregano||1|tablespoon
-57|5|ground cumin||1|tablespoon
-58|5|ground origin||1|tablespoon
-59|5|vegan margarine||1/2|cup
-60|5|organic sugar||3|tablespoon
-61|5|sage||1/2|teaspoon
-62|5|salt|||pinch
-63|5|whole wheat flour||1|cup
-64|6|quinoa||1|cup
-65|6|water||2|cup
-66|6|celeriac||3/4|cup
-67|6|butternut squash||3/4|cup
-68|6|onion||1|
-69|6|garlic||1|
-70|6|ground sage||1|teaspoon
-71|6|ground thyme||1|teaspoon
-72|6|salt||3/4|teaspoon
-73|6|pepper||1/2|teaspoon
-74|6|parsley||1/4|cup
-75|6|hazelnuts||1/4|cup
-76|6|extra-virgin olive oil ||2|tablespoon
-77|7|bosc pears||4|
-78|7|anjou pears||4|
-79|7|pomegranate molasses||6|tablespoon
-80|7|unsalted butter||3|tablespoon
-81|7|tapioca||3|tablespoon
-82|7|light brown sugar||3/4|cup
-83|7|ground ginger||1/2|teaspoon
-84|7|salt||1/4|teaspoon
-85|7|all-purpose flour||1 1/4|cup
-86|7|salt||1/4|teaspoon
-87|7|unsalted butter||10|tablespoon
-88|8|butter||4|tablespoon
-89|8|all-purpose flour||1/4|cup
-90|8|half-and-half||2|cup
-91|8|salt|||
-92|8|pepper|||
-93|8|cayenne||1|pinch
-94|8|nutmeg|||
-95|8|dry lasagna noodles||1|pound
-96|8|broccoli rabe||2|pound
-97|8|garlic||4|
-98|8|extra-virgin olive oil ||1/2|cup
-99|8|ricotta||1|pound
-100|8|lemon||1/2|teaspoon
-101|8|butter||4|tablespoon
-102|8|parmesan|||
-114|2|vegetable oil||2|tablespoon
-115|2|dried red chiles|small|6 to 8|
-116|2|snow peas|, trimmed|1|pound
-117|2|scallion|, trimmed, chopped in 1-inch lengths|1|bunch
-118|2|garlic|, minced|4|cloves
-119|2|ginger|grated|1/2|teaspoon
-120|2|toasted sesame oil||1/2|teaspoon
-121|2|roasted peanuts|crushed|3|tablespoon
-122|2|cilantro|||
-123|3|lamb shanks||3|
-124|3|salt and pepper|||
-125|3|garlic| cloves, minced|6|
-126|3|paprika||1|tablespoon
-127|3|cumin|ground||
-128|3|butter||2|tablespoon
-129|3|onion|, sliced, about 2 cups|1|
-130|3|saffron||1|small pinch
-131|3|cayenne pepper||1/2|teaspoon
-132|3|tomato paste||1|tablespoon
-133|3|cinnamon stick||1|
-134|3|dried ginger||2|tablespoon
-135|3|dates|, chopped|1/2|cup
-136|3|golden raisins|, soaked in hot water to soften for 30 minutes and drained|1/2|cup
-137|3|pomegranate seeds||1/2|cup
-138|3| Cilantro sprigs, for garnish|||
-139|13|chuck steak||4|
-140|13|olive oil||¼|cup
-141|13|garlic||1|tablespoon
-142|13|onions||2|cups
-143|13|flour||6|tablespoons
-144|13|dry red wine||4|cups
-145|13|water||2|cups
-146|13|cloves||4|
-147|13|bay leaf||1|
-148|13|thyme||½|teaspoon
-149|13|parsley||6|
-150|13|carrots||6|
-151|14|chickpea flour||¼|cup
-152|14|flour||¾|cup
-153|14|fine cornmeal||1|cup
-154|14|kosher salt||1|
-155|14|baking powder||½|teaspoon
-156|14|turmeric powder||½|teaspoon
-157|14|fresh corn kernels||2 ½|cups
-158|14|cumin seeds||½|teaspoon
-159|14|fennel seeds||½|teaspoon
-160|14|mustard seeds||½|teaspoon
-161|14|chopped fresh red or green chile||1|teaspoon
-162|14|chopped scallions||½|cup
-163|14|chopped cilantro||½|cup
-164|14|grated ginger||1|tablespoon
-165|14|vegetable oil, for frying||
-|
-166|14|lime wedges||
-|
-167|14|mango-tamarind chutney||
-|
-168|15|fresh asparagus, medium thickness||½|
-169|15|salt||
-|
-170|15|butter||1|tablespoon
-171|15|minced shallots||½|tablespoon
-172|15|heavy cream||1|cup
-173|15|fresh lemon juice||1|teaspoon
-174|15|minced fresh dill||2|tablespoons
-175|16|cherry tomatoes||20 to 30|
-176|16|olive oil||
-|
-177|16|salt||
-|
-178|16|garlic||2|cloves
-179|16|eggplants||12|
-180|16|pasta||300|
-181|16|ricotta salata||2 to 3|
-182|16|basil||20|
-183|17|porcini or shiitake mushrooms||1|ounce
-184|17|extra virgin olive oil||1|tablespoon
-185|17|shallots||2|
-186|17|garlic||2 to 3|
-187|17|cremini mushrooms||1|pound
-188|17|salt||
-|
-189|17|fruity red wine||½|cup
-190|17|thyme leaves||1|teaspoon
-191|17|pepper||
-|
-192|17|extra virgin olive oil||2|tablespoons
-193|17|shallot or onion||2|tablespoons
-194|17|all-purpose flour||2|tablespoons
-195|17|milk||2|cups
-196|17|salt||
-|
-197|17|pepper||
-|
-198|17|no-boil lasagna noodles||½|pound
-199|17|parmesan cheese||4|ounces
-200|17|sage||
-|
-201|18|egg||1|
-202|18|bittersweet chocolate||6|
-203|18|unsalted butter||2|
-204|18|vanilla extract||1|
-205|18|whole milk||2 ½|
-206|18|heavy cream||½|
-207|18|brown sugar||⅓|
-208|18|unsweetened cocoa powder||2|
-209|18|cornstarch||2|
-210|18|fine sea salt||¼|
-211|18|whipped cream||
-|
-212|18|chocolate shavings||
-|
-213|18|flaky sea salt||
-|
-214|19|skinless chicken breast||1|pound
-215|19|egg white||1|tablespoon
-216|19|cornstarch||2|teaspoons
-217|19|rice wine||1 ½|teaspoons
-218|19|sugar||½|teaspoon
-219|19|hoisin sauce||2|tablespoons
-220|19|soy sauce||1|teaspoon
-221|19|peanut oil||2|tablespoons
-222|19|ginger||1|tablespoon
-223|19|garlic||2|
-224|19|green peppers||1|pound
-225|19|cashew||¼|cup
-226|20|dried hominy||1 ½|pounds
-227|20|dried red new mexico chiles||3|ounces
-228|20|fresh pork belly||2|pounds
-229|20|pork shoulder||2|pounds
-230|20|salt and pepper||
-|
-231|20|onion||1|
-232|20|bay leaf||1|
-233|20|chopped garlic||1|tablespoon
-234|20|cumin seeds||2|teaspoons
-235|20|finely diced white onion||2|cups
-236|20|cilantro||
-|
-237|21|pork chops||4|
-238|21|salt||1|teaspoon
-239|21|dijon mustard||4|teaspoons
-240|21|cumin seeds||2|tablespoons
-241|21|black pepper||1|teaspoon
-242|21|canola oil||1|teaspoon
-243|22|pork loin||2|
-244|22|kosher salt||¾|teaspoon
-245|22|black pepper||½|teaspoon
-246|22|extra virgin olive oil||2|tablespoons
-247|22|red onion||1|
-248|22|rosemary sprigs||3|
-249|22|garlic||2|
-250|22|plum tomatoes||2|pounds
-251|22|anchovy fillets||6|
-252|22|polenta, noodles or rice||
-|
-253|23|pine nuts||¾|cup
-254|23|pea shoots||3|cups
-255|23|cilantro leaves||½|cup
-256|23|parmesan||¼|cup
-257|23|garlic||2|cloves
-258|23|kosher salt||¾|teaspoon
-259|23|extra virgin olive oil||⅓|cup
-260|23|bone-in pork chops||4|
-261|23|garlic||1|clove
-262|23|kosher salt||1 ½|teaspoons
-263|23|black pepper||
-|
-264|23|extra virgin olive oil||3|tablespoons
-265|23|pea shoots||2|cups
-266|23|arugula||1|
-267|23|cilantro leaves||3|tablespoons
-268|23|shallot||1|
-269|23|extra virgin olive oil||
-|
-270|23|lemon juice||
-|
-271|23|coarse sea salt||
-|
-272|23|black pepper||
-|
-273|24|eggplants||2|
-274|24|extra-virgin olive oil||4|tablespoons
-275|24|kosher salt||2|teaspoons
-276|24|yellow onion||1|
-277|24|garlic||2|
-278|24|ground lamb||1|pound
-279|24|cinnamon||½|teaspoon
-280|24|black pepper||
-|
-281|24|unsalted butter||½|tablespoon
-282|24|pine nuts||½|cup
-283|24|tomato sauce||1|
-284|24|mozzarella||12|ounces
-285|25|extra-virgin olive oil||4|tablespoons
-286|25|lemon juice||2|tablespoons
-287|25|ginger||½|teaspoon
-288|25|black pepper||½|teaspoon
-289|25|sea salt||
-|
-290|25|chicken||1|
-291|25|couscous||2|cups
-292|25|butter||3|tablespoons
-293|25|almonds||½|cup
-294|25|dates||½|cup
-295|25|sugar||1|teaspoon
-296|25|cinnamon||1|teaspoon
-297|25|orange blossom water||2|tablespoons
-298|25|honey||2|tablespoons
-299|25|mint||
-|
-300|26|cauliflower||1|
-301|26|olive oil||5|tablespoons
-302|26|garlic||3|
-303|26|anchovies||3|
-304|26|rosemary leaves||¾|teaspoon
-305|26|tomatoes||1 ½|cups
-306|26|white wine||¼|cup
-307|26|pequin chiles||3|
-308|26|flaky salt||1|teaspoon
-309|27|butter||4|tablespoons
-310|27|chervil||4|tablespoons
-311|27|salmon||1|
-312|27|lemon wedges||
-|
-313|28|boneless chicken thighs||
-|
-314|28|salt||
-|
-315|28|black pepper||
-|
-316|28|all-purpose flour||1|cup
-317|28|bread crumbs||1 ½|cups
-318|28|eggs||3|
-319|28|extra virgin olive oil||2|tablespoons
-320|28|butter||3|tablespoons
-321|28|dry white wine||¼|cup
-322|28|chicken or vegetable stock||½|cup
-323|28|lemon juice||¼|cup
-324|28|parsley||¼|cup
-325|28|lemon wedges||
-|
-326|29|soy sauce||1|cup
-327|29|granulated sugar||1|cup
-328|29|brown sugar||1 ½|teaspoons
-329|29|garlic||6|cloves
-330|29|ginger||2|tablespoons
-331|29|black pepper||¼|teaspoon
-332|29|cinnamon||1|
-333|29|pineapple juice||1|tablespoon
-334|29|chicken thighs||8|
-335|29|cornstarch||2|tablespoons
-336|30|chicken thighs||1|pound
-337|30|parmesan cheese||1|
-338|30|parsley leaves||¼|cup
-339|30|onion||1|
-340|30|egg||1|
-341|30|salt||
-|
-342|30|black pepper||
-|
-343|30|extra virgin olive oil||2|tablespoons
-344|30|all-purpose flour||
-|
-345|30|lemon wedges||
-|
-346|31|lamb shanks||3|
-347|31|garlic||6|
-348|31|fresh ginger||1|tablespoon
-349|31|paprika||1|tablespoon
-350|31|cumin||2|teaspoons
-351|31|butter||2|tablespoons
-352|31|onion||1|
-353|31|saffron||
-|
-354|31|cayenne pepper||½|teaspoon
-355|31|tomato paste||1|tablespoon
-356|31|cinnamon stick||1|
-357|31|ginger||2|teaspoons
-358|31|dates||½|cup
-359|31|golden raisins||½|cup
-360|31|pomegranate seeds||½|cup
-361|32|saffron||½|teaspoon
-362|32|plain whole-milk yogurt||2|cups
-363|32|garlic||1|tablespoon
-364|32|chicken||2 ½|pounds
-365|32|flour||2|cups
-366|32|paprika||2|teaspoons
-367|32|mint||1|tablespoon
-368|32|salt||1|tablespoon
-369|32|black pepper||½|teaspoon
-370|32|oil||
-|
-371|32|walnut||1|cup
-372|32|lemon||1|
-CREATE TABLE categories (
-	cat_code VARCHAR(5) NOT NULL, 
-	cat_name VARCHAR(50), 
-	PRIMARY KEY (cat_code)
-);
-CREATE TABLE expences (
-id INTEGER NOT NULL, 
-store VARCHAR(50) NOT NULL, 
-total REAL, 
-date_of_purchase DATE NOT NULL, 
-user_fk INTEGER,
-PRIMARY KEY (id), 
-FOREIGN KEY(user_fk) REFERENCES users (user_id)
-);
-CREATE TABLE ingredients (
-	id INTEGER NOT NULL, 
-	name VARCHAR(50) NOT NULL, 
-	pkg_weight INTEGER, 
-	pkg_measure INTEGER, 
-	cost VARCHAR(100), 
-	aisle VARCHAR(50), 
-	PRIMARY KEY (id), 
-	UNIQUE (name)
-);
-CREATE TABLE meals (
-	meal_id INTEGER NOT NULL, 
-	meal_type VARCHAR(20), 
-	recipe_fk INTEGER, 
-	user_fk INTEGER, 
-	portions INTEGER, 
-	date_planned DATETIME NOT NULL, 
-	week_planned INTEGER, 
-	list_fk VARCHAR(50), 
-	PRIMARY KEY (meal_id), 
-	FOREIGN KEY(recipe_fk) REFERENCES recipes (recipe_id), 
-	FOREIGN KEY(user_fk) REFERENCES users (user_id)
-);
-CREATE TABLE recipe_steps (
-	id INTEGER NOT NULL, 
-	recipe_fk INTEGER, 
-	step_description TEXT, 
-	step_num INTEGER, 
-	PRIMARY KEY (id), 
-	FOREIGN KEY(recipe_fk) REFERENCES recipes (recipe_id)
-);
-CREATE TABLE recipes (
-	recipe_id INTEGER NOT NULL, 
-	title VARCHAR(64) NOT NULL, 
-	description TEXT, 
-	image_url VARCHAR(100), 
-	cat_code VARCHAR(50), 
-	cuisine VARCHAR(50), 
-	calories INTEGER, 
-	source VARCHAR(50), 
-	rate VARCHAR(20), 
-	servings INTEGER, 
-	cook_time VARCHAR(50), 
-	skill_level VARCHAR(2), 
-	PRIMARY KEY (recipe_id), 
-	FOREIGN KEY(cat_code) REFERENCES categories (cat_code)
-);
-CREATE TABLE shop_lists (
-	id INTEGER NOT NULL, 
-	name VARCHAR(50), 
-	ingredient_fk INTEGER, 
-	qty VARCHAR(20), 
-	user_fk INTEGER, 
-	date_created DATETIME NOT NULL, 
-	PRIMARY KEY (id), 
-	FOREIGN KEY(ingredient_fk) REFERENCES ingredients (id), 
-	FOREIGN KEY(user_fk) REFERENCES users (user_id)
-);
-CREATE TABLE users (
-	user_id INTEGER NOT NULL, 
-	email VARCHAR(64) NOT NULL, 
-	password VARCHAR(64) NOT NULL, 
-	age INTEGER, 
-	gender VARCHAR(15), 
-	name VARCHAR(50), 
-	zipcode INTEGER, 
-	PRIMARY KEY (user_id)
-);
-CREATE TABLE x_recipe_ingredient (
-	id INTEGER NOT NULL, 
-	recipe_fk INTEGER, 
-	ingredient_name VARCHAR(50), 
-	ingredient_info VARCHAR(50), 
-	quantity VARCHAR(20), 
-	measure VARCHAR(20), 
-	PRIMARY KEY (id), 
-	FOREIGN KEY(recipe_fk) REFERENCES recipes (recipe_id), 
-	FOREIGN KEY(ingredient_name) REFERENCES ingredients (name)
-);
-CREATE TABLE x_recipe_user (
-	id INTEGER NOT NULL, 
-	user_fk INTEGER, 
-	recipe_fk INTEGER, 
-	PRIMARY KEY (id), 
-	FOREIGN KEY(user_fk) REFERENCES users (user_id), 
-	FOREIGN KEY(recipe_fk) REFERENCES recipes (recipe_id)
-);

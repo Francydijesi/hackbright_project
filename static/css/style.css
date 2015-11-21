@@ -283,3 +283,8 @@ div#set-month{
     font-size: 20;
     padding-top: 14px;
 }
+
+@media print {
+   body {font-size:8pt;}
+   background-color:green;
+}

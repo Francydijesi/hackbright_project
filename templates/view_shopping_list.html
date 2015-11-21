@@ -10,6 +10,14 @@
         <div class="row" >
             <div class="col-xs-6 col-xs-offset-1" id="list-box" >
 
+                <form action="/sendShoppingList" method='POST'>
+                            <!-- <a href="/sendShoppingList/{{ list }}"> -->
+                            <input type="submit" class='btn btn-default' id="send"
+                            value ="Send an SMS">
+                            <input type="hidden" name="listIng" value='{{name}}'>
+                            
+                            </form>
+
                 <form action="/deleteShoppingList">
                 
                     <!-- LIST NAME -->
@@ -18,10 +26,16 @@
                         <div class="col-xs-6">
                             <h3>{{ name }}<h3>
                         </div>   
-                        <div class="col-xs-6" id="delete-btn"> 
+                        <div class="col-xs-2 " id="delete-btn"> 
                             <input type="submit" class='btn btn-default'
                              value="Delete List" />   
                         </div>
+                        <div class="col-xs-2" id="delete-btn">
+                            <a href="javascript:window.print();">
+                                <button class='btn btn-default' id="print">Print</button>
+                            </a>
+                        </div>
+
                     </div>
                   {% endif %}      
 
@@ -50,7 +64,7 @@
                 </form>  
 
             </div>
-            <div class="col-xs-3">
+            <div class="col-xs-5">
 
                 <h3>All of your lists:</h3><br><br>
                 {% for name in names %}
@@ -60,10 +74,10 @@
                             {{name[0]}}
                         </div> 
 
-                        <div class="col-xs-4 col-xs-offset-2">
-                            <a href="/getShoppingLists/{{name[0]}}">
+                        <div class="col-xs-5 col-xs-offset-1">
+                            <!-- <a href="/getShoppingLists/{{name[0]}}"> -->
                                 <button class="btn-group btn-group-xs" value="View">View</button>
-                            </a>
+                            <!-- </a> -->
                         </div>
 
                     </div>  <br>  
@@ -73,6 +87,31 @@
             </div>
         </div>  
 
+
+<script> 
+
+    function printShopList(evt){
+
+        evt.preventDefault();
+
+        window.print();
+    }
+
+    $("#print").on('click', printShopList);
+
+
+    // function sendSMS(evt){
+
+    //     evt.preventDefault();
+
+    //     alert("SENDING SMS");
+
+    //     $.get("/sendShoppingList", {{ list|safe }});
+
+    // }
+
+    // $("#send").on('click', sendSMS);
+</script>
         
 
 </body>

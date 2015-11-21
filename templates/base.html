@@ -5,6 +5,7 @@
   <title>{% block title %}{% endblock%}</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="stylesheet" href="/static/css/login.css">
   <script src="https://code.jquery.com/jquery.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
@@ -40,9 +41,13 @@
       <td class="title-wrap">{% block page %} {% endblock %}</td>
       <td class="login-wrap">  
           {% if 'User' in session %}
-            <a href="/logout"> Sign Out </a>
+          <!-- Trigger the modal with a button -->
+            
+            <a href="/logout"><button type="button" class="btn btn-default btn-lg" data-toggle="modal" data-target="#signIn">Sign Out</button> </a>
           {% else %}
-            <a href="/login">Sign In </a>|<a href="/register">Sign Up </a>
+          <!-- Trigger the modal with a button -->
+            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#signIn">Sign In</button>|<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#signUp">Sign Up</button>
+            <!-- <a href="/login">Sign In </a>|<a href="/register">Sign Up </a> -->
             
           {% endif %}
       </td>
@@ -50,6 +55,72 @@
   <hr>
   </table>
 </div>  
+
+<!-- Trigger the modal with a button -->
+<!-- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Sign In</button>
+Trigger the modal with a button
+<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#signUp">Sign Up</button>
+ -->
+<!-- Modal -->
+<div id="signIn" class="modal fade" role="dialog">
+<div class="container">
+        <div class="card card-container">
+            <!-- <img class="profile-img-card" src="//lh3.googleusercontent.com/-6V8xOA6M7BA/AAAAAAAAAAI/AAAAAAAAAAA/rzlHcD0KYwo/photo.jpg?sz=120" alt="" /> -->
+            <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
+            <p id="profile-name" class="profile-name-card"></p>
+            
+            <form class="form-signin" action="/login_confirm" method="POST">
+                <span id="reauth-email" class="reauth-email"></span>
+                <input type="email" id="inputEmail" class="form-control" name="email"placeholder="Email address" required autofocus>
+                
+                <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
+
+                <div id="remember" class="checkbox">
+                    <label>
+                        <input type="checkbox" value="remember-me"> Remember me
+                    </label>
+                </div>
+                <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>
+            </form><!-- /form -->
+            <a href="#" class="forgot-password">
+                Forgot the password?
+            </a>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+        </div><!-- /card-container -->
+    </div><!-- /container -->
+ </div>   
+
+<div id="signUp" class="modal fade" role="dialog">
+<div class="container">
+        <div class="card card-container">
+            
+            <form class="form-signin" id="register" action="/register-confirm" method="POST">
+                
+                <label for="name"></label>
+                <input type="text" id="first-name" name="name"  
+                          class="form-control" placeholder="Name" required autofocus>
+
+                <span id="reauth-email" class="reauth-email"></span>
+                <input type="email" id="inputEmail" class="form-control" name="email"placeholder="Email address" >
+                
+                <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
+
+                <input type="password" id="passwordcheck" name="passwordCheck" class="form-control" placeholder="Confirm password" required>
+
+                
+                <button class="btn btn-lg btn-primary btn-block btn-signin"  
+                        id="register" type="submit">Register</button>
+            </form><!-- /form -->
+            
+            </a>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+        </div><!-- /card-container -->
+    </div><!-- /container -->
+ </div>   
 
 <!-- Navigation bar --> 
 <ul class="nav nav-tabs">
@@ -61,8 +132,8 @@
       </a>
       <ul class="dropdown-menu">
         <li><a href="/recipes">View</a></li>
-        <!-- <li><a href="/importForm">Import<a></li> -->
         <li><a href="/addRecipesForm">Import</a></li>
+        <li><a href="/create">Create</a></li>
       </ul>
   </li>
 
@@ -76,9 +147,29 @@
         <li><a href="/getShoppingLists">List</a></li>
         <!-- <li><a href="/importForm">Import<a></li> -->
         <li><a href="/viewExpences">Expences</a></li>
+        <li><a href="/createBubbleGraph">Analytic</a></li>
+        
       </ul>
   </li>
 </ul>
+
+<script>
+function validatePassword(evt) {
+    if ($("#password").val() !== $("#passwordcheck").val()) {
+        alert("Your passwords doesn't match");
+        evt.preventDefault();
+        $("#register").trigger("reset");
+    }
+    
+    if ($("#password").val().length < 6) {
+        alert("Your password needs to be at least 6 characters long.");
+        evt.preventDefault();
+        $("#register").trigger("reset");
+    }
+   
+}
+$("#register").on('submit', validatePassword)
+</script>
 
   {% block content %} {% endblock %}
 

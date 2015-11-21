@@ -400,22 +400,45 @@ def delete_recipe(recipeid):
 
     return redirect ("/recipes")
 
-@app.route("/createRecipe/<ingredient>")
-def generateRecipe(ingredient):
+@app.route("/create")
+def create():
 
-    """ Calls Markov chains to generate a new recipe """
+    ingredients = Ingredient.getAllIngredient()
+
+    # return render_template('/create_recipe.html', ingredients=ingredients)
+    return render_template("ingredients_graph.html")
+
+@app.route('/miserables.json')
+def createGraph():
+
+    graph = helpFunctions.createGraph()       
+
+
+    return jsonify(graph) 
+
+
+
+@app.route("/createRecipe")
+def generateRecipe():
+
+    """ Generate a new recipe """
+
+    ingredient = request.args.get("ingredient")
+
+    print "INGREDIENT", ingredient
 
     # List of ingredients list, one for each recipe
 
-    recipe_lists = helpFunctions.getListIngredient()
+    # recipe_lists = helpFunctions.getListIngredient()
+
+    recipe_lists = RecipeIngredient.getAllMatchingRecipe(ingredient)
 
 
     # Gets a dictionary of matched ingredients for i 
 
-    ingr_dict = helpFunctions.makeDict(ingredient, recipe_lists)        
+    ingr_dict = helpFunctions.makeDict(ingredient, recipe_lists)
 
-
-    pass    
+     
 
 
 ###############################################################################    
@@ -449,13 +472,35 @@ def plan():
         flash = "You need to login"
         return redirect("/login")
 
-
+@app.route("/planner/<date>/<num>")
 @app.route("/planner")
-def getPlanner():
+def getPlanner(date=None, num=None):
 
     """ Gets the list of meals planned """
 
-    start_date = datetime.today()
+    start_date = ''  
+
+    # date = request.args.get('date')
+    # num = request.args.get('operation') 
+
+    print "Date", date
+
+
+    if date and num =='-':
+
+
+        start_date = datetime.strptime(date,'%Y-%m-%d %H:%M:%S.%f') - timedelta(days=7)
+        print "DATE", date, start_date
+
+    elif date and num == '+':
+        
+        start_date = datetime.strptime(date,'%Y-%m-%d %H:%M:%S.%f') + timedelta(days=7)
+
+        print "DATE", date, start_date
+
+    if not start_date:
+        start_date = datetime.today()
+
     end_date = start_date + timedelta(days=7)
     currentWeek = start_date.strftime("%W")
     week_days = []
@@ -607,7 +652,8 @@ def getShoppingList(name=None):
         else:
 
             shop_list = ShoppingList.getLatestShoppingList(session['User'])
-            name = shop_list[0].list_name
+            if shop_list:
+                name = shop_list[0].list_name
         
         print 'SHOP_LIST', shop_list
 
@@ -660,6 +706,47 @@ def deleteShopList():
         flash = []
         flash = "You need to login"
         return redirect("/login")
+
+@app.route("/sendShoppingList", methods=['POST'])
+def sendShoppingList():
+
+    from twilio.rest import TwilioRestClient
+ 
+    # Find these values at https://twilio.com/user/account
+    # account_sid = "ACXXXXXXXXXXXXXXXXX"
+    # auth_token = "YYYYYYYYYYYYYYYYYY"
+    # client = TwilioRestClient(account_sid, auth_token)
+    client = TwilioRestClient()
+
+    name = request.form.get('listIng')
+
+    if 'User' in session:
+    
+        shop_list = ShoppingList.getShoppingListByName(name, session['User'])
+        i_list = helpFunctions.makeShoppingList(shop_list)
+
+        print "SHOPP", shop_list
+
+    else:
+
+        flash = []
+        flash = "You need to login"
+        return redirect("/login")
+    
+    message = ''
+
+    for aisle in i_list:
+        
+        message += '\n'+aisle.upper() + ':\n'
+
+        message += '\n'.join(i_list[aisle])
+
+    print "MESSAGE", message
+
+    message = client.messages.create(to="+14156018298", from_="+16506810994",
+                                     body=message)    
+
+    return  redirect("/getShoppingLists")  
 
 @app.route("/save-expence", methods=['POST'])
 def saveExpence():
@@ -718,16 +805,31 @@ def getExpences():
         flash = "You need to login"
         return redirect("/login")
 
-# @app.route("/getExpencesByStore")
-# def getExpencesByStore():
+@app.route("/createBubbleGraph")
+def createBubbleGraph():
+
+    return render_template("ingredients_bubble_graph.html")
 
 
+@app.route("/flare.json")
+def createDataForGraph():
+
+    """  It creates data in a json format for a Bubble graph """
+
+    if 'User' in session:
+
+        print "CREATE BUBBLE GRAPH"
+    
+        graph = helpFunctions.getAllShopListIngredients(session['User'])
+
+        flare = { "name": "flare", "children": graph }
+
+        print "GRAPH", flare
+    
+    return jsonify(flare)
 
 
-    # data_expences = {}
-
-    # for expence in expences:
-    #     data_expence
+   
 
 # ##############################################################################
 # # REGISTER - LOGIN - LOGOUT
@@ -748,6 +850,7 @@ def confirm_new_user():
     confirmed_user = User.get_user_by_email(user_email)
     
     print "USER",confirmed_user
+    flash=[]
     if not confirmed_user:
         User.create_user_by_email_password(user_email, user_password)
         flash("You successfully created an account!")
@@ -781,6 +884,8 @@ def get_login():
     
     confirmed_user = User.get_user_by_email_password(user_email, user_password)
     print "USER: ", confirmed_user
+
+    # flash = []
 
     if confirmed_user:
         flash("You're logged in!","loggedin")

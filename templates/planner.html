@@ -8,33 +8,55 @@
       
     <div class="container">
 
-        <div class="row">
-            
-            <!-- DATEPICKER -->
-        
-        <div class="row">
-            <div class="col-xs-5">
-            <h2>{{ start_date.strftime("%B")}} {{ start_date.strftime("%d")}} - 
-                {{ end_date.strftime("%d")}}</h2>
-            </div>
-        <!-- BUTTON to generate SHOPPING LIST -->
-            <div class="col-xs-2 col-xs-offset-5"> 
+        <div class="row" id="cal-box">
+            <div class="col-xs-9"></div>
+            <!-- BUTTON to generate SHOPPING LIST -->
+            <div class="col-xs-2 col-xs-offset-1"> 
                 <!-- Trigger the modal with a button -->
                 <a href="/grocery">
                     <button type="button" class="btn btn-info btn-lg">Create Shopping List</button>
                 </a>
             </div> 
+        </div>    
+            
+            <!-- DATEPICKER -->
+        
+        <div class="row" id='cal-month'>
+            <div class="col-xs-12">
+
+                <div class="row">
+
+                    <div class="col-xs-1">
+                        <a href="/planner/{{ start_date}}/-">
+                        <button type="button" id="left-arr" class="btn btn-default" aria-label="Left Align"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
+                        </a>
+                    </div>
+
+                    <div class='col-xs-5' id= 'month-box'>    
+                        {{ start_date.strftime("%B")}} {{ start_date.strftime("%d")}} - {{ end_date.strftime("%d")}}
+                    </div>
+
+                    <div class='col-xs-1'>
+                        <a href="/planner/{{start_date}}/+">
+                        <button type="button" id='right-arr' class="btn btn-default" aria-label="Left Align"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
+                        </a>
+                    </div>    
+
+                </div>
+
+            </div>
+        
         </div> 
 
         <div class="grid-calendar">
 
-            <div class="row calendar-week-header"> 
+            <div class="row calendar-week-header" id="days-box"> 
 
                 {% for day in meals_list %}
 
                 <!-- DAYS -->
-                    <div class="col-xs-1 grid-cell"><div>
-                        <div>
+                    <div class="col-xs-1 grid-cell-days" ><div>
+                        <div class="row">
                         {% if day['date'].strftime('%d')[-1]==1 %}
                             <span id="day">{{ day['date'].strftime('%A %d') }}st</span>
                         {% elif day['date'].strftime('%d')[-1]==2%}   
@@ -74,7 +96,7 @@
 
                                     {% else %}
 
-                                        <img src="static/img/recipes/{{ meal.recipe.image_url }}"class="img-responsive" class="img-thumbnail" id="img-small">
+                                        <img src="http://localhost:5000/static/img/recipes/{{ meal.recipe.image_url }}"class="img-responsive" class="img-thumbnail" id="img-small">
                                      
                                     {% endif %}   
 
@@ -123,7 +145,7 @@
 
                                         {% else %}
 
-                                            <img src="static/img/recipes/{{ meal.recipe.image_url }}"class="img-responsive" class="img-thumbnail" id="img-small">
+                                            <img src="http://localhost:5000/static/img/recipes/{{ meal.recipe.image_url }}"class="img-responsive" class="img-thumbnail" id="img-small">
                                      
                                         {% endif %}  
 
@@ -170,7 +192,7 @@
 
                                         {% else %}
 
-                                            <img src="static/img/recipes/{{ meal.recipe.image_url }}"class="img-responsive" class="img-thumbnail" id="img-small">
+                                            <img src="http://localhost:5000/static/img/recipes/{{ meal.recipe.image_url }}"class="img-responsive" class="img-thumbnail" id="img-small">
                                      
                                         {% endif %}  
 
@@ -215,7 +237,7 @@
 
                                         {% else %}
 
-                                            <img src="static/img/recipes/{{ meal.recipe.image_url }}"class="img-responsive" class="img-thumbnail" id="img-small">
+                                            <img src="http://localhost:5000/static/img/recipes/{{ meal.recipe.image_url }}"class="img-responsive" class="img-thumbnail" id="img-small">
                                      
                                         {% endif %}  
 
@@ -329,6 +351,23 @@
 <!-- End of Modal -->
 
 <script>
+
+    // function updateDate(){
+
+    //     alert("Arrow");
+        
+    //     date = {{ start_date|safe }};
+    //     .getDate() - 7;
+    //     console.log(date);
+    //     $.get('/planner',{ "date" : date, "operation": "-" } );
+
+    // }
+
+    // $("#left-arr").on('click', updateDate)
+    // </script>
+
+
+<script>
   
     function displayImg(result){
 
@@ -405,13 +444,14 @@
         //if browser doesn't support input type="date", initialize date picker widget:
         if (datefield.type!="date"){ 
 
-            jQuery(function($){ //on document.ready
+            jQuery(function(){ //on document.ready
                 $('#meal-day').datepicker();
             })
         }
 
     </script>
 
+    
 
 </body>
 

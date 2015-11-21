@@ -287,6 +287,14 @@ class Ingredient(db.Model):
             print "NEW_INGRIDIENT", new_ingredient
             db.session.add(new_ingredient)
 
+    @classmethod
+    def getAllIngredient(cls):
+
+        ingredients = db.session.query(Ingredient.name).\
+                    order_by(Ingredient.name).all()
+
+        return ingredients
+
 
     def __repr__(self):
         """ Ingredients information"""
@@ -464,7 +472,16 @@ class ShoppingList(db.Model):
 
         return shop_list_names
 
+    @classmethod
+    def getAllIngredientsInShopList(cls, user):
 
+        ingredients = db.session.query(Ingredient.aisle, Ingredient.name).\
+                      join(ShoppingList).\
+                      filter(ShoppingList.ingredient_fk == Ingredient.name).\
+                      filter(ShoppingList.user_fk == user).\
+                      order_by(Ingredient.aisle, Ingredient.name).all()  
+
+        return ingredients
 
     @classmethod
     def getShoppingListByName(cls, name, user):
@@ -563,6 +580,12 @@ class ShoppingList(db.Model):
 
         return "<Shopping list name=%s ingredient=%s date=%s>" % ( self.name,
                                             self.ingredient_fk, date_planned )
+
+
+##############################################################################
+#
+### Expenses ###
+
 
 class Expence(db.Model):
     """ User Expenses """
@@ -694,9 +717,45 @@ class RecipeIngredient(db.Model):
     def getAllIngredients(cls):
 
         recipeIngr = db.session.query(RecipeIngredient).\
-                     order_by(RecipeIngredient.recipe_fk).all() 
+                     order_by(RecipeIngredient.recipe_fk).\
+                     distinct(RecipeIngredient.ingredient_name).all() 
 
-        return recipeIngr     
+        return recipeIngr   
+
+    @classmethod
+    def getAllMatchingRecipes(cls, ingredient1, ingredient2):
+
+        recipes = db.session.query(RecipeIngredient).\
+                      filter(RecipeIngredient.ingredient_name.like('%'+ingredient1+'%')).\
+                      filter(RecipeIngredient.ingredient_name.like('%'+ingredient2+'%')).\
+                      all()
+
+        return recipes
+
+    @classmethod
+    def getAllMatchingRecipe(cls, ingredient):
+
+        recipes = db.session.query(RecipeIngredient).\
+                      filter(RecipeIngredient.ingredient_name.like('%'+ingredient+'%')).\
+                      all()
+
+        return recipes
+
+    @classmethod
+    def getAllIngredientsByRecipe(cls, recipe_fk):
+
+        ingredients = db.session.query(RecipeIngredient).\
+                        filter(RecipeIngredient.recipe_fk == recipe_fk).all()
+
+        return ingredients
+
+    @classmethod
+    def getAllIngredientsNamesByRecipe(cls, recipe_fk):
+
+        ingredients = db.session.query(RecipeIngredient.ingredient_name).\
+                        filter(RecipeIngredient.recipe_fk == recipe_fk).all()
+
+        return ingredients                    
 
     def __repr__(self):
         """ User Ingredient Association"""

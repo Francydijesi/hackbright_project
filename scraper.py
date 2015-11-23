@@ -50,45 +50,23 @@ def url_scraper(url, user):
 
         servings = soup.find('span', 'icon icon-person').next_sibling.contents[0]
 
-    if soup.find('div', 'media-container ').find('img'):
+    if soup.find('div', 'media-container '):
 
-        img_url = soup.find('div', 'media-container ').find('img')['src']
+        if soup.find('div', 'media-container ').find('img'):
 
-
-    # elif soup.find('div', 'video-player-target nytd-player-container vhs-plugin-sharetools vhs-m'):
-
-    #     # img_url = soup.find('div', 'nytd-player-poster')['style']['background-image']
-
-    #     img_url = soup.find('div', 'video-player-target nytd-player-container vhs-plugin-sharetools vhs-m').\
-    #     attrs['style'].findall('\(\w*?\)')[0]
-
-    #     print "STYLE", soup.find('div',
-    #      'video-player-target nytd-player-container vhs-plugin-sharetools vhs-m')
-    #     # .attrs['style']
+            img_url = soup.find('div', 'media-container ').find('img')['src']
 
     elif soup.find('div', 'video-container'):
 
         img_url = soup.find('div', 'video-container').\
-                        find_all(attrs={"itemprop" : "image"})[0]['content']
+                find_all(attrs={"itemprop" : "image"})[0]['content']
 
-        # print 'META_IMG', meta_img_url
+    elif soup.find('div', 'media-container vertical'):   
 
-        # for meta in soup.find('div', 'video-container').find_all('meta'):
+        if soup.find('div', 'media-container vertical').find('img'): 
 
-        #     if meta.attrs['itemprop'] == 'image':
-
-        #         img_url = meta['content']
-
-        #         print "IN LOOP", img_url
-
-
-        # img for img in meta_img_url,
-        # img_url = meta_img_url.find(attrs={"itemprop" : "image"})
-
-    print "IMAGE_URL" , img_url  
-
-    # print "STYLE", soup.find('div', 'nytd-player-poster').attrs['style']  
-
+            img_url = soup.find('div', 'media-container vertical').find('img')['src']                   
+    
 
     text = soup.find('div', 'recipe grid-wrap').get_text(strip=True)
 
@@ -139,6 +117,8 @@ def url_scraper(url, user):
                     print "INGREDIENT", ingredient
             if ingredient:
 
+                ingredient = cleanIngredient(ingredient)
+
                 ingredients.append( {'name': ingredient,
                                  'qty': qty,
                                  'unit': unit})
@@ -173,6 +153,78 @@ def url_scraper(url, user):
 
 
 ########    UTILITY FUNCTIONS   #########
+
+def cleanIngredient(ingredient):
+
+    ingredient = ingredient.strip()
+
+    lemonSet = set(ingredient.split()) & set(['lemon', 'Lemon'])
+
+    flourSet = set(['all-purpose flour', 'all purpose flour', 'flour'])
+
+    eggSet = set(['egg', 'eggs', 'egg white', 'egg yolk'])
+
+    unnecessaryWords = set(['finely','chopped','minced','crushed','grated','flaky',
+                            'medium thickness', 'no-boil', 'leaves',  'sprigs',
+                            'wedges','skinless','cheese'])
+
+    ingredient = ingredient.split(' or ')[0]
+
+    ingredient = ingredient.split(',')[0]
+
+    ingredient = ''.join(set(ingredient.split()) - unnecessaryWords)
+
+    if ingredient in eggSet:
+
+        ingredient = 'eggs'
+
+    if lemonSet:
+
+        ingredient = lemonSet
+
+    if ingredient.find('butter') != -1:
+
+        ingredient = 'butter'
+
+    if ingredient in flourSet:
+
+        ingredient = 'all-purpose flour'
+
+    if ingredient.find('olive oil') != -1:
+
+        ingredient = 'extra virgin olive oil'
+
+    if ingredient.find('salt') != -1:
+
+        ingredient = 'salt'
+
+    if ingredient.find('chicken thighs') != -1:
+
+        ingredient = 'chicken thighs'
+
+    if ingredient.find('cayenn') != -1:
+
+        ingredient = 'cayenne pepper'
+
+    if ingredient.find('chile') != -1:
+
+        ingredient = 'chile'
+
+    # if ingredient.find('garlic') != -1:
+
+    #     ingredient = 'garlic'
+    
+    if ingredient.find('scallion') != -1:
+
+        ingredient = 'scallions'
+
+    # if ingredient.find('cilantro') != -1:
+
+    #     ingredient = 'cilantro'
+
+    return ingredient.strip().lower()
+
+    
 
 def calculateCuisine(text):
 
@@ -267,7 +319,7 @@ def calculateCategory(text):
     elif words_set & cat_soup_SP:
         cat_code = 'SP'
 
-    elif words_set & cat_soup_VE:
+    elif words_set & cat_vegan_VE:
         cat_code = 'VE'
 
     else:

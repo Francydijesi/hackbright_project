@@ -34,7 +34,8 @@
 </script>
 
   <!-- Top bar with Logo Title Login -->
-<div class="top-bar">  
+<!-- <div class="top-bar" >   -->
+<div class="row" id='top-bar'>
 <table>
     <tr>
       <td class="logo-wrap"><a href="/">Logo</a></td>
@@ -56,35 +57,32 @@
   </table>
 </div>  
 
-<!-- Trigger the modal with a button -->
-<!-- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Sign In</button>
-Trigger the modal with a button
-<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#signUp">Sign Up</button>
- -->
-<!-- Modal -->
+<!-- Modal Windows -->
+<!-- SIGN IN  -->
 <div id="signIn" class="modal fade" role="dialog">
 <div class="container">
         <div class="card card-container">
-            <!-- <img class="profile-img-card" src="//lh3.googleusercontent.com/-6V8xOA6M7BA/AAAAAAAAAAI/AAAAAAAAAAA/rzlHcD0KYwo/photo.jpg?sz=120" alt="" /> -->
-            <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
-            <p id="profile-name" class="profile-name-card"></p>
-            
+          {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <div class=flashes>
+              {% for message in messages %}
+                  {{ message }}<br>
+              {% endfor %}
+            </div>
+            {% endif %}
+          {% endwith %}
+           
+            <div><h3>Login In</h3></div>
+
             <form class="form-signin" action="/login_confirm" method="POST">
                 <span id="reauth-email" class="reauth-email"></span>
                 <input type="email" id="inputEmail" class="form-control" name="email"placeholder="Email address" required autofocus>
                 
                 <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
 
-                <div id="remember" class="checkbox">
-                    <label>
-                        <input type="checkbox" value="remember-me"> Remember me
-                    </label>
-                </div>
                 <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>
-            </form><!-- /form -->
-            <a href="#" class="forgot-password">
-                Forgot the password?
-            </a>
+            </form>
+
             <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
@@ -92,6 +90,7 @@ Trigger the modal with a button
     </div><!-- /container -->
  </div>   
 
+<!-- SIGN UP -->
 <div id="signUp" class="modal fade" role="dialog">
 <div class="container">
         <div class="card card-container">
@@ -105,7 +104,7 @@ Trigger the modal with a button
                 <span id="reauth-email" class="reauth-email"></span>
                 <input type="email" id="inputEmail" class="form-control" name="email"placeholder="Email address" >
                 
-                <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
+                <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
 
                 <input type="password" id="passwordcheck" name="passwordCheck" class="form-control" placeholder="Confirm password" required>
 
@@ -153,21 +152,26 @@ Trigger the modal with a button
 </ul>
 
 <script>
-function validatePassword(evt) {
-    if ($("#password").val() !== $("#passwordcheck").val()) {
-        alert("Your passwords doesn't match");
-        evt.preventDefault();
-        $("#register").trigger("reset");
-    }
-    
-    if ($("#password").val().length < 6) {
-        alert("Your password needs to be at least 6 characters long.");
-        evt.preventDefault();
-        $("#register").trigger("reset");
-    }
-   
-}
-$("#register").on('submit', validatePassword)
+
+  function validatePassword(evt) {
+
+      if ($("#password").val() !== $("#passwordcheck").val()) {
+        alert($("#password").val(), $("#passwordcheck").val());
+          alert("Your passwords don't match");
+          evt.preventDefault();
+          $("#register").trigger("reset");
+      }
+      
+      if ($("#password").val().length < 6) {
+          alert("Your password needs to be at least 6 characters long.");
+          evt.preventDefault();
+          $("#register").trigger("reset");
+      }
+     
+  }
+
+  $("#register").on('submit', validatePassword)
+
 </script>
 
   {% block content %} {% endblock %}

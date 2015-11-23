@@ -13,7 +13,9 @@ from sqlalchemy import func
 
 from datetime import datetime, timedelta
 
-import math, helpFunctions, scraper, os, json
+from validate_email import validate_email
+
+import math, helpFunctions, scraper, os, json, re
 
 
 app = Flask(__name__)
@@ -30,6 +32,9 @@ app.config['UPLOAD_FOLDER'] = 'static/img/recipes/'
 
 # These are the extension that we are accepting to be uploaded
 app.config['ALLOWED_EXTENSIONS'] = set(['png', 'jpg', 'jpeg', 'gif'])
+
+# To validate email format
+EMAIL_RE = re.compile("(\w+)\@(\w+\.com)")
 
 # For a given file, return whether it's an allowed type or not
 def allowed_file(filename):
@@ -255,26 +260,26 @@ def import_rec():
 
     message = scraper.url_scraper(url, user)
 
-    if message!= "Error":
+    if message.find("Error") == -1:
 
         return redirect('/recipe_page/'+ str(message))
 
     else:
 
-        flash = []
         flash = "Your recipe could not be loaded"
-        return redirect('/addRecipesForm')
+        return redirect('/addRecipesForm/'+message)
 
 
+@app.route("/addRecipesForm/<message>")
 @app.route("/addRecipesForm")
-def add_recipes():
+def add_recipes(message=None):
 
     """ Get list of categories for recipe form """
 
     # ingredients = Ingredient.query.order_by("name").all()
     categories = Category.query.distinct().order_by("cat_name")
     
-    return render_template("recipe_form.html", categories=categories)
+    return render_template("recipe_form.html", categories=categories, msg=message)
 
 
 @app.route("/addRecipe.json", methods=['POST'])
@@ -397,7 +402,7 @@ def delete_recipe(recipeid):
 
 
 ###############################################################################    
-#                   MEAL PLANNER
+#                                MEAL PLANNER
 ###############################################################################
 
 @app.route("/plan-meal")
@@ -497,9 +502,8 @@ def getPlanner(date=None, num=None):
 def getImg():
 
     recipe_id=request.args.get('recipeid')
-    print "ID RICETTA",recipe_id
+    
     rec = db.session.query(Recipe.image_url, Recipe.title).filter_by(recipe_id=recipe_id).all()
-    print "IMG ", rec[0][0]
     
     recipe_info={
           
@@ -512,47 +516,51 @@ def getImg():
 
 @app.route("/deleteMeal")
 def deleteMeal():
-
-    print "Delete MEAL"
+    
     recipe_fk = request.args.get("recipeid")
     meal_type = request.args.get("mealtype")
     date_planned = request.args.get("dateplanned")
-
-    print "RECIPE",recipe_fk, meal_type, date_planned
-
 
     Meals.deleteMeal(date=date_planned, user=session['User'], meal_type=meal_type,
              recipe=recipe_fk)
 
     db.session.commit()
 
-    # except Exception, error:
-
-    #     flash("Meal couldn't be deleted: error %s" % error)
 
     return redirect("/planner")
 
 # ##############################################################################
-# # SHOPPING LIST : make a list - save a list
+# #                        SHOPPING LIST : make a list - save a list
 # ##############################################################################
 # Make a list
-@app.route("/grocery")
-def create_shopping_list():
+@app.route("/grocery/<name>")
+def create_shopping_list(name):
+    """ 
+        It creates a shopping list with the ingredients for the recipes
+        in the meal planner and returns it in a dictionary  :
+        {'aisle':[ingr1, ingr2,...],...}
 
+    """
+    print name
+ 
     i_ingr = []
 
     if 'User' in session:
 
         list_ingr = ShoppingList.getListIngrName(session['User'])
 
-        i_ingr = helpFunctions.makeShoppingListNoQty(list_ingr)
+        dict_ingr = helpFunctions.makeShoppingListNoQty(list_ingr)
 
-    return render_template("grocery_list.html", list=i_ingr)
+    return render_template("grocery_list.html", list=dict_ingr, name=name)
 
-    # ShoppingList.addItem(ingredient.id, recipeIngredient.qty, user, name)
 
 @app.route("/saveShoppingList", methods=["POST"])
 def saveShoppingList():
+
+    """ 
+        It saves the shopping list with the ingredients for the recipes in the planner
+
+    """
 
     list_name = request.form.get('name')
     ingredients = request.form.get('ingredients')
@@ -560,23 +568,22 @@ def saveShoppingList():
 
     list_ingredients = ingredients.split(",")
 
-    print "TO SAVE ", list_name, ingredients, ingr_aisles
 
-# Saves each ingredient in the shop_lists table
+    # Saves each ingredient in the shop_lists table
     for ingr in list_ingredients:
 
         ShoppingList.addItem(ingr, session['User'], list_name)
 
     db.session.commit    
 
-
     return redirect("/getShoppingLists/"+list_name)
+
 
 @app.route("/getShoppingLists/<name>")
 @app.route("/getShoppingLists")
 def getShoppingList(name=None):
 
-    print "VIEW SHOPPING LISTS"
+    """ It searches a shopping list by name or finds the latest saved"""
 
     shop_list = ''
     all_names = ''
@@ -595,7 +602,6 @@ def getShoppingList(name=None):
             if shop_list:
                 name = shop_list[0].list_name
         
-        print 'SHOP_LIST', shop_list
 
         if len(shop_list) > 0:
 
@@ -605,7 +611,6 @@ def getShoppingList(name=None):
 
             i_list = helpFunctions.makeShoppingList(shop_list)
 
-            print "SHOPPING LIST",shop_list, date_created ,all_names  
 
         return render_template("view_shopping_list.html", list=i_list,
                     names=all_names, date_created=date_created, name=name )
@@ -614,16 +619,17 @@ def getShoppingList(name=None):
 
         flash = []
         flash = "You need to login"
-        return redirect("/login")
+        return render_template("/error.html", url="/getShoppingLists")
+
 
 @app.route("/deleteShoppingList/")
 def deleteShopList():
 
+    """ It deletes the shopping list by name """
+
     name = request.args.get("lname")
     date_created = request.args.get("date")
     all_names = ''
-
-    print "PARAMS", name, date_created
 
     if 'User' in session:
 
@@ -632,48 +638,48 @@ def deleteShopList():
             ShoppingList.deleteShoppingList(name, session['User'], date_created)
 
         else:
+            
             ShoppingList.deleteShoppingListByDate(session['User'], date_created)
 
+        
         all_names = ShoppingList.getShoppingListNames(session['User'])
 
-        print "NAMES", all_names
-
-        # return render_template('display_shopping_list.html', names=all_names)
         return redirect ('/getShoppingLists')
 
     else:
 
         flash = []
         flash = "You need to login"
-        return redirect("/login")
+        return render_template("/error.html",url="homepage.html")
+
 
 @app.route("/sendShoppingList", methods=['POST'])
 def sendShoppingList():
 
+    """ It sends the shopping list by SMS with Twilio API """
+
     from twilio.rest import TwilioRestClient
  
-    # Find these values at https://twilio.com/user/account
-    # account_sid = "ACXXXXXXXXXXXXXXXXX"
-    # auth_token = "YYYYYYYYYYYYYYYYYY"
-    # client = TwilioRestClient(account_sid, auth_token)
     client = TwilioRestClient()
 
     name = request.form.get('listIng')
 
+    # It finds the shopping list by name and creates a dictionary of ingredients
+    #  and aisle
     if 'User' in session:
     
         shop_list = ShoppingList.getShoppingListByName(name, session['User'])
         i_list = helpFunctions.makeShoppingList(shop_list)
 
-        print "SHOPP", shop_list
-
     else:
 
         flash = []
         flash = "You need to login"
-        return redirect("/login")
+        return render_template("/error.html", url="homepage.html")
     
     message = ''
+
+    # It creates a string message with all the ingredients and aisles
 
     for aisle in i_list:
         
@@ -681,15 +687,22 @@ def sendShoppingList():
 
         message += '\n'.join(i_list[aisle])
 
-    print "MESSAGE", message
 
     message = client.messages.create(to="+14156018298", from_="+16506810994",
                                      body=message)    
 
     return  redirect("/getShoppingLists")  
 
+
+
+################################################################################
+#                          EXPENSES
+################################################################################    
+
 @app.route("/save-expence", methods=['POST'])
 def saveExpence():
+
+    """ It saves the expenses added in a form """
 
     date = request.form.get('date')
     store = request.form.get('store')
@@ -704,16 +717,28 @@ def saveExpence():
 @app.route("/viewExpences")
 def viewExpences():
 
-    return render_template('/display_expences.html')
+    if 'User' in session:
+
+        return render_template('/display_expences.html')
+
+    else:
+
+        return render_template('error.html', url='/display_expences.html')
+
 
 @app.route("/getExpences")
-
 def getExpences():
+
+    """ 
+        It gets all the expenses by week and by store for the current month
+        or for the past 2 or 3 months if the parameter 'month' is passed
+    """
 
     month = request.args.get('month')
 
-    print "SET MONTH ", month
     current_month = datetime.today().strftime('%m')
+
+    print "MONTH PARAM", month
 
     if not month:
 
@@ -723,19 +748,14 @@ def getExpences():
 
         month = int(current_month) - int(month)
 
-        print "MONTH", month
-
+    print "MONTH", month
     if 'User' in session:
         
         expences = Expence.getExpencesGroupedByDate(session['User'], month)
 
         expences_by_store = Expence.getExpencesByStore(session['User'], month)
 
-        print 'EXPENCES', expences
-
         data_expences = helpFunctions.setDisplayData(expences, expences_by_store)
-
-        print "DATA", data_expences
 
         return jsonify(data_expences)
 
@@ -743,7 +763,11 @@ def getExpences():
 
         flash = []
         flash = "You need to login"
-        return redirect("/login")
+        return render_template("error.html")
+
+################################################################################
+#                   INGREDIENT BUBBLE GRAPH
+###############################################################################        
 
 @app.route("/createBubbleGraph")
 def createBubbleGraph():
@@ -765,15 +789,17 @@ def createDataForGraph():
         flare = { "name": "flare", "children": graph }
 
         print "GRAPH", flare
+
+    else:
+        return render_template("error.html")
     
     return jsonify(flare)
-
-
    
 
 # ##############################################################################
-# # REGISTER - LOGIN - LOGOUT
+#   REGISTER - LOGIN - LOGOUT
 # ##############################################################################
+
 @app.route("/register")
 def register_user():
     """Allows the user to sign up for an account"""
@@ -782,22 +808,34 @@ def register_user():
 
 @app.route("/register-confirm", methods=["POST"])
 def confirm_new_user():
-    """Create new user"""
-    print("\n\n\n\n\nUSER CONFIRM\n\n\n\n")
+    """Creates new user"""
+
+    # flash=[]
+    # It gets email and password from the POST param
     user_email = request.form.get("email")
-    user_password = request.form.get("password") 
 
+    user_password = request.form.get("password")
+
+    #It checks if user already exists or email is invalid
     confirmed_user = User.get_user_by_email(user_email)
-    
-    print "USER",confirmed_user
-    flash=[]
-    if not confirmed_user:
-        User.create_user_by_email_password(user_email, user_password)
-        flash("You successfully created an account!")
-    else:
-        flash("You already have an account")
 
-    return redirect("/")
+    # is_valid = validate_email(user_email,verify=True)
+
+    # EMAIL_RE.search(user_email)
+    if True:
+
+        if not confirmed_user:
+            User.create_user_by_email_password(user_email, user_password)
+            flash("You successfully created an account!")
+        else:
+            flash("You already have an account")
+            return render_template('error.html',url='homepage.html')
+
+    else:
+        flash("The email that you entered is invalid")
+        # return render_template('error.html',url='homepage.html')
+
+    return render_template('error.html',url='homepage.html')
 
 @app.route("/login")
 def login_user():
@@ -808,35 +846,35 @@ def login_user():
 @app.route("/logout")
 def logout_user():
     """Logs out the user"""
+
     del session['User']
-    
+
     flash("You are logged out","loggedout")
 
-    return redirect("/")    
+    return redirect("/")
 
 
 @app.route('/login_confirm', methods=["POST"])
 def get_login():
     """Get user info"""
-    print "LOGIN CONFIRM"
+
     user_email = request.form.get("email")
     user_password = request.form.get("password")
-    
-    confirmed_user = User.get_user_by_email_password(user_email, user_password)
-    print "USER: ", confirmed_user
 
-    # flash = []
+    confirmed_user = User.get_user_by_email_password(user_email, user_password)
+
+    flash = []
 
     if confirmed_user:
-        flash("You're logged in!","loggedin")
+        # flash("You're logged in!","loggedin")
         userid = confirmed_user.user_id
         session["User"] = confirmed_user.user_id
 
         print session["User"]
         return redirect("/")
     else:
-        flash("Your email and password combination are not correct.")
-        return redirect("/login")
+        flash = "Your email and password combination are not correct."
+        return render_template("error.html",url='homepage.html')
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point

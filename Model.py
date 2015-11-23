@@ -3,7 +3,8 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
 from datetime import datetime
-from sqlalchemy import func
+from sqlalchemy import func, Numeric
+from sqlalchemy.sql.expression import cast
 
 db = SQLAlchemy()
 
@@ -113,26 +114,22 @@ class Recipe(db.Model):
     def getRecipeByTitle(cls, title):
 
         recipe = Recipe.query.filter(func.lower(Recipe.title) == func.lower(title)).all()
-        print "RECIPE BY TITLE", recipe
         return recipe
 
     @classmethod
     def addRecipe(cls, title, description, image, cat_code, servings, cooktime,
                   skillLevel, cuisine):
 
-        print "ADD RECIPE"
-
         if image:
             imageName = image.split(".")
             img_extension = imageName[1]
-            print "IMAGE EXTENSION:",img_extension
 
         new_recipe = Recipe(title=title,description=description,image_url=image,
                             cat_code=cat_code, servings=servings, cook_time=cooktime,
                             skill_level=skillLevel, cuisine=cuisine)
         
         if Recipe.getRecipeByTitle(title):
-            raise Exception("Recipe already in the Database")
+            raise Exception("This recipe has already been loaded")
         else:
             db.session.add(new_recipe)
 
@@ -175,14 +172,20 @@ class Recipe(db.Model):
     
 
     @classmethod
-    def getRecipeByIngrByUser(cls,ingredient, user):
+    def getRecipeByIngrByUser(cls, ingredient, user=None):
 
-        recipes = db.session.query(Recipe).join(RecipeIngredient).join(RecipeUser).\
-                    filter(Recipe.recipe_id==RecipeIngredient.recipe_fk).\
-                    filter(RecipeUser.recipe_fk==Recipe.recipe_id).\
-                    filter(RecipeUser.user_fk==user).\
-                    filter(RecipeIngredient.ingredient_name.like('%'+ingredient+'%')).\
-                    all()
+        if user:
+            recipes = db.session.query(Recipe).join(RecipeIngredient).join(RecipeUser).\
+                        filter(Recipe.recipe_id==RecipeIngredient.recipe_fk).\
+                        filter(RecipeUser.recipe_fk==Recipe.recipe_id).\
+                        filter(RecipeUser.user_fk==user).\
+                        filter(RecipeIngredient.ingredient_name.like('%'+ingredient+'%')).\
+                        all()
+        else:
+            recipes = db.session.query(Recipe).join(RecipeIngredient).\
+                        filter(Recipe.recipe_id==RecipeIngredient.recipe_fk).\
+                        filter(RecipeIngredient.ingredient_name.like('%'+ingredient+'%')).\
+                        all()
 
         return recipes
 
@@ -413,6 +416,7 @@ class Ingredient(db.Model):
         ingr = Ingredient.query.filter(func.lower(Ingredient.name) == name).all()
         print "INGREDIENTS", ingr
         return ingr
+
 
     @classmethod
     def addIngredients(cls, name):
@@ -751,7 +755,7 @@ class Expence(db.Model):
     def getExpencesGroupedByDate(cls, user, month):
 
         expences = db.session.query(Expence).\
-                    filter(func.substr(Expence.date_of_purchase,6,2)>=month).\
+                    filter(cast(func.substr(Expence.date_of_purchase,6,2),Numeric(10,4))>=month).\
                     filter(Expence.user_fk==user).\
                     order_by(Expence.date_of_purchase).all()
                     # %m month num. 
@@ -902,11 +906,11 @@ class RecipeIngredient(db.Model):
 ##############################################################################
 # Helper functions
 
-def connect_to_db(app):
+def connect_to_db(app, db_uri='sqlite:///recipes.db'):
     """Connect the database to our Flask app."""
 
     # Configure to use our SQLite database
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///recipes.db'
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
     # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/Ricette'
     app.config['SQLALCHEMY_ECHO'] = True
     db.app = app

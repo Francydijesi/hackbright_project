@@ -9,11 +9,14 @@
     <div class="container">
 
         <div class="row" id="cal-box">
-            <div class="col-xs-9"></div>
+            <div class="col-xs-6"></div>
+            
             <!-- BUTTON to generate SHOPPING LIST -->
-            <div class="col-xs-2 col-xs-offset-1"> 
+            <div class="col-xs-3 col-xs-offset-3"> 
+               
                 <!-- Trigger the modal with a button -->
-                <a href="/grocery">
+
+                <a href="/grocery/{{ start_date.strftime("%B")}} {{ start_date.strftime("%d")}} - {{ end_date.strftime("%d")}}">
                     <button type="button" class="btn btn-info btn-lg">Create Shopping List</button>
                 </a>
             </div> 
@@ -71,6 +74,11 @@
                  {% endfor%}   
 
             </div>
+
+            <div class="meal-type" id='breakfast'>Breakfast</div>
+            <div class="meal-type" id='lunch'>Lunch</div>
+            <div class="meal-type" id ='dinner'>Dinner</div>
+            <div class="meal-type" id='snack'>Snack</div>
 
             <div class="row calendar-week"> 
 

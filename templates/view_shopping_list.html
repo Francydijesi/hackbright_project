@@ -3,87 +3,122 @@
 {% block page %} Shopping List {% endblock%}
 {% block content %}
 
+<link rel="stylesheet" href="/static/css/notebook.css">
+
+
 <body>
 
     <div container>
         <br><br>
         <div class="row" >
-            <div class="col-xs-6 col-xs-offset-1" id="list-box" >
+            <div class="col-xs-6 col-xs-offset-3" id="list-box" >
 
-                <form action="/sendShoppingList" method='POST'>
-                            <!-- <a href="/sendShoppingList/{{ list }}"> -->
-                            <input type="submit" class='btn btn-default' id="send"
-                            value ="Send an SMS">
+                <div class= 'row'>
+                    <div class='col-xs-2 col-xs-offset-10'>
+            <!-- Send Shopping List via SMS with Twilio -->
+                        <form action="/sendShoppingList" method='POST'>
+                            
+                            <input type="submit" class='btn btn-default' id="send" 
+                            value='Send list'>
                             <input type="hidden" name="listIng" value='{{name}}'>
                             
-                            </form>
-
+                        </form>
+                    </div>
+                </div>       
+                <br>
+            
+            <!-- Delete Shopping List -->
                 <form action="/deleteShoppingList">
                 
-                    <!-- LIST NAME -->
+                <!-- LIST NAME -->
+                <div class='notecontainer'>
+                <p class="paper" >
+
                   {% if name%}  
                     <div class="row">   
-                        <div class="col-xs-6">
-                            <h3>{{ name }}<h3>
+
+                        <div class="col-xs-6 col-xs-offset-2">
+                            <h3>{{ name }}</h3>
                         </div>   
-                        <div class="col-xs-2 " id="delete-btn"> 
-                            <input type="submit" class='btn btn-default'
-                             value="Delete List" />   
+                        <div class="col-xs-1 " id="delete-btn"> 
+                            <button type="submit" class='btn btn-default'
+                             value="Delete list" data-toggle="tooltip" data-placement="bottom" title="Delete list"/> <span class="glyphicon glyphicon-erase" aria-hidden="true"></span> </button> 
+
                         </div>
-                        <div class="col-xs-2" id="delete-btn">
+                        <div class="col-xs-1" id="delete-btn">
                             <a href="javascript:window.print();">
-                                <button class='btn btn-default' id="print">Print</button>
+                                <button class='btn btn-default' id="print" data-toggle="tooltip" data-placement="bottom" title="Print list"><span class="glyphicon glyphicon-print" aria-hidden="true"></span> </button>
                             </a>
                         </div>
+
 
                     </div>
                   {% endif %}      
 
                     <input type='hidden' name='date' value='{{date_created}}'/>
                     
-                    <!--  AISLE -->           
+                <!--  AISLE -->           
                         
                     {% for aisle in list.keys()%}
 
-                    <div  class="row" id="view-aisle" >{{ aisle }}</div> 
-                        
+                        <div  class="row" id="view-aisle" >
+                            <div class="col-xs-6 col-xs-offset-2">
 
-                    <!-- INGREDIENT -->
+                                {{ aisle }}
+                            
+                            </div> 
+                        </div>
+                            
 
-                            {% for ingr in list[aisle]%}
+                <!-- INGREDIENT -->
 
-                               <div class="row" id ="view-ingr">{{ingr}}</div>    
-                                    
-                            {% endfor %}
+                        {% for ingr in list[aisle]%}
+
+                        <div class="row" id ="view-ingr">   
+                             <div class="col-xs-6 col-xs-offset-2">   
+                                {{ingr}}
+                             </div>  
+                        </div>            
+                        {% endfor %}
                         <br>
 
                     {% endfor %}
 
                     <input type='hidden' name='lname' value='{{name}}'>
-
+                </p>
+                </div>
                 </form>  
 
             </div>
-            <div class="col-xs-5">
+            
+            <!-- ALL SHOPPING LISTS -->
 
-                <h3>All of your lists:</h3><br><br>
-                {% for name in names %}
+            <!-- <div class="col-xs-2">
+              
+                <form action="/getShoppingLists">
+                    
+                    <select><h4>Select other lists:</h4>
+                    
+                    {% for name in names %}
                     <div class="row">
 
-                        <div class="col-xs-6">
-                            {{name[0]}}
-                        </div> 
+                        <div class="form-group">
+                            <option value='{{name[0]}}'>{{name[0]}}</option>
+                        </div>    
 
-                        <div class="col-xs-5 col-xs-offset-1">
-                            <!-- <a href="/getShoppingLists/{{name[0]}}"> -->
-                                <button class="btn-group btn-group-xs" value="View">View</button>
-                            <!-- </a> -->
+                    {% endfor %}
+
+                    </select>
+                     <input type='submit' class="btn btn-default" value='View'>-->
+                        <!-- <div class="col-xs-5 col-xs-offset-1"> -->
+                    
+                           <!--  <button class="btn-group btn-group-xs" value="View">View</button>
+                            
                         </div>
-
-                    </div>  <br>  
-                {% endfor %}
-
+ -->
+                    <!-- </div>  <br>  --> 
                 
+                </form>
             </div>
         </div>  
 

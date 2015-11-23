@@ -92,11 +92,11 @@
 
                 <form class="form-inline" id="search-form">
                     <div class="form-group"> 
-                    Search by ingredients: <input type="text" name='search-ingr' id='search-field'>
+                    Search by ingredient: <input type="text" name='search-ingr' id='search-field'>
                     </div>
 
                     <div class="form-group">
-                        <input type='submit' value='submit' id="sub-search">
+                        <input type='submit' class="btn btn-default" value='submit' id="sub-search">
                     </div>
 
                 </form>   
@@ -239,8 +239,6 @@
     $("#reset-filter").on("click",resetFilters);
 
     function sendSearchByIngr(evt) {
-
-        alert("Search")
      
       evt.preventDefault();
 

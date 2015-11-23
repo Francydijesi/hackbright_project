@@ -123,12 +123,12 @@
   height: 133px;
   padding: 50% 0;
 }
-.meal-type{
+/*.meal-type{
 /*  -webkit-transform: rotate(271deg);
 -moz-transform: rotate(271deg);
 -o-transform: rotate(271deg);
 writing-mode: lr-tb;
-*/
+
 -webkit-transform: rotate(90deg); 
      -moz-transform: rotate(90deg); 
       -ms-transform: rotate(90deg); 
@@ -141,7 +141,7 @@ writing-mode: lr-tb;
             float: left;        
             vertical-align:top;  
 
-}
+}*/
 
 #editRecipe{
   top:5%;
@@ -178,4 +178,34 @@ button#right-arr{
 div#cal-month{
   vertical-align: middle;
   padding-left: 280px;
+}
+.meal-type{
+
+ margin-left: -70px;
+ position: absolute;
+ z-index: 2;
+ 
+ color: #000;
+ font-size: 22px;  
+
+ -webkit-transform: rotate(-90deg); 
+     -moz-transform: rotate(-90deg); 
+      -ms-transform: rotate(-90deg); 
+       -o-transform: rotate(-90deg); 
+          transform: rotate(-90deg);
+}
+#breakfast{
+  margin-top: 50px;
+  margin-left: -80px;
+
+}
+#lunch{
+  margin-top: 200px;
+
+}
+#dinner{
+  margin-top: 350px;
+}
+#snack{
+  margin-top: 500px;
 }

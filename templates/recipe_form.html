@@ -12,6 +12,12 @@
     
     <div class="col-xs-6">
         <br><br>
+
+        {% if msg != none %}
+            
+            <div class="form-group" id="msg-box" class="col-xs-6">{{msg}}</div>   
+
+        {%endif%}
         <!-- IMPORT RECIPE FROM NYT -->
         <form action = '/importRecipe' method='POST'>
 
@@ -28,7 +34,6 @@
         <br><br>
 
         <div class="form-group"><label> <h4> Create a recipe manually:</h4></label> </div>
-
 
           <!-- Hidden Box for error or success messages -->
         <div class="form-group" id="msg-box" class="col-xs-6" style="display: none;">

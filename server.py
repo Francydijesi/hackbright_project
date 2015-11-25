@@ -260,7 +260,7 @@ def import_rec():
 
     message = scraper.url_scraper(url, user)
 
-    if message.find("Error") == -1:
+    if type(message)== int:
 
         return redirect('/recipe_page/'+ str(message))
 
@@ -431,7 +431,7 @@ def plan():
         
         flash = []
         flash = "You need to login"
-        return redirect("/login")
+        return redirect("/error.html",url="/planner")
 
 
 @app.route("/planner/<date>/<num>")
@@ -496,7 +496,7 @@ def getPlanner(date=None, num=None):
     else:
 
         flash("You need to sign in")
-        return render_template("error.html")
+        return render_template("error.html",url="/planner")
 
 @app.route("/getRecipeImg.json")
 def getImg():
@@ -800,11 +800,11 @@ def createDataForGraph():
 #   REGISTER - LOGIN - LOGOUT
 # ##############################################################################
 
-@app.route("/register")
-def register_user():
-    """Allows the user to sign up for an account"""
+# @app.route("/register")
+# def register_user():
+#     """Allows the user to sign up for an account"""
 
-    return render_template("signup.html")
+#     return render_template("signup.html")
 
 @app.route("/register-confirm", methods=["POST"])
 def confirm_new_user():

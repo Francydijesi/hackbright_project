@@ -47,11 +47,13 @@ def addRecipe(img_file, title, description, cat_code, servings,
         print "RECIPE ID:  ",recipeFk
 
         # ingredients = ingredients
+        print "INGREDIENTS LIST", ingredients
 
         for ingredient in ingredients:
             name = ingredient["name"]
             qty = ingredient["qty"]
             unit = ingredient["unit"]
+            print "INGREDIENT UNICODE", ingredient
 
             # Add ingredients in 'RecipeIngredient'
             RecipeIngredient.addIngredients(recipeFk, name, qty, unit)
@@ -793,7 +795,7 @@ def setDisplayData(expences, expencesByStore):
 
             else:
 
-                label.append(current_week)
+                label.append('week '+current_week)
 
                 totals.append(somma)
 
@@ -801,7 +803,7 @@ def setDisplayData(expences, expencesByStore):
 
                 somma = current_total
 
-        label.append(current_week)
+        label.append('week '+current_week)
 
         totals.append(somma)
       
@@ -810,7 +812,7 @@ def setDisplayData(expences, expencesByStore):
             'labels': label,
             'datasets': [
                 {
-                    'label': "My First dataset",
+                    'label': "Weekly expenses",
                     'fillColor': "rgba(220,220,220,0.2)",
                     'strokeColor': "rgba(220,220,220,1)",
                     'pointColor': "rgba(220,220,220,1)",
@@ -832,7 +834,7 @@ def setDisplayData(expences, expencesByStore):
             ]
         }
 
-        colors = ['#F7464A','#46BFBD', 'FDB45C']
+        colors = ['#F7464A','#46BFBD', '#FDB45C']
         highlight = ['#FF5A5E', '#5AD3D1', '#FFC870']
 
         for i in range(len(expencesByStore)):
@@ -840,6 +842,7 @@ def setDisplayData(expences, expencesByStore):
             data_by_store.append({
                     'value': round(expencesByStore[i][1]),
                     'color':colors[i],
+                    'fillColor': colors[i],
                     'highlight': highlight[i],
                     'label': expencesByStore[i][0]
                 })

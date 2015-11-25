@@ -848,6 +848,7 @@ class RecipeIngredient(db.Model):
 
         recipeIngr = RecipeIngredient(recipe_fk=recipe_fk,ingredient_name=ingredient_name.lower(),
                      quantity=quantity, measure=measure)
+        print "INGREDIENT QUERY", recipeIngr
 
         db.session.add(recipeIngr)
         # db.session.commit()

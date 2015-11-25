@@ -4,26 +4,48 @@
 {% block content %}
 
 <!-- Image -->
-<div>
-    <img class="img_container" src="/static/img/homepage.jpg">
-</div>
+<div class="container-fluid homepage">
+  <div class="row">
+    <div class="col-xs-12">
+      <img class="img_container" src="/static/img/homepage.jpg">
+    </div>
+  </div>    
+
 
 <!-- Sections -->
-<div >   
-  <table>
-    <tr>
-      <td class="section"> <a href="/recipes"> Store Recipes </a></td>
-      <td class="section"> <span class="glyphicons glyphicons-dining-set" aria-hidden="true"></span><a href="/plan"> Plan Meals </a></td>
-      <td class="section"> <a href="/grocery"> Make grocery list </a></td>
-    <tr>
+<div clas="row">   
+  <div class="col-xs-4 section">
+    
+      <a href="/recipes"><h3> Store Recipes </h3></a><br>
+      <span class="glyphicons glyphicons-dining-set" aria-hidden="true"></span>
+      <p>Search among your recipes by ingredients, filter by category or cuisine.</p>
+      <p>Create and edit your own recipes or import one from New York Time recipe sites by pasting a URL.</p><br>
+  
+  </div>
+  
+  <div class="col-xs-4 section">
+  
+    <a href="/planner"><h3> Plan Meals </h3></a><br>
+  
+  </div>
+  
+  <div class="col-xs-4 section">
+
+      <a href="/getShoppingLists"><h3> Make grocery list</h3> </a><br>
+
+  </div>
+
+</div>
     <!-- <tr> 
       <td> <img src="/static/img/Rhubarb-Pie-articleLarge.jpg" height: 100px;></td>
       <td> <img src="/static/img/Rhubarb-Pie-articleLarge.jpg" height: 157px;> </td>
       <td> <img src="/static/img/Rhubarb-Pie-articleLarge.jpg" height: 157px;></td>
 
     </tr>  -->
-  </table>
- </div> 
+  
+
+
+</div>
 
 {% endblock %}
 

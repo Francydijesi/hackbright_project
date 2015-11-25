@@ -1,49 +1,67 @@
 
-
-div#top-bar{
+body { padding-top: 140px; }
+div.top-bar{
 
     background: #ffcc33;
     /*width: 1200px;*/
     /*padding-left: 20px;*/
+    padding-top:40px;
 
 }
 
-td.logo-wrap{
+.logo-wrap{
    
    text-align:center;
-   width: 100px;
-   font-size: 30px;
+   /*width: 100px;*/
+   font-size: 40px;
    font-family: 'Brush Script MT', cursive;
 }
 
-td.title-wrap{
-   width:900px;
-   font-size: 60px;
+.title-wrap{
+   /*width:900px;*/
+   font-size: 40px;
    text-align:center;
-   font-family: 'Brush Script MT', cursive;
+   font-family: 'Playfair Display';
+   color: #1B2340;
+   font-style: italic;
+   font-weight: 900;
+   padding-left:200px;
 }
 
-td.login-wrap{
-   width: 200px;  
+.login-wrap{
+   /*width: 200px;  */
    text-align:right;
-   font-size: 30px;
-   font-family: 'Brush Script MT', cursive;
+   font-size: 20px;
+   font-family: 'Playfair Display';
+   font-style: italic;
    vertical-align: bottom;
+   padding-top:10px;
+   padding-right: 30px;
  
+}
+
+.sign{
+
+    border: transparent;
+    background-color: transparent;
+    padding-right: 20px;
 }
 
 .img_container{
    
-  width:1200px;
+  width:100%;
+  height: auto;
 }
 
+.section{
 
-td.section{
-
-    width:400px;
-    font-size: 30px;
+    /*width:400px;*/
+    font-size: 18px;
+    padding: 30px;
     text-align:center;
-    font-family: 'Brush Script MT', cursive;
+    font-family: 'Playfair Display';
+    font-style: italic;
+    text-align: justify;
 }
 
 /* Recipe list*/
@@ -67,24 +85,26 @@ div#nav{
 div#recipe-box{
     
     /*width: 1200px;*/
-    font-family: 'Brush Script MT', cursive;
-    font-size: 20px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 15px;
     /*padding-left: 20px;*/
     padding-top: 30px;
  
 }
 div#recipe-title{
         
-    font-size: 28px; 
+    font-size: 20px; 
     font: bold;
-    font-family: 'Brush Script MT', cursive;
+    font-family: 'Playfair Display';
+    font-style: italic;
     vertical-align: bottom;
     padding-top: 20px;
+    font-weight: 700;
 }
 
 div#recipe-desc{
     
-    font-size: 20px; 
+    font-size: 15px; 
     /*width:500px;*/
     text-align: left;
     vertical-align: center;
@@ -139,73 +159,95 @@ img#recipe-img{
 }
 /* Recipe page */
 
-#recipe-page{
+/*#recipe-page{
    
   width:600px;
 }
-
+*/
 
 div#ingr-box{
-    width:400px;
+    /*width:400px;*/
     padding-top: 20px;
-    padding-left: 20px;
+    /*padding-left: 20px;*/
     
 }
 
 div#steps-box{
-    width:600px;
-    padding-top: 20px;
-    padding-left: 20px;
-    font-family: 'Brush Script MT', cursive;
-    font-size: 30px;
+    /*width:600px;*/
+    /*padding-top: 20px;
+    padding-left: 20px;*/
+    /*font-family: 'Playfair Display';*/
+    /*font-style: italic;*/
+    font-family: 'Open Sans', sans-serif;
+    /*font-family: 'Brush Script MT', cursive;*/
+    font-size: 15px;
+
     
 }
-td#ingr-item{
+div#ingr-item{
 
-    font-family: 'Brush Script MT', cursive;
-    font-size: 25px;
+    /*font-family: 'Brush Script MT', cursive;*/
+    /*font-family: 'Playfair Display';*/
+    font-family: 'Open Sans', sans-serif;
+    /*font-style: italic;*/
+    font-size: 15px;
     text-align: left;
+    font-weight: bold;
     
 }
-td#ingr-qty{
+div#ingr-qty{
 
-    font-family: 'Brush Script MT', cursive;
-    font-size: 20px;
+    /*font-family: 'Playfair Display';*/
+    /*font-style: italic;*/
+    font-family: 'Open Sans', sans-serif;
+    font-size: 15px;
+    /*font-family: 'Brush Script MT', cursive;*/
     text-align: left;
-    padding-left: 20px;
+    /*padding-left: 20px;*/
+    font-weight: bold;
 }
-td#step-num{
+div#step-num{
 
-    font-family: 'Brush Script MT';
+    /*font-family: 'Brush Script MT';*/
     font-size: 20px;
+    font-family: 'Open Sans';
     text-align: left;
     padding-left: 20px;
-    padding-top: 20px;
+    /*padding-top: 20px;*/
+    font-weight: 900;
     font-weight: bold;
     
 
 }
-td#step-desc{
+div#step-desc{
 
-    font-family: 'Brush Script MT', cursive;
+    /*font-family: 'Brush Script MT', cursive;*/
+    font-family: 'Open Sans', sans-serif;
     font-size: 20px;
     text-align: left;
     padding-left: 20px;
-    padding-top: 20px;
+    /*padding-top: 20px;*/
 
 }
-p#r-desc{
-   font-family: 'Brush Script MT', cursive;
-    font-size: 25px;
+div#r-desc{
+    /*font-family: 'Brush Script MT', cursive;*/
+    font-family: 'Open Sans', sans-serif;
+    font-size: 20px;
     text-align: left;
     padding-left: 20px;
 }
-p#ingr{
-    font-family: 'Brush Script MT', cursive;
-    font-size: 40px;
+div#ingr{
+    /*font-family: 'Brush Script MT', cursive;*/
+    font-family: 'Open Sans', sans-serif;
+    font-size: 25px;
+    font-weight:bold;
+    padding-left: 30px;
 }
-p#rec-tit{
-    font-family: 'Brush Script MT', cursive;
+div#rec-tit{
+    /*font-family: 'Brush Script MT', cursive;*/
+    font-family: 'Playfair Display';
+    font-style: italic;
+    /*padding-left:20px;*/
     font-size: 40px;
 }
 
@@ -280,7 +322,9 @@ div#delete-btn{
 /*Expences*/
 div#month{
 
-    font-size: 20px;
+    font-size: 25px;
+    text-align: center;
+    font: bold;
 }
 div#set-month{
 
@@ -288,8 +332,38 @@ div#set-month{
     font-size: 20;
     padding-top: 14px;
 }
+.chart-legend li span{
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-right: 5px;
+}
+div#add-expenses{
+
+    padding-top:13px;
+    padding-left:45px;
+}
+
+/*canvas#donutChart{
+
+    width:450px; 
+    height: 300px;
+}*/
+
+canvas#donutText{
+
+    z-index: 1; 
+    position: absolute;
+    background: transparent;
+    left: 100px; 
+    top: 60px;
+    height: 300px; 
+    width: 300px;
+
+}
 
 @media print {
    body {font-size:8pt;}
    background-color:green;
 }
+

@@ -182,6 +182,17 @@ INSERT INTO "ingredients" VALUES(185,'fresh ginger',NULL,NULL,NULL,'Produce');
 INSERT INTO "ingredients" VALUES(187,'plain whole-milk yogurt',NULL,NULL,NULL,'Dairy');
 INSERT INTO "ingredients" VALUES(188,'oil',NULL,NULL,NULL,'Condiments');
 INSERT INTO "ingredients" VALUES(189,'walnut',NULL,NULL,NULL,'Dry fruits');
+INSERT INTO "ingredients" VALUES(190,'sproutsbrussels',NULL,NULL,NULL,NULL);
+INSERT INTO "ingredients" VALUES(191,'oliveoil',NULL,NULL,NULL,NULL);
+INSERT INTO "ingredients" VALUES(192,'andpeppersalt',NULL,NULL,NULL,NULL);
+INSERT INTO "ingredients" VALUES(193,'vinegarbalsamic',NULL,NULL,NULL,NULL);
+INSERT INTO "ingredients" VALUES(194,'greenbeans',NULL,NULL,NULL,NULL);
+INSERT INTO "ingredients" VALUES(195,'mushrooms',NULL,NULL,NULL,NULL);
+INSERT INTO "ingredients" VALUES(196,'cremefraiche',NULL,NULL,NULL,NULL);
+INSERT INTO "ingredients" VALUES(197,'heavycream',NULL,NULL,NULL,NULL);
+INSERT INTO "ingredients" VALUES(198,'gruyere',NULL,NULL,NULL,NULL);
+INSERT INTO "ingredients" VALUES(199,'marjoram',NULL,NULL,NULL,NULL);
+INSERT INTO "ingredients" VALUES(200,'crumbsbread',NULL,NULL,NULL,NULL);
 CREATE TABLE categories (
 	cat_code VARCHAR(5) NOT NULL, 
 	cat_name VARCHAR(50), 
@@ -246,6 +257,7 @@ INSERT INTO "recipes" VALUES(30,'Chicken Meatballs, Italian Style','','http://gr
 INSERT INTO "recipes" VALUES(31,'Lamb Shank Tagine With Dates','For the best stews, use lamb shanks simmered slowly on the bone. Here, Moroccan seasonings mingle for a bright balance of flavors: sweetness comes from dates and onions, and heat and spice from ginger and cumin. This tagine is traditionally accompanied only by warm whole wheat pita or Arab flatbread. But, if you wish, serve with buttered couscous or even mashed potatoes. Roasted parsnips or wilted mustard greens would harmonize well, too.','http://graphics8.nytimes.com/images/2014/01/07/dining/07KITCH_SPAN/07KITCH_SPAN-articleLarge.jpg','MT','North African',NULL,NULL,NULL,'4 to 6 servings','3 1/2 hours','');
 INSERT INTO "recipes" VALUES(32,'Persian Fried Chicken','Here is a fried chicken recipe that is the best kind of weeknight cooking, with ingredients found quickly at most local grocery stores, whirled in a food processor and then left overnight to turn into something delicious the next evening. A yogurt marinade helps tenderize the boneless, skinless chicken thighs, infusing them with saffron and paprika, and a quick frying lends the meat a crispy, minty coating. You can marinate the chicken for 3 hours or overnight, but you set the timetable depending on whatever else is going on. This chicken will adapt. Make one night, finish the next. That’s living.','http://graphics8.nytimes.com/images/2014/04/15/dining/Persian-Fried-Chicken/Persian-Fried-Chicken-articleLarge.jpg','MT','International',NULL,NULL,NULL,'8 servings','45 minutes','');
 INSERT INTO "recipes" VALUES(35,'Roasted Potatoes With Figs and Thyme','A fall walk through New York’s Greenmarket with Eleven Madison Park’s chef, Daniel Humm, brought the idea for this unusual dish. Hot black tea lends a deeper flavor to dried figs, which are scattered with potatoes on a pan with thyme and then roasted. The recipe calls for fingerling potatoes, but any waxy potato will do. (And for everything you need to know to make perfect potatoes, visit our ','http://graphics8.nytimes.com/images/2015/10/28/dining/tonelli-potatoes/tonelli-potatoes-articleLarge.jpg','VG','International',NULL,NULL,NULL,'6 servings','40 minutes','');
+INSERT INTO "recipes" VALUES(36,'Roasted Brussels Sprouts With Garlic','If you haven’t yet figured out a go-to recipe for brussels sprouts, this simple dish is the answer. It results in sweet caramelized brussels sprouts that will make a believer out of anyone.','http://graphics8.nytimes.com/images/2014/04/29/dining/Roasted-Brussels-Sprouts/Roasted-Brussels-Sprouts-articleLarge.jpg','VG','International',NULL,NULL,NULL,'4 servings','45 minutes','');
 CREATE TABLE shop_lists (
 	id INTEGER NOT NULL, 
 	name VARCHAR(50), 
@@ -299,41 +311,80 @@ INSERT INTO "shop_lists" VALUES(39,'all','paprika',NULL,1,'2015-11-19 23:12:24.3
 INSERT INTO "shop_lists" VALUES(40,'all','saffron',NULL,1,'2015-11-19 23:12:24.339613');
 INSERT INTO "shop_lists" VALUES(41,'all','pepper',NULL,1,'2015-11-19 23:12:24.339613');
 INSERT INTO "shop_lists" VALUES(42,'all','ground cumin',NULL,1,'2015-11-19 23:12:24.339613');
-INSERT INTO "shop_lists" VALUES(43,'PROVA2','flour',NULL,1,'2015-11-20 00:29:57.262691');
-INSERT INTO "shop_lists" VALUES(44,'PROVA2','light brown sugar',NULL,1,'2015-11-20 00:29:57.262691');
-INSERT INTO "shop_lists" VALUES(45,'PROVA2','pomegranate molasses',NULL,1,'2015-11-20 00:29:57.262691');
-INSERT INTO "shop_lists" VALUES(46,'PROVA2','tapioca',NULL,1,'2015-11-20 00:29:57.262691');
-INSERT INTO "shop_lists" VALUES(47,'PROVA2','whole wheat flour',NULL,1,'2015-11-20 00:29:57.262691');
-INSERT INTO "shop_lists" VALUES(48,'PROVA2','unsalted butter',NULL,1,'2015-11-20 00:29:57.262691');
-INSERT INTO "shop_lists" VALUES(49,'PROVA2','paprika',NULL,1,'2015-11-20 00:29:57.262691');
-INSERT INTO "shop_lists" VALUES(50,'November 22 - 29','extra-virgin olive oil ',NULL,1,'2015-11-22 22:39:23.932249');
-INSERT INTO "shop_lists" VALUES(51,'November 22 - 29','quinoa',NULL,1,'2015-11-22 22:39:23.932249');
-INSERT INTO "shop_lists" VALUES(52,'November 22 - 29','bittersweet chocolate',NULL,1,'2015-11-22 22:39:23.932249');
-INSERT INTO "shop_lists" VALUES(53,'November 22 - 29','brown sugar',NULL,1,'2015-11-22 22:39:23.932249');
-INSERT INTO "shop_lists" VALUES(54,'November 22 - 29','chocolate shavings',NULL,1,'2015-11-22 22:39:23.932249');
-INSERT INTO "shop_lists" VALUES(55,'November 22 - 29','cornstarch',NULL,1,'2015-11-22 22:39:23.932249');
-INSERT INTO "shop_lists" VALUES(56,'November 22 - 29','egg',NULL,1,'2015-11-22 22:39:23.932249');
-INSERT INTO "shop_lists" VALUES(57,'November 22 - 29','fine sea salt',NULL,1,'2015-11-22 22:39:23.932249');
-INSERT INTO "shop_lists" VALUES(58,'November 22 - 29','flaky sea salt',NULL,1,'2015-11-22 22:39:23.932249');
-INSERT INTO "shop_lists" VALUES(59,'November 22 - 29','heavy cream',NULL,1,'2015-11-22 22:39:23.932249');
-INSERT INTO "shop_lists" VALUES(60,'November 22 - 29','unsweetened cocoa powder',NULL,1,'2015-11-22 22:39:23.932249');
-INSERT INTO "shop_lists" VALUES(61,'November 22 - 29','vanilla extract',NULL,1,'2015-11-22 22:39:23.932249');
-INSERT INTO "shop_lists" VALUES(62,'November 22 - 29','whipped cream',NULL,1,'2015-11-22 22:39:23.932249');
-INSERT INTO "shop_lists" VALUES(63,'November 22 - 29','whole milk',NULL,1,'2015-11-22 22:39:23.932249');
-INSERT INTO "shop_lists" VALUES(64,'November 22 - 29','chervil',NULL,1,'2015-11-22 22:39:23.932249');
-INSERT INTO "shop_lists" VALUES(65,'November 22 - 29','lemon wedges',NULL,1,'2015-11-22 22:39:23.932249');
-INSERT INTO "shop_lists" VALUES(66,'November 22 - 29','salmon',NULL,1,'2015-11-22 22:39:23.932249');
-INSERT INTO "shop_lists" VALUES(67,'November 22 - 29','butternut squash',NULL,1,'2015-11-22 22:39:23.932249');
-INSERT INTO "shop_lists" VALUES(68,'November 22 - 29','celeriac',NULL,1,'2015-11-22 22:39:23.932249');
-INSERT INTO "shop_lists" VALUES(69,'November 22 - 29','garlic',NULL,1,'2015-11-22 22:39:23.932249');
-INSERT INTO "shop_lists" VALUES(70,'November 22 - 29','onion',NULL,1,'2015-11-22 22:39:23.932249');
-INSERT INTO "shop_lists" VALUES(71,'November 22 - 29','parsley',NULL,1,'2015-11-22 22:39:23.932249');
-INSERT INTO "shop_lists" VALUES(72,'November 22 - 29','unsalted butter',NULL,1,'2015-11-22 22:39:23.932249');
-INSERT INTO "shop_lists" VALUES(73,'November 22 - 29','butter',NULL,1,'2015-11-22 22:39:23.932249');
-INSERT INTO "shop_lists" VALUES(74,'November 22 - 29','hazelnuts',NULL,1,'2015-11-22 22:39:23.932249');
-INSERT INTO "shop_lists" VALUES(75,'November 22 - 29','ground sage',NULL,1,'2015-11-22 22:39:23.932249');
-INSERT INTO "shop_lists" VALUES(76,'November 22 - 29','ground thyme',NULL,1,'2015-11-22 22:39:23.932249');
-INSERT INTO "shop_lists" VALUES(77,'November 22 - 29','pepper',NULL,1,'2015-11-22 22:39:23.932249');
+INSERT INTO "shop_lists" VALUES(43,'November 22 - 29','bittersweet chocolate',NULL,1,'2015-11-22 23:33:18.400246');
+INSERT INTO "shop_lists" VALUES(44,'November 22 - 29','brown sugar',NULL,1,'2015-11-22 23:33:18.400246');
+INSERT INTO "shop_lists" VALUES(45,'November 22 - 29','chocolate shavings',NULL,1,'2015-11-22 23:33:18.400246');
+INSERT INTO "shop_lists" VALUES(46,'November 22 - 29','cornstarch',NULL,1,'2015-11-22 23:33:18.400246');
+INSERT INTO "shop_lists" VALUES(47,'November 22 - 29','unsweetened cocoa powder',NULL,1,'2015-11-22 23:33:18.400246');
+INSERT INTO "shop_lists" VALUES(48,'November 22 - 29','vanilla extract',NULL,1,'2015-11-22 23:33:18.400246');
+INSERT INTO "shop_lists" VALUES(49,'November 22 - 29','extra-virgin olive oil',NULL,1,'2015-11-22 23:33:18.400246');
+INSERT INTO "shop_lists" VALUES(50,'November 22 - 29','quinoa',NULL,1,'2015-11-22 23:33:18.400246');
+INSERT INTO "shop_lists" VALUES(51,'November 22 - 29','salmon',NULL,1,'2015-11-22 23:33:18.400246');
+INSERT INTO "shop_lists" VALUES(52,'November 22 - 29','butternut squash',NULL,1,'2015-11-22 23:33:18.400246');
+INSERT INTO "shop_lists" VALUES(53,'November 22 - 29','celeriac',NULL,1,'2015-11-22 23:33:18.400246');
+INSERT INTO "shop_lists" VALUES(54,'November 22 - 29','garlic',NULL,1,'2015-11-22 23:33:18.400246');
+INSERT INTO "shop_lists" VALUES(55,'November 22 - 29','onion',NULL,1,'2015-11-22 23:33:18.400246');
+INSERT INTO "shop_lists" VALUES(56,'November 22 - 29','parsley',NULL,1,'2015-11-22 23:33:18.400246');
+INSERT INTO "shop_lists" VALUES(57,'November 22 - 29','chervil',NULL,1,'2015-11-22 23:33:18.400246');
+INSERT INTO "shop_lists" VALUES(58,'November 22 - 29','lemon',NULL,1,'2015-11-22 23:33:18.400246');
+INSERT INTO "shop_lists" VALUES(59,'November 22 - 29','butter',NULL,1,'2015-11-22 23:33:18.400246');
+INSERT INTO "shop_lists" VALUES(60,'November 22 - 29','egg',NULL,1,'2015-11-22 23:33:18.400246');
+INSERT INTO "shop_lists" VALUES(61,'November 22 - 29','heavy cream',NULL,1,'2015-11-22 23:33:18.400246');
+INSERT INTO "shop_lists" VALUES(62,'November 22 - 29','whipped cream',NULL,1,'2015-11-22 23:33:18.400246');
+INSERT INTO "shop_lists" VALUES(63,'November 22 - 29','whole milk',NULL,1,'2015-11-22 23:33:18.400246');
+INSERT INTO "shop_lists" VALUES(64,'November 22 - 29','hazelnuts',NULL,1,'2015-11-22 23:33:18.400246');
+INSERT INTO "shop_lists" VALUES(65,'November 22 - 29','ground sage',NULL,1,'2015-11-22 23:33:18.400246');
+INSERT INTO "shop_lists" VALUES(66,'November 22 - 29','ground thyme',NULL,1,'2015-11-22 23:33:18.400246');
+INSERT INTO "shop_lists" VALUES(67,'November 22 - 29','pepper',NULL,1,'2015-11-22 23:33:18.400246');
+INSERT INTO "shop_lists" VALUES(68,'November 23 - 30','cornstarch',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(69,'November 23 - 30','whole wheat flour',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(70,'November 23 - 30','bittersweet chocolate',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(71,'November 23 - 30','chocolate shavings',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(72,'November 23 - 30','unsweetened cocoa powder',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(73,'November 23 - 30','vanilla extract',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(74,'November 23 - 30','all-purpose flour',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(75,'November 23 - 30','light brown sugar',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(76,'November 23 - 30','pomegranate molasses',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(77,'November 23 - 30','tapioca',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(78,'November 23 - 30','hoisin sauce',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(79,'November 23 - 30','peanut oil',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(80,'November 23 - 30','rice wine',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(81,'November 23 - 30','soy sauce',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(82,'November 23 - 30','chicken breast',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(83,'November 23 - 30','salmon',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(84,'November 23 - 30','chuck steak',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(85,'November 23 - 30','cilantro',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(86,'November 23 - 30','garlic',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(87,'November 23 - 30','ginger',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(88,'November 23 - 30','green peppers',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(89,'November 23 - 30','butternut squash',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(90,'November 23 - 30','fresh oregano',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(91,'November 23 - 30','onion',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(92,'November 23 - 30','red bell pepper',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(93,'November 23 - 30','sage',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(94,'November 23 - 30','zucchini',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(95,'November 23 - 30','chervil',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(96,'November 23 - 30','lemon',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(97,'November 23 - 30','carrots',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(98,'November 23 - 30','onions',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(99,'November 23 - 30','parsley',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(100,'November 23 - 30','thyme',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(101,'November 23 - 30','anjou pears',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(102,'November 23 - 30','bosc pears',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(103,'November 23 - 30','ground ginger',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(104,'November 23 - 30','egg',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(105,'November 23 - 30','parmesan',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(106,'November 23 - 30','vegan margarine',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(107,'November 23 - 30','butter',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(108,'November 23 - 30','heavy cream',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(109,'November 23 - 30','whipped cream',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(110,'November 23 - 30','whole milk',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(111,'November 23 - 30','cashew',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(112,'November 23 - 30','ground cumin',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(113,'November 23 - 30','ground origano',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(114,'November 23 - 30','bay leaf',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(115,'November 23 - 30','cloves',NULL,1,'2015-11-24 00:09:29.051988');
+INSERT INTO "shop_lists" VALUES(116,'November 23 - 30','dry red wine',NULL,1,'2015-11-24 00:09:29.051988');
 CREATE TABLE x_recipe_ingredient (
 	id INTEGER NOT NULL, 
 	recipe_fk INTEGER, 
@@ -712,6 +763,12 @@ INSERT INTO "x_recipe_ingredient" VALUES(391,35,'thyme',NULL,'5','');
 INSERT INTO "x_recipe_ingredient" VALUES(392,35,'extra virgin olive oil',NULL,'⅓','cup');
 INSERT INTO "x_recipe_ingredient" VALUES(393,35,'salt',NULL,'
 ','');
+INSERT INTO "x_recipe_ingredient" VALUES(394,36,'sproutsbrussels',NULL,'1','');
+INSERT INTO "x_recipe_ingredient" VALUES(395,36,'oliveoil',NULL,'4 to 6','tablespoons');
+INSERT INTO "x_recipe_ingredient" VALUES(396,36,'garlic',NULL,'5','cloves');
+INSERT INTO "x_recipe_ingredient" VALUES(397,36,'andpeppersalt',NULL,'
+','');
+INSERT INTO "x_recipe_ingredient" VALUES(398,36,'vinegarbalsamic',NULL,'1','tablespoon');
 CREATE TABLE recipe_steps (
 	id INTEGER NOT NULL, 
 	recipe_fk INTEGER, 
@@ -847,6 +904,9 @@ INSERT INTO "recipe_steps" VALUES(126,32,'Sprinkle with salt and serve immediate
 INSERT INTO "recipe_steps" VALUES(134,35,'Place figs in a bowl, cover with hot black tea and let cool. Cover and refrigerate for 4 to 6 hours or overnight, depending on initial softness of figs.',1);
 INSERT INTO "recipe_steps" VALUES(135,35,'Preheat oven to 400 degrees. Wash potatoes well and trim any bad parts. Separate garlic head into individual cloves but do not remove outer skin.',2);
 INSERT INTO "recipe_steps" VALUES(136,35,'Drain figs. In a bowl, combine garlic, thyme, figs, potatoes and olive oil; toss. Place on roasting pan and bake until potatoes are tender enough to pierce with a fork, about 30 minutes. Remove and season immediately with salt and pepper. Serve. Diners may remove skin from garlic at the table and eat along with the potatoes, if they wish.',3);
+INSERT INTO "recipe_steps" VALUES(137,36,'Heat oven to 400 degrees. Trim bottom of brussels sprouts, and slice each in half top to bottom. Heat oil in cast-iron pan over medium-high heat until it shimmers; put sprouts cut side down in one layer in pan. Put in garlic, and sprinkle with salt and pepper.',1);
+INSERT INTO "recipe_steps" VALUES(138,36,'Cook, undisturbed, until sprouts begin to brown on bottom, and transfer to oven. Roast, shaking pan every 5 minutes, until sprouts are quite brown and tender, about 10 to 20 minutes.',2);
+INSERT INTO "recipe_steps" VALUES(139,36,'Taste, and add more salt and pepper if necessary. Stir in balsamic vinegar, and serve hot or warm.',3);
 CREATE TABLE x_recipe_user (
 	id INTEGER NOT NULL, 
 	user_fk INTEGER, 
@@ -883,6 +943,7 @@ INSERT INTO "x_recipe_user" VALUES(30,1,30);
 INSERT INTO "x_recipe_user" VALUES(31,1,31);
 INSERT INTO "x_recipe_user" VALUES(32,1,32);
 INSERT INTO "x_recipe_user" VALUES(35,1,35);
+INSERT INTO "x_recipe_user" VALUES(36,1,36);
 CREATE TABLE meals (
 	meal_id INTEGER NOT NULL, 
 	meal_type VARCHAR(20), 
@@ -925,6 +986,12 @@ INSERT INTO "meals" VALUES(28,'breakfast',14,1,4,'2015-11-21 00:00:00.000000',46
 INSERT INTO "meals" VALUES(29,'lunch',6,1,6,'2015-11-22 00:00:00.000000',46,NULL);
 INSERT INTO "meals" VALUES(30,'breakfast',18,1,4,'2015-11-22 00:00:00.000000',46,NULL);
 INSERT INTO "meals" VALUES(31,'dinner',27,1,4,'2015-11-22 00:00:00.000000',46,NULL);
+INSERT INTO "meals" VALUES(32,'lunch',19,1,4,'2015-11-24 00:00:00.000000',47,NULL);
+INSERT INTO "meals" VALUES(33,'lunch',5,1,4,'2015-11-23 00:00:00.000000',47,NULL);
+INSERT INTO "meals" VALUES(34,'dinner',27,1,4,'2015-11-23 00:00:00.000000',47,NULL);
+INSERT INTO "meals" VALUES(35,'breakfast',18,1,4,'2015-11-23 00:00:00.000000',47,NULL);
+INSERT INTO "meals" VALUES(36,'dinner',13,1,5,'2015-11-24 00:00:00.000000',47,NULL);
+INSERT INTO "meals" VALUES(37,'breakfast',7,1,4,'2015-11-25 00:00:00.000000',47,NULL);
 CREATE TABLE expences (
 id INTEGER NOT NULL, 
 store VARCHAR(50) NOT NULL, 
@@ -934,14 +1001,25 @@ user_fk INTEGER,
 PRIMARY KEY (id), 
 FOREIGN KEY(user_fk) REFERENCES users (user_id)
 );
-INSERT INTO "expences" VALUES(1,'Safeway',99.26,'2015-11-14 00:00:00.000000',1);
-INSERT INTO "expences" VALUES(2,'Whole Food',46.0,'2015-11-15 00:00:00.000000',1);
-INSERT INTO "expences" VALUES(3,'Whole Food',35.89,'2015-11-10 00:00:00.000000',1);
-INSERT INTO "expences" VALUES(4,'Safeway',28.45,'2015-11-14 00:00:00.000000',1);
-INSERT INTO "expences" VALUES(5,'Trader''s Joe',99.26,'2015-11-15 00:00:00.000000',1);
-INSERT INTO "expences" VALUES(6,'Safeway',47.36,'2015-11-10 00:00:00.000000',1);
-INSERT INTO "expences" VALUES(7,'Trader''s Joe',106.0,'2015-11-03 00:00:00.000000',1);
-INSERT INTO "expences" VALUES(8,'Safeway',250.0,'2015-10-14 00:00:00.000000',1);
+INSERT INTO "expences" VALUES(1,'Safeway',26.53,'2015-09-11 00:00:00.000000',1);
+INSERT INTO "expences" VALUES(2,'Safeway',24.85,'2015-09-12 00:00:00.000000',1);
+INSERT INTO "expences" VALUES(3,'Safeway',6.98,'2015-09-13 00:00:00.000000',1);
+INSERT INTO "expences" VALUES(4,'Safeway',10.99,'2015-09-18 00:00:00.000000',1);
+INSERT INTO "expences" VALUES(5,'Trader''s Joe',106.64,'2015-09-25 00:00:00.000000',1);
+INSERT INTO "expences" VALUES(6,'Trader''s Joe',66.88,'2015-09-22 00:00:00.000000',1);
+INSERT INTO "expences" VALUES(7,'Safeway',19.57,'2015-09-26 00:00:00.000000',1);
+INSERT INTO "expences" VALUES(8,'Trader''s Joe',62.61,'2015-10-03 00:00:00.000000',1);
+INSERT INTO "expences" VALUES(9,'Safeway',70.37,'2015-10-03 00:00:00.000000',1);
+INSERT INTO "expences" VALUES(10,'Safeway',77.23,'2015-10-04 00:00:00.000000',1);
+INSERT INTO "expences" VALUES(11,'Safeway',45.88,'2015-11-07 00:00:00.000000',1);
+INSERT INTO "expences" VALUES(12,'Safeway',85.53,'2015-11-07 00:00:00.000000',1);
+INSERT INTO "expences" VALUES(13,'Safeway',53.1,'2015-10-12 00:00:00.000000',1);
+INSERT INTO "expences" VALUES(14,'Trader''s Joe',79.68,'2015-10-13 00:00:00.000000',1);
+INSERT INTO "expences" VALUES(15,'Trader''s Joe',105.24,'2015-10-20 00:00:00.000000',1);
+INSERT INTO "expences" VALUES(16,'Safeway',16.95,'2015-10-22 00:00:00.000000',1);
+INSERT INTO "expences" VALUES(17,'Trader''s Joe',50.46,'2015-10-27 00:00:00.000000',1);
+INSERT INTO "expences" VALUES(18,'Safeway',29.44,'2015-11-03 00:00:00.000000',1);
+INSERT INTO "expences" VALUES(19,'Trader''s Joe',125.18,'2015-11-07 00:00:00.000000',1);
+INSERT INTO "expences" VALUES(20,'Safeway',99.26,'2015-11-14 00:00:00.000000',1);
+INSERT INTO "expences" VALUES(21,'Whole Food',46.0,'2015-11-15 00:00:00.000000',1);
 COMMIT;
-                                                                                                                                                                                                                                                                                                                                      79|fresh corn kernels||||Product
-166|mint||||Product

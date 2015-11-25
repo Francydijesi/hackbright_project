@@ -1,0 +1,240 @@
+{% extends 'base.html' %}
+{% block title %}Meal planner{% endblock%}
+{% block page %} Expenses {% endblock%}
+{% block content %}
+
+<script src="https://cdnjs.com/libraries/Chart.js"></script>
+<body>
+    <div class="container">
+
+        <div class="row">
+
+            <div class='col-xs-12'>
+        
+                <div id='month'></div>
+
+            </div>
+        </div>
+
+        <div class="row">   
+
+            <div class='col-xs-2' id='set-month'>
+
+                <form action="/getExpences">
+
+                    <select id='setmonth' class='form-control'>
+
+                        <option  name="month" value="0">this month</option>
+                        <option  name="month" value="1">the past two months</option>
+                        <option  name="month" value="2">the past three months</option>
+
+                    </select>
+
+                </form>
+
+            </div>
+
+            <div class="col-xs-3 col-xs-offset-7" id='add-expenses'>
+
+                <button type="button"  class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Add grocery expenses</button>
+
+            </div>    
+
+        </div> 
+        
+        <br>
+        <div class='row'>    
+
+            <div class="col-xs-7">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Expenses per week</div>
+                        <div id="chart_panel" class="panel-body" style="width:100%;height:400px">
+                            <div class="sum-chart">
+                                <canvas id='lineChart' id="myChart" width="600px" height="300px">
+                                </canvas>
+                                <!-- <div id="line-legend" class="chart-legend"></div> -->
+                            </div>  
+                        </div>
+                     
+                </div> 
+            </div>    
+           
+           <div class = 'col-xs-5'>
+                <div class="panel panel-default">
+                    <div class="panel-heading">Expenses per store</div>
+                        <div id="chart_panel" class="panel-body" style="width:100%;height:400px">
+                            <div class="sum-chart">
+                                <canvas id='donutChart' style="width:450px; height: 300px;"></canvas>
+                                <div id="donut-legend" class="chart-legend"></div>
+                                <!-- <canvas id="donutText" 
+                                    style="z-index: 0; 
+                                           position: absolute;
+                                           background: transparent;
+                                           left: 100px; 
+                                           top: 60px;" 
+                                    height="300px" 
+                                    width="300px"></canvas> -->
+                            </div>
+                        </div>    
+                </div>
+            </div>            
+        </div>
+        
+    </div> 
+
+      
+<!-- Modal Window to enter the Expenses -->
+
+        <div id="myModal" class="modal fade" role="dialog">
+            
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Grocery Expenses</h4>
+                    </div>
+                    <div class="modal-body">
+                   
+                        <form action="/save-expence" method="POST">
+
+                            <label for="date">Date of purchase : </label>
+                            <input type="date" id="shop-day" name="date" size="20" />
+                            <br><br>
+
+                            <label for="sum">Total : </label>
+                            <input type="number" pattern="(\d{3})([\.])(\d{2})" 
+                                    name='sum'/>
+                            <br><br>
+
+
+                            <label for="store">Store : </label>
+                            <input type='text' name='store'/>
+                            <br><br>
+
+                            <input type="submit" name="Save" />
+
+                        </form>
+                    </div> 
+
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>  
+                </div> 
+            </div> 
+        </div>          
+    </div>
+
+
+    <script type="text/javascript">
+           
+        var options = { responsive:  true};
+
+        var option_donut = {
+
+            responsive:  true,
+            segmentShowStroke: false,
+            animateRotate: true,
+            animateScale: false,
+            percentageInnerCutout: 50,
+            tooltipTemplate: "$<%= value %>",
+            labelFontFamily : "Arial",
+            labelFontStyle : "normal",
+            labelFontSize : 24,
+            labelFontColor : "#666",
+            showDataLabels: true
+            
+        }
+
+        // LINE CHART - Total Expenses by Week
+
+        var ctx_line = $("#lineChart").get(0).getContext("2d");
+
+        // DONUT CHART - Total by Stores
+
+        var ctx_donut = $("#donutChart").get(0).getContext("2d");
+
+        // var textCtx = $("#donutText").get(0).getContext("2d");
+        //     textCtx.textAlign = "center";
+        //     textCtx.textBaseline = "middle";
+        //     textCtx.font = "30px sans-serif";
+            
+
+        function displayGraphs(data){
+
+            var total = 0;
+            
+            for (i = 0; i < data.data_by_store.length; i++) {
+                 total = total + data.data_by_store[i].value;
+            }
+            console.log("total"+ total);
+            // textCtx.fillText(total, 150, 150);
+         
+            var myLineChart = new Chart(ctx_line).Line(data.data_by_week, options);
+
+            console.log(data.data_by_week.datasets);
+
+            $('#line-legend').html(myLineChart.generateLegend());
+
+            var myDonutChart = new Chart(ctx_donut).Doughnut(data.data_by_store, option_donut);
+
+            console.log(data.data_by_store);
+
+            $('#donut-legend').html(myDonutChart.generateLegend());
+            html=''
+
+            for (i = 0; i < data.month.length ; i++){
+
+                html += " " + data.month[i];
+
+            }
+             
+            $('#month').html("Grocery expenses for "+ html);
+
+        }
+
+        $.get('/getExpences', displayGraphs);
+
+     // Function to send the form in the modal window 
+
+        function sendForm(evt){
+
+            var month = $("#setmonth").val()
+        
+            $.get('/getExpences?month='+month, displayGraphs);
+
+        }
+
+        $("#setmonth").on("change", sendForm);
+
+        
+        var datefield = document.createElement("input");   
+        
+        datefield.setAttribute("type", "date");
+
+        //if browser doesn't support input type="date", load files for jQuery UI Date Picker
+        if (datefield.type!="date"){ 
+
+            document.write('<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />\n');
+
+            document.write('<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"><\/script>\n');
+
+            document.write('<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"><\/script>\n'); 
+        }
+
+                
+        //if browser doesn't support input type="date", initialize date picker widget:
+        if (datefield.type!="date"){ 
+
+            $(function(){ 
+                $('#shop-day').datepicker();
+            });
+        }
+
+     </script>
+        
+</body>
+
+{% endblock %}    

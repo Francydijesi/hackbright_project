@@ -8,6 +8,8 @@ import helpFunctions
 
 import requests
 
+import unicodedata
+
 
 
 def url_scraper(url, user):
@@ -112,7 +114,16 @@ def url_scraper(url, user):
 
                 if more_info.span:
 
-                    ingredient = more_info.span.next
+
+                    if isinstance(more_info.span.next, unicode):
+                    #     ingredient = unicode(ingredient)
+                    #     print "SCRAPED INGR", ingredient
+                    #     ingredient = ingredient.encode('utf-8','ignore')
+
+                        ingredient = unicodedata.normalize('NFKD', more_info.span.next).encode('ascii','ignore')
+                    
+                    else:
+                         ingredient = more_info.span.next
 
                     print "INGREDIENT", ingredient
             if ingredient:
@@ -223,8 +234,7 @@ def cleanIngredient(ingredient):
     #     ingredient = 'cilantro'
 
     return ingredient.strip().lower()
-
-    
+   
 
 def calculateCuisine(text):
 

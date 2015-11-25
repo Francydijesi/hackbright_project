@@ -3,14 +3,23 @@
 <head>
   
   <title>{% block title %}{% endblock%}</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/static/css/style.css">
-  <link rel="stylesheet" href="/static/css/login.css">
+  
   <script src="https://code.jquery.com/jquery.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <link href='https://fonts.googleapis.com/css?family=IM+Fell+Double+Pica|Playfair+Display:400,900' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.js"></script>
   <script src="https://cdnjs.com/libraries/Chart.js"></script>
+
+  <link rel="stylesheet" 
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="stylesheet" href="/static/css/login.css">  
+  <link rel="import" href="/templates/modals.html">
+
+
 </head>
 
 <body>
@@ -35,27 +44,72 @@
 
   <!-- Top bar with Logo Title Login -->
 <!-- <div class="top-bar" >   -->
-<div class="row" id='top-bar'>
-<table>
-    <tr>
-      <td class="logo-wrap"><a href="/">Logo</a></td>
-      <td class="title-wrap">{% block page %} {% endblock %}</td>
-      <td class="login-wrap">  
-          {% if 'User' in session %}
-          <!-- Trigger the modal with a button -->
-            
-            <a href="/logout"><button type="button" class="btn btn-default btn-lg" data-toggle="modal" data-target="#signIn">Sign Out</button> </a>
-          {% else %}
-          <!-- Trigger the modal with a button -->
-            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#signIn">Sign In</button>|<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#signUp">Sign Up</button>
-            <!-- <a href="/login">Sign In </a>|<a href="/register">Sign Up </a> -->
-            
-          {% endif %}
-      </td>
-    </tr>  
-  <hr>
-  </table>
+<nav class="navbar navbar-default navbar-fixed-top"> 
+<div class="container-fluid">
+  <div class="row top-bar ">
+      
+        <!-- <div class="col-xs-2  logo-wrap">
+            <a href="/"><i class="fa fa-cutlery"></i></a>
+        </div> -->
+        <div class="col-xs-9 title-wrap">{% block page %} {% endblock %}</div>
+        <div class="col-xs-3 login-wrap">
+          <a href="/"><i class="fa fa-cutlery"></i></a>
+            {% if 'User' in session %}
+            <!-- Trigger the modal with a button -->
+              
+              <a href="/logout">
+              <button type="button" class="sign" data-toggle="modal" data-target="#signIn">Sign Out</button></a>
+            {% else %}
+            <!-- Trigger the modal with a button -->
+              <button class="sign" data-toggle="modal" data-target="#signIn">Sign In</button> | 
+              <button class="sign" data-toggle="modal" data-target="#signUp">Sign Up</button>
+              <!-- <a href="/login">Sign In </a>|<a href="/register">Sign Up </a> -->
+              
+            {% endif %}
+        </div>
+       
+   
+   
+  </div> 
+   
+
+
+  <!-- Navigation bar --> 
+ 
+  <ul class="nav nav-tabs">
+
+    <li role="presentation"><a href="/">Home</a></li>
+    <!-- <li role="presentation"><a href="/recipes">Recipe</a></li> -->
+    <li role="presentation" class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" 
+           aria-haspopup="true" aria-expanded="false">Recipe<span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a href="/recipes">View</a></li>
+          <li><a href="/addRecipesForm">Import</a></li>
+        </ul>
+    </li>
+
+    <li role="presentation"><a href="/planner">Plan Meals</a></li>
+    <!-- <li role="presentation"><a href="/grocery"> Grocery List</a></li> -->
+     <li role="presentation" class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" 
+           aria-haspopup="true" aria-expanded="false">Grocery<span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a href="/getShoppingLists">List</a></li>
+          <!-- <li><a href="/importForm">Import<a></li> -->
+          <li><a href="/viewExpences">Expenses</a></li>
+          <li><a href="/createBubbleGraph">Ingredients analysis</a></li>
+          
+        </ul>
+    </li>
+  </ul>
+
+
 </div>  
+</nav>
+
 
 <!-- Modal Windows -->
 <!-- SIGN IN  -->
@@ -121,35 +175,6 @@
     </div><!-- /container -->
  </div>   
 
-<!-- Navigation bar --> 
-<ul class="nav nav-tabs">
-  <li role="presentation"><a href="/">Home</a></li>
-  <!-- <li role="presentation"><a href="/recipes">Recipe</a></li> -->
-  <li role="presentation" class="dropdown">
-      <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" 
-         aria-haspopup="true" aria-expanded="false">Recipe<span class="caret"></span>
-      </a>
-      <ul class="dropdown-menu">
-        <li><a href="/recipes">View</a></li>
-        <li><a href="/addRecipesForm">Import</a></li>
-      </ul>
-  </li>
-
-  <li role="presentation"><a href="/planner">Plan Meals</a></li>
-  <!-- <li role="presentation"><a href="/grocery"> Grocery List</a></li> -->
-   <li role="presentation" class="dropdown">
-      <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" 
-         aria-haspopup="true" aria-expanded="false">Grocery<span class="caret"></span>
-      </a>
-      <ul class="dropdown-menu">
-        <li><a href="/getShoppingLists">List</a></li>
-        <!-- <li><a href="/importForm">Import<a></li> -->
-        <li><a href="/viewExpences">Expences</a></li>
-        <li><a href="/createBubbleGraph">Ingredients analysis</a></li>
-        
-      </ul>
-  </li>
-</ul>
 
 <script>
 

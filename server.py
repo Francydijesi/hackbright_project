@@ -96,7 +96,6 @@ def recipe_list():
                             cuisine=cuisine, sources=sources, categories=categories)
 
 
-
 @app.route("/changeFilters.json", methods=['POST'])
 def change_filters():
 
@@ -235,16 +234,10 @@ def filteres_recipe():
 
 ############################## RECIPE IMPORT ##################################
 
-@app.route("/importForm")
-def getImportForm():
-
-    return render_template("/import_form.html")
-
-
 @app.route("/importRecipe", methods=['POST'])
 def import_rec():
 
-    """ It scrapes recipe from a url 
+    """ It scrapes recipe from a url
 
         If successfull redirects to recipe_page
 
@@ -260,7 +253,7 @@ def import_rec():
 
     message = scraper.url_scraper(url, user)
 
-    if type(message)== int:
+    if type(message) == int:
 
         return redirect('/recipe_page/'+ str(message))
 
@@ -302,7 +295,6 @@ def enter_recipe():
     # json.loads(request.form.get("listIngr"))
     ingredients = json.loads(request.form.get("listIngr"))
 
-
     img_file = ''
     user = ''
 
@@ -313,27 +305,27 @@ def enter_recipe():
     if 'Image' in request.files:
 
         img_file = request.files['Image']
+        print "IMAGE FILE", img_file
+
+        if img_file and allowed_file(img_file.filename):
+            filename = secure_filename(img_file.filename)
+            print filename
+            img_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
 
     value = helpFunctions.addRecipe(img_file, title, description, cat_code, servings,
              cooktime, skillLevel, cuisine, ingredients, steps, user)
-
     
     if  type(value) == int:
 
-        message = {
-
-            'msg': "Recipe successfully added",
-            'recipeid': value
-        }
-
+        message = {  'msg': "Recipe successfully added",
+                     'recipeid': value }
     else:
 
-        message = {
-
-            'msg': value
-        }
+        message = { 'msg': value }
 
     return jsonify(message)
+
 
 ############################ RECIPE PAGE #####################################
 
@@ -360,45 +352,6 @@ def delete_recipe(recipeid):
 
     return redirect ("/recipes")
 
-# @app.route("/create")
-# def create():
-
-#     ingredients = Ingredient.getAllIngredient()
-
-#     # return render_template('/create_recipe.html', ingredients=ingredients)
-#     return render_template("ingredients_graph.html")
-
-# @app.route('/miserables.json')
-# def createGraph():
-
-#     graph = helpFunctions.createGraph()       
-
-
-#     return jsonify(graph) 
-
-
-
-# @app.route("/createRecipe")
-# def generateRecipe():
-
-#     """ Generate a new recipe """
-
-#     ingredient = request.args.get("ingredient")
-
-#     print "INGREDIENT", ingredient
-
-#     # List of ingredients list, one for each recipe
-
-#     # recipe_lists = helpFunctions.getListIngredient()
-
-#     recipe_lists = RecipeIngredient.getAllMatchingRecipe(ingredient)
-
-
-#     # Gets a dictionary of matched ingredients for i 
-
-#     ingr_dict = helpFunctions.makeDict(ingredient, recipe_lists)
-
-     
 
 
 ###############################################################################    
@@ -418,7 +371,7 @@ def plan():
     # import pdb;
     if 'User' in session:
 
-        if not Meals.getMealByDateByRecipe(date, session['User'],recipe_id):
+        if not Meals.getMealByDateByRecipe(date, session['User'], recipe_id):
             
             Meals.plan_meal(recipe_id, meal_type, servings, session["User"], date)
             db.session.commit()
@@ -816,6 +769,8 @@ def confirm_new_user():
 
     user_password = request.form.get("password")
 
+    name = request.form.get("name")
+
     #It checks if user already exists or email is invalid
     confirmed_user = User.get_user_by_email(user_email)
 
@@ -825,8 +780,9 @@ def confirm_new_user():
     if True:
 
         if not confirmed_user:
-            User.create_user_by_email_password(user_email, user_password)
+            User.create_user_by_email_password(user_email, user_password, name)
             flash("You successfully created an account!")
+            return redirect('/')
         else:
             flash("You already have an account")
             return render_template('error.html',url='homepage.html')
@@ -837,21 +793,11 @@ def confirm_new_user():
 
     return render_template('error.html',url='homepage.html')
 
-@app.route("/login")
-def login_user():
-    """Logs the user in"""
+# @app.route("/login")
+# def login_user():
+#     """Logs the user in"""
 
-    return render_template("login.html")
-
-@app.route("/logout")
-def logout_user():
-    """Logs out the user"""
-
-    del session['User']
-
-    flash("You are logged out","loggedout")
-
-    return redirect("/")
+#     return render_template("login.html")
 
 
 @app.route('/login_confirm', methods=["POST"])
@@ -863,7 +809,7 @@ def get_login():
 
     confirmed_user = User.get_user_by_email_password(user_email, user_password)
 
-    flash = []
+    # flash = []
 
     if confirmed_user:
         # flash("You're logged in!","loggedin")
@@ -873,8 +819,20 @@ def get_login():
         print session["User"]
         return redirect("/")
     else:
-        flash = "Your email and password combination are not correct."
+        flash("Your email and password combination are not correct.")
         return render_template("error.html",url='homepage.html')
+
+
+@app.route("/logout")
+def logout_user():
+    """Logs out the user"""
+
+    del session['User']
+
+    flash("You are logged out","loggedout")
+
+    return render_template("/homepage.html")
+
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point

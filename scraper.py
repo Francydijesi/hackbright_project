@@ -10,7 +10,7 @@ import requests
 
 import unicodedata
 
-
+# -*- coding: utf-8 -*-
 
 def url_scraper(url, user):
 
@@ -189,35 +189,36 @@ def cleanIngredient(ingredient):
 
         ingredient = 'eggs'
 
-    if lemonSet:
+    elif lemonSet:
 
-        ingredient = lemonSet
+        ingredient = lemonSet.pop()
+      
 
-    if ingredient.find('butter') != -1:
+    elif ingredient.find('butter') != -1:
 
         ingredient = 'butter'
 
-    if ingredient in flourSet:
+    elif ingredient in flourSet:
 
         ingredient = 'all-purpose flour'
 
-    if ingredient.find('olive oil') != -1:
+    elif ingredient.find('olive oil') != -1:
 
         ingredient = 'extra virgin olive oil'
 
-    if ingredient.find('salt') != -1:
+    elif ingredient.find('salt') != -1:
 
         ingredient = 'salt'
 
-    if ingredient.find('chicken thighs') != -1:
+    elif ingredient.find('chicken thighs') != -1:
 
         ingredient = 'chicken thighs'
 
-    if ingredient.find('cayenn') != -1:
+    elif ingredient.find('cayenn') != -1:
 
         ingredient = 'cayenne pepper'
 
-    if ingredient.find('chile') != -1:
+    elif ingredient.find('chile') != -1:
 
         ingredient = 'chile'
 
@@ -225,7 +226,7 @@ def cleanIngredient(ingredient):
 
     #     ingredient = 'garlic'
     
-    if ingredient.find('scallion') != -1:
+    elif ingredient.find('scallion') != -1:
 
         ingredient = 'scallions'
 

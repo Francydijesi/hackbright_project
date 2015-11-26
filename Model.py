@@ -51,9 +51,9 @@ class User(db.Model):
             print error
 
     @classmethod
-    def create_user_by_email_password(cls, user_email, user_password):
+    def create_user_by_email_password(cls, user_email, user_password, name):
 
-        user = User(email = user_email, password = user_password)
+        user = User(email = user_email, password = user_password, name=name)
         print user
         db.session.add(user)
         db.session.commit()

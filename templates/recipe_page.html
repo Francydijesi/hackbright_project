@@ -6,19 +6,28 @@
 <body>
     <div class="container">
         
+        <!-- Recipe Title and Buttons -->
+
         <div class="row">
-            <div class="col-xs-10" id="rec-tit">
+            <div class="col-xs-7" id="rec-tit">
                 {{ recipe.title }}
             </div>  
-            <div class="col-xs-2"> 
+            <div class="col-xs-2 col-xs-offset-1" id="planner-butt"> 
                 <!-- Trigger the modal with a button -->
-                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Add to Planner</button>
+                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Add to Planner</button>
 
             </div>   
+            <div class="col-xs-2" id="delete-butt">
+                <a href="/deleteRecipe/{{ recipe.recipe_id}}" >
+                    <button type="button" class="btn btn-default">Delete
+                    </button></a>
+            </div> 
         </div>    
 
-        <div class="row">
-            <!-- RECIPE IMG -->
+        <div class="row" id="img-box">
+
+        <!-- RECIPE IMG -->
+
             <div class="col-xs-6"> 
 
             {% if recipe.image_url%}
@@ -53,14 +62,26 @@
                     </div>
 
                     <br><br>
-                    
-                    <div class="row">
-                        <div class="col-xs-3 col-xs-offset-9">
-                            <a href="/deleteRecipe/{{ recipe.recipe_id}}" >
-                                <button type="button" class="btn btn-default">Delete
-                                </button></a>
-                        </div>    
-     
+                    <div class="row" id="info-butt">
+                        <div class="col-xs-4 col-xs-offset-1" >
+                            {% if recipe.cook_time %}
+                                <i class="fa fa-clock-o"></i>
+                                 {{ recipe.cook_time }}
+                            {% endif %}     
+                         </div>
+                        <div class="col-xs-4">
+                            {% if recipe.servings %}
+                                <i class="fa fa-user"></i>
+                                {{recipe.servings}} servings
+                            {% endif %}    
+                        </div>
+                        <div class="col-xs-3">
+                            {% if recipe.cuisine %}
+                                <i class="fa fa-cutlery"></i>
+                                 {{recipe.cuisine}}
+                            {% endif %}     
+                        </div>
+
                     </div>    
                  
             </div>     
@@ -70,48 +91,50 @@
         <div class="row">
 
              <!-- INGREDIENTS -->
-            <div class="col-xs-6">
-                <div class="row" id="ingr"> Ingredients: </div><br>
+            <div class="col-xs-5">
+                <div class="row" id="ingr"> 
+                    <div class="col-xs-12">Ingredients: </div>
+                </div> <br>   
 
-                    {% for ingredient in ingredients%}
+                {% for ingredient in ingredients%}
 
-                        <div class="row" >
+                    <div class="row" >
 
-                            <div class="col-xs-6" id="ingr-qty">
-                                {% if ingredient.quantity and ingredient.quantity > 1
-                                and ingredient.measure %}
+                        <div class="col-xs-5" id="ingr-qty">
+                        <!-- {% if ingredient.quantity and ingredient.quantity > 1
+                                                  and ingredient.measure %} -->
+                            <div class="col-xs-6" id="qty">
+                                {{ ingredient.quantity }}
+                            </div>
+
+                            <div class="col-xs-6">    
+                                {{ ingredient.measure }}
+                            </div>    
+
+                        <!-- {% else %} 
+
+                            <div class="col-xs-4">
+                                {{ ingredient.quantity }}
+                            </div>
+
+                            <div class="col-xs-6">     
+                                 {{ ingredient.measure }}
+                            </div>     
+
+                        {% endif %} -->    
+
+                        </div>
+                        <div class="col-xs-7" id="ingr-item">
+                            
+                            {{ ingredient.ingredient_name }}
                         
-                                    {{ ingredient.quantity }} {{ ingredient.measure }}s
-
-                                {% else %}   
-                                
-                                    {{ ingredient.quantity }} {{ ingredient.measure }}
-
-                                {% endif %}     
-
-                            </div>
-                            <div class="col-xs-6" id="ingr-item">
-                                
-                                {% if ingredient.quantity and ingredient.quantity > 1  and not ingredient.measure%}
-                                
-                                    {{ ingredient.ingredient_name }}s
-                            
-                                {% else %} 
-                                
-                                    {{ ingredient.ingredient_name }}
-
-                                {% endif %}    
-                            
-                            </div>
-                        </div>    
-
-                    {% endfor%}
-                
+                        </div>
+                    </div>    
+                {% endfor%} 
             </div> 
-
      
             <!-- INSTRUCTIONS -->
-            <div class="col-xs-6">
+            <div class="col-xs-7">
                 <div class="row" id="ingr"> Preparation: </div><br>
 
                 {% for step in steps %}
@@ -121,18 +144,18 @@
                         STEP {{ step.step_num }}
 
                     </div> <br>
-                    <div class="row" id="step-num">
+                    <div class="row" id="step-desc">
 
                         {{ step.step_description }}
 
                     </div><br>
-
                 {% endfor %}      
-
             </div> 
-
         </div>
     </div>
+
+
+
         <!-- Modal -->
         <div id="myModal" class="modal fade" role="dialog">
           <div class="modal-dialog">

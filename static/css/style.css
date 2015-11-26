@@ -95,10 +95,12 @@ div#recipe-title{
         
     font-size: 20px; 
     font: bold;
-    font-family: 'Playfair Display';
+    /*font-family: 'Playfair Display';*/
+    font-family: 'Raleway', sans-serif;
     font-style: italic;
     vertical-align: bottom;
     padding-top: 20px;
+    padding-bottom:20px;
     font-weight: 700;
 }
 
@@ -165,6 +167,11 @@ img#recipe-img{
 }
 */
 
+div#img-box{
+
+    padding-top:30px;
+}
+
 div#ingr-box{
     /*width:400px;*/
     padding-top: 20px;
@@ -178,77 +185,109 @@ div#steps-box{
     padding-left: 20px;*/
     /*font-family: 'Playfair Display';*/
     /*font-style: italic;*/
-    font-family: 'Open Sans', sans-serif;
+    /*font-family: 'Open Sans', sans-serif;*/
     /*font-family: 'Brush Script MT', cursive;*/
     font-size: 15px;
-
-    
+   
 }
 div#ingr-item{
 
     /*font-family: 'Brush Script MT', cursive;*/
     /*font-family: 'Playfair Display';*/
-    font-family: 'Open Sans', sans-serif;
+    /*font-family: 'Open Sans', sans-serif;*/
     /*font-style: italic;*/
     font-size: 15px;
     text-align: left;
     font-weight: bold;
+
     
 }
 div#ingr-qty{
 
     /*font-family: 'Playfair Display';*/
     /*font-style: italic;*/
-    font-family: 'Open Sans', sans-serif;
+    /*font-family: 'Open Sans', sans-serif;*/
     font-size: 15px;
     /*font-family: 'Brush Script MT', cursive;*/
     text-align: left;
     /*padding-left: 20px;*/
     font-weight: bold;
+    padding-left:25px;
+}
+
+div#qty{
+
+    text-align: right;
 }
 div#step-num{
 
     /*font-family: 'Brush Script MT';*/
-    font-size: 20px;
-    font-family: 'Open Sans';
+    font-size: 18px;
+    /*font-family: 'Open Sans';*/
     text-align: left;
     padding-left: 20px;
     /*padding-top: 20px;*/
-    font-weight: 900;
+    /*font-weight: 900;*/
     font-weight: bold;
     
-
 }
 div#step-desc{
 
     /*font-family: 'Brush Script MT', cursive;*/
-    font-family: 'Open Sans', sans-serif;
-    font-size: 20px;
-    text-align: left;
+    /*font-family: 'Helvetica', sans-serif;*/
+    font-size: 18px;
+    /*font-weight: 500;*/
+    text-align: justify;
     padding-left: 20px;
     /*padding-top: 20px;*/
 
 }
 div#r-desc{
     /*font-family: 'Brush Script MT', cursive;*/
-    font-family: 'Open Sans', sans-serif;
-    font-size: 20px;
+    /*font-family: 'Open Sans', sans-serif;*/
+    font-size: 18px;
     text-align: left;
-    padding-left: 20px;
+    padding-left: 80px;
+    padding-right: 80px;
+    text-align: justify;
 }
+
+div#planner-butt{
+
+    padding-top:10px;
+    padding-left:40px;
+    text-align:right;
+}
+
+div#delete-butt{
+
+    padding-top:10px;
+    padding-right:10px;
+}
+
+div#info-butt{
+
+    padding-right:50px;
+}
+
 div#ingr{
     /*font-family: 'Brush Script MT', cursive;*/
-    font-family: 'Open Sans', sans-serif;
-    font-size: 25px;
+    font-family: times;
+    font-size: 20px;
     font-weight:bold;
-    padding-left: 30px;
+    padding-left: 25px;
+    text-align: center;
 }
 div#rec-tit{
     /*font-family: 'Brush Script MT', cursive;*/
-    font-family: 'Playfair Display';
-    font-style: italic;
-    /*padding-left:20px;*/
-    font-size: 40px;
+    /*font-family: 'Playfair Display';*/
+    /*font-style: italic;*/
+    font-family: 'Raleway', sans-serif;
+    font-weight: 600;
+    /*font-weight: bold;*/
+    padding-left:20px;
+    font-size: 35px;
+
 }
 
 /* Recipe FORM */
@@ -297,7 +336,8 @@ input#notepad{
 div#view-ingr{
 
     font-size: 25px;
-    font-family: 'Brush Script MT', cursive;
+    /*font-family: 'Brush Script MT', cursive;*/
+    font-family:'Lobster';
 
 }
 div#view-aisle{

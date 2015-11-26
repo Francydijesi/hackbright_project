@@ -183,7 +183,7 @@ def cleanIngredient(ingredient):
 
     ingredient = ingredient.split(',')[0]
 
-    ingredient = ''.join(set(ingredient.split()) - unnecessaryWords)
+    ingredient = ' '.join(set(ingredient.split()) - unnecessaryWords)
 
     if ingredient in eggSet:
 

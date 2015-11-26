@@ -312,7 +312,6 @@ def enter_recipe():
             print filename
             img_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-
     value = helpFunctions.addRecipe(img_file, title, description, cat_code, servings,
              cooktime, skillLevel, cuisine, ingredients, steps, user)
     

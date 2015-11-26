@@ -100,6 +100,7 @@
   width: 14.28571%;
   height: 149px;
   font-size: 12px;
+  font-weight: bold;
 }
 
 #image-small{
@@ -164,7 +165,11 @@ input#del{
 
 div#cal-box{
 
-  padding-top: 30px;
+  /*padding-left: 100px;*/
+}
+div#shop-butt{
+
+  padding-left:80px;
 }
 
 button#left-arr{
@@ -178,6 +183,11 @@ button#right-arr{
 div#cal-month{
   vertical-align: middle;
   padding-left: 280px;
+}
+
+div#div-meal{
+
+  font-weight: bold;
 }
 .meal-type{
 

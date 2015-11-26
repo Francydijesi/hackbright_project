@@ -34,9 +34,9 @@ def addRecipe(img_file, title, description, cat_code, servings,
         print "IMG_FILE" ,img_file
 
         # If img is not from a website
-        if img_file and allowed_file(img_file.filename) and 'http' not in img_file:
+        # if img_file and allowed_file(img_file.filename) and 'http' not in img_file:
 
-            filename = secure_filename(img_file.filename)
+        #     filename = secure_filename(img_file.filename)
             # print "FILENAME" , filename
             # img_file.save(os.path.join(UPLOAD_FOLDER, filename))
 

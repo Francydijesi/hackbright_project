@@ -407,7 +407,7 @@ def getPlanner(date=None, num=None):
         start_date = datetime.today()
 
     # It sets the END DATE 
-    end_date = start_date + timedelta(days=7)
+    end_date = start_date + timedelta(days=6)
     currentWeek = start_date.strftime("%W")
     
     week_days = []
@@ -690,7 +690,7 @@ def getExpences():
 
     current_month = datetime.today().strftime('%m')
 
-    print "MONTH PARAM", month
+    # print "MONTH PARAM", month, type(month),type(current_month)
 
     if not month:
 
@@ -700,7 +700,7 @@ def getExpences():
 
         month = int(current_month) - int(month)
 
-    print "MONTH", month
+    # print "MONTH", month
     if 'User' in session:
         
         expences = Expence.getExpencesGroupedByDate(session['User'], month)
@@ -752,11 +752,6 @@ def createDataForGraph():
 #   REGISTER - LOGIN - LOGOUT
 # ##############################################################################
 
-# @app.route("/register")
-# def register_user():
-#     """Allows the user to sign up for an account"""
-
-#     return render_template("signup.html")
 
 @app.route("/register-confirm", methods=["POST"])
 def confirm_new_user():
@@ -791,12 +786,6 @@ def confirm_new_user():
         # return render_template('error.html',url='homepage.html')
 
     return render_template('error.html',url='homepage.html')
-
-# @app.route("/login")
-# def login_user():
-#     """Logs the user in"""
-
-#     return render_template("login.html")
 
 
 @app.route('/login_confirm', methods=["POST"])
@@ -836,7 +825,7 @@ def logout_user():
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point
     # that we invoke the DebugToolbarExtension
-    app.debug = True
+    app.debug = False
 
     connect_to_db(app)
 

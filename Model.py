@@ -766,7 +766,7 @@ class Expence(db.Model):
     def getExpencesByStore(cls, user, month):
 
         expences = db.session.query(Expence.store, func.sum(Expence.total)).\
-                    filter(func.substr(Expence.date_of_purchase,6,2)>=month).\
+                    filter(cast(func.substr(Expence.date_of_purchase,6,2),Numeric(10,4))>=month).\
                     filter(Expence.user_fk==user).group_by(Expence.store).all() 
 
         print "Expences by store", expences

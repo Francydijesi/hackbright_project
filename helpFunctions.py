@@ -742,9 +742,10 @@ def setDisplayData(expences, expencesByStore):
                 }
             ]
         }
-
-        colors = ['#F7464A','#46BFBD', '#FDB45C']
-        highlight = ['#FF5A5E', '#5AD3D1', '#FFC870']
+        colors = ['#045A40','#E61155','#D8F6E6']
+        highlight = ['#2E7240','#C81155','#3BF6E6']
+        # colors = ['#F7464A','#46BFBD', '#FDB45C']
+        # highlight = ['#FF5A5E', '#5AD3D1', '#FFC870']
 
         # Data structure for donut chart
 

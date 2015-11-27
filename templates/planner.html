@@ -277,7 +277,9 @@
                 {% endfor %}    
             </div>  
         </div>
-      </div>    
+      </div>   <br><br><br>
+      <div class="row"></div>
+      <div class="row"></div><br><br><br> 
 
 <!-- Modal Add RECIPE-->
 
@@ -299,7 +301,7 @@
                 <div class="row">
                     <div class="col-xs-6">
                         <label for="date">Name: </label>
-                        <select name="recipeid" id="rec-title">
+                        <select name="recipeid" id="rec-title" style="width: 200px">
                                 <option value=""></option>
                             {% for recipe in recipes %}
                                 <option value="{{ recipe.recipe_id }}">{{ recipe.title }}</option>
@@ -357,22 +359,6 @@
 </div>
 
 <!-- End of Modal -->
-
-<script>
-
-    // function updateDate(){
-
-    //     alert("Arrow");
-        
-    //     date = {{ start_date|safe }};
-    //     .getDate() - 7;
-    //     console.log(date);
-    //     $.get('/planner',{ "date" : date, "operation": "-" } );
-
-    // }
-
-    // $("#left-arr").on('click', updateDate)
-    // </script>
 
 
 <script>

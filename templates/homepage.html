@@ -4,47 +4,63 @@
 {% block content %}
 
 <!-- Image -->
-<div class="container-fluid homepage">
+<div class="container-fluid">
   <div class="row">
-    <div class="col-xs-12">
-      <img class="img_container" src="/static/img/homepage.jpg">
+    <div class="col-xs-12" id="homepage">
+
+      <div class="jumbotron" id="jumb-box">
+        <div class="container">
+          <p id="main-title">Meals made easy</p>
+          <p id="sub-title">Choose. Plan. Shop.</p><br><br>
+          <p><a class="btn btn-lg btn-info" id="join" href="#" role="button" 
+            data-toggle="modal" data-target="#signUp">Get Started</a></p>
+        </div>  
+      </div>
     </div>
   </div>    
-
-
+<br>
 <!-- Sections -->
-<div clas="row">   
-  <div class="col-xs-4 section">
-    
-      <a href="/recipes"><h3> Store Recipes </h3></a><br>
-      <span class="glyphicons glyphicons-dining-set" aria-hidden="true"></span>
-      <p>Search among your recipes by ingredients, filter by category or cuisine.</p>
-      <p>Create and edit your own recipes or import one from New York Time recipe sites by pasting a URL.</p><br>
-  
-  </div>
-  
-  <div class="col-xs-4 section">
-  
-    <a href="/planner"><h3> Plan Meals </h3></a><br>
-  
-  </div>
-  
-  <div class="col-xs-4 section">
+<div clas="row">
 
-      <a href="/getShoppingLists"><h3> Make grocery list</h3> </a><br>
+  <div class="col-xs-4">
+
+    <div class="jumbotron" id="section">
+      
+        <p><a href="/recipes" id="sect-title"> Store Recipes </a></p>
+        <p id="sect-text">Search among your recipes by ingredients, category or cuisine.
+        </p>
+        <p id="sect-text">Create and edit your own recipes or import one from the New York Time.</p>         
+       
+    </div>
+    
+  </div>
+
+  <div class="col-xs-4">
+
+    <div class="jumbotron" id="section" >
+  
+      <p><a href="/planner" id="sect-title"> Plan Meals </a></p>
+      <p id="sect-text">Uploading your recipes in the calendar will help you to stay organized.</p>
+      <p id="sect-text">Make cooking and shopping easier by planning a whole week of meals.</p>
+
+    </div>  
+  
+  </div>
+  
+  <div class="col-xs-4">
+
+    <div class="jumbotron" id="section">
+
+      <p><a href="/getShoppingLists" id="sect-title"> Make grocery list </a></p>
+      <p id="sect-text">Generate a shopping list for the meals you planned for the week.</p>
+      <p id="sect-text">Keep track of your grocery expenses and analyze your shopping habits.</p>
+
+    </div>
 
   </div>
 
 </div>
-    <!-- <tr> 
-      <td> <img src="/static/img/Rhubarb-Pie-articleLarge.jpg" height: 100px;></td>
-      <td> <img src="/static/img/Rhubarb-Pie-articleLarge.jpg" height: 157px;> </td>
-      <td> <img src="/static/img/Rhubarb-Pie-articleLarge.jpg" height: 157px;></td>
-
-    </tr>  -->
-  
-
-
+    
 </div>
 
 {% endblock %}

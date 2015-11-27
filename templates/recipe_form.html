@@ -22,18 +22,18 @@
         <form action = '/importRecipe' method='POST'>
 
             <div class="form-group">
-                <label for="url"><h4>Import recipe from <a href='http://cooking.nytimes.com'> New York Times</a></h4></label>
+                <label for="url"><h4>Import recipe from <a href='http://cooking.nytimes.com' id="NYT-import"> The New York Times</a></h4></label>
                 <input type="text" class="form-control" id="url" placeholder="New York Time URL" name='url'>
                 </input>
             </div>
             <div class="form-group">
-                <input type="submit" value="import"/>
+                <input type="submit" class="btn btn-default" value="import"/>
             </div>    
 
         </form>
         <br><br>
 
-        <div class="form-group"><label> <h4> Create a recipe manually:</h4></label> </div>
+        <div class="form-group"><label> <h4> Enter a recipe manually:</h4></label> </div>
 
           <!-- Hidden Box for error or success messages -->
         <div class="form-group" id="msg-box" class="col-xs-6" style="display: none;">
@@ -187,7 +187,8 @@
       
         </form>
     </div>
-</div>   
+</div>   <br><br><br>
+<div class="row"></div>
 
 <script>
 

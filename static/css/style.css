@@ -1,20 +1,136 @@
 
-body { padding-top: 140px; }
-div.top-bar{
+body { 
+    
+    padding-top: 85px; 
+    padding-bottom:80px;
+    width: 100%;
+    
+}
 
-    background: #ffcc33;
-    /*width: 1200px;*/
-    /*padding-left: 20px;*/
-    padding-top:20px;
+html {
+    width: 100%;
+    height: 100%;
+}
 
+nav#footer{
+
+    /*background-color: #E61155;*/
+    color: white;
+    font-family: 'Pacifico', coursive;
+}
+
+div#menu-box{
+
+    color:white;
+}
+
+.navbar-fixed-top{
+    color:white;
+    border:transparent;
+}
+.nav-tabs{
+    border:transparent;
+    color:white;
+}
+.top-bar{
+
+    /*background: #ffcc33;YELLOW*/
+    /*background-color:#E61155;*/
+    /*background-color: #FAF2F8;Off White*/
+    /*background: #178A70;Light GREEN*/
+    /*background:#045A40;*/
+    /*background:#611427;GOOD RED*/
+    /*background-color:#1D2325;My FAVORITE */
+    background-color: #4f8c49;
+    /*background-color:#8ac284;*/
+    /*background-color:#5C832F;*/
+    border:transparent;
+    padding-top:40px;
+    color:white;
+
+}
+#menu{
+
+    /*color:#1D2325;GRAY*/
+    color: white;
+    font-weight: 500;
+    font-size: 18px;
+}
+
+#submenu{
+
+    color: #4f8c49;
+    font-weight: 500;
+    font-size: 18px;
+}
+
+#homepage{
+
+  /*padding-top: 250px;*/
+  background-image: url('/static/img/homepage1.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  color: white;
+  /*line-height: 1.3;*/
+  -webkit-font-smoothing: antialiased;
+  /*height: 600px;*/
+  height:100%;
+  /*font-size: 80px;*/
+  font-family: 'Playfair Display';
+  font-style: italic;
+  /*font-family:'Raleway';*/
+  font-weight: 900;
+  text-align: center;
+  vertical-align: middle;
+
+}
+
+#jumb-box{
+
+    background-color: transparent;
+    font-family: 'Playfair Display';
+    font-style: italic;
+    color: white;
+    padding-top:150px;
+}
+p#main-title{
+    
+    font-size: 80px;
+    font-weight: 900;
+    
+}
+
+p#sub-title{
+    
+    font-size: 60px;
+    font-weight: 900;
+}
+
+a#join{
+
+    font-size:20px; 
+    font-family: 'Pacifico';
+    background-color:#E61155;
+    padding-bottom:40px;  
+}
+
+.btn-info.round {
+    border-radius: 24px;
 }
 
 .logo-wrap{
    
-   text-align:center;
+   text-align:left;
    /*width: 100px;*/
-   font-size: 40px;
-   font-family: 'Brush Script MT', cursive;
+   font-size: 25px;
+   font-family: 'Pacifico', cursive;
+   /*color: #5C0009;*/
+   color: white;
+}
+#logo{
+
+    color:white;
 }
 
 .title-wrap{
@@ -22,7 +138,8 @@ div.top-bar{
    font-size: 40px;
    text-align:center;
    font-family: 'Playfair Display';
-   color: #1B2340;
+   /*color: #1B2340;*/
+   color:white;
    font-style: italic;
    font-weight: 900;
    padding-left:200px;
@@ -34,6 +151,8 @@ div.top-bar{
    font-size: 20px;
    font-family: 'Playfair Display';
    font-style: italic;
+   /*color: #5C0009;*/
+   color:white;
    vertical-align: bottom;
    padding-top:10px;
    padding-right: 30px;
@@ -42,9 +161,13 @@ div.top-bar{
 
 .sign{
 
-    border: transparent;
+    /*border: 2px dotted #E61155;*/
+    border:transparent;
     background-color: transparent;
-    padding-right: 20px;
+    color:white;
+    padding-top: 10px;
+    font-size:18px;
+    font-weight: 500;
 }
 
 .img_container{
@@ -53,14 +176,28 @@ div.top-bar{
   height: auto;
 }
 
-.section{
+div#section{
 
     /*width:400px;*/
-    font-size: 18px;
-    padding: 30px;
+    font-size: 15px;
+    padding: 40px;
     text-align:center;
-    font-family: 'Playfair Display';
-    font-style: italic;
+    /*font-family: 'Raleway', sans-serif;*/
+    font-weight: 500;
+    /*font-style: italic;*/
+    /*text-align: justify;*/
+}
+a#sect-title{
+
+    font-size:25px;
+    color:#1D2325;
+    font-family:'Raleway', sans-serif;
+    font-weight: 600;
+}
+
+p#sect-text{
+
+    font-size:18px;
     text-align: justify;
 }
 
@@ -72,6 +209,12 @@ div.top-bar{
     text-align:center;
     padding:5px;
 }
+
+#filter-form{
+    padding-top: 30px;
+    font-weight: 500;
+}
+
 div#nav{
     line-height:30px;
     /* background-color:#eeeeee; */
@@ -116,17 +259,20 @@ div#recipe-desc{
 div#view-button{
 
     margin-top: 20px;
-    float: rigth;
+    /*float: rigth;*/
     width: 10%;
+    vertical-align: bottom;
+
     
 }
 div#reset{
 
     padding-right: 30px;
+    padding-top:30px;
 }
 
 div#flt-bt{
-    padding-left: 31px;
+    padding-left: 23px;
 }
 
 div#reset-filter{
@@ -166,6 +312,10 @@ img#recipe-img{
   width:600px;
 }
 */
+div#recipe-header{
+
+    padding-top:30px;
+}
 
 div#img-box{
 
@@ -267,7 +417,10 @@ div#delete-butt{
 
 div#info-butt{
 
-    padding-right:50px;
+    padding-right:20px;
+    padding-left:80px;
+    padding-top:30px;
+    
 }
 
 div#ingr{
@@ -275,8 +428,8 @@ div#ingr{
     font-family: times;
     font-size: 20px;
     font-weight:bold;
-    padding-left: 25px;
-    text-align: center;
+    padding-left: 30px;
+    text-align: left;
 }
 div#rec-tit{
     /*font-family: 'Brush Script MT', cursive;*/
@@ -291,6 +444,11 @@ div#rec-tit{
 }
 
 /* Recipe FORM */
+
+a#NYT-import{
+    color:#E61155;
+    font-style:italic; 
+}
 #form-container{
    width:600px;
    padding: 30px; 
@@ -318,7 +476,7 @@ div#rec-tit{
 /* Modal ADD */
 div#title-box{
     font-size: 8px;
-    font-family: 'Brush Script MT';
+    font-family: 'Pacifico', cursive;
     text-align: center;
 }
 
@@ -328,23 +486,31 @@ img#recipe-img{
     padding-bottom: 20px;
 }
 /*Shopping List*/
+div#shopping-container{
+    background-color:rgb(238, 238, 238) ;
+}
 
-input#notepad{
+span#shop-name{
 
-    background-image: url('/static/img/notepad.png');
+    font-size:35px;
+    font-weight: 900;
+    font-family:'Pacifico',cursive;
+    /*padding-bottom: 20px;*/
 }
 div#view-ingr{
 
-    font-size: 25px;
+    font-size: 20px;
     /*font-family: 'Brush Script MT', cursive;*/
-    font-family:'Lobster';
+    /*font-family:'Pacifico';*/
+    font-family:cursive;
+    font-weight: 700;
 
 }
 div#view-aisle{
 
     font-size: 30px;
-    font-family: 'Brush Script MT', cursive;
-    color: blue;
+    font-family: 'Pacifico', cursive;
+    color:#E61155 ;
 
 }
 div#list-box{
@@ -354,12 +520,12 @@ div#list-box{
     background-repeat: no-repeat;
 
 }
-div#delete-btn{
+div#send{
 
-    padding-top: 20px;
+    padding-left: 60px;
 }
 
-/*Expences*/
+/*Expenses*/
 div#month{
 
     font-size: 25px;
@@ -381,9 +547,12 @@ div#set-month{
 div#add-expenses{
 
     padding-top:13px;
-    padding-left:45px;
+    padding-left:95px;
 }
-
+div#expenses-title{
+    padding-top:20px;
+    font-weight: 700;
+}
 /*canvas#donutChart{
 
     width:450px; 
@@ -408,6 +577,9 @@ canvas#donutText{
     height: 300px; 
     width: 300px;
 
+}
+.panel-heading{
+    font-weight:500;
 }
 
 @media print {

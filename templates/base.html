@@ -18,13 +18,21 @@
   <link rel="stylesheet" href="/static/css/style.css">
   <link rel="stylesheet" href="/static/css/login.css">  
   <link href='https://fonts.googleapis.com/css?family=Raleway:400,900' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
   <link rel="import" href="/templates/modals.html">
 
 
 </head>
 
-<body>
-  <!--- FACEBOOK --->
+
+  <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+
+    <!-- Navigation -->
+<!-- <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">-->
+  <!--- FACEBOOK ---> 
   <script>
   window.fbAsyncInit = function() {
     FB.init({
@@ -45,42 +53,91 @@
 
   <!-- Top bar with Logo Title Login -->
 <!-- <div class="top-bar" >   -->
-<nav class="navbar navbar-default navbar-fixed-top"> 
-<div class="container-fluid">
-  <div class="row top-bar ">
-      
-        <!-- <div class="col-xs-2  logo-wrap">
-            <a href="/"><i class="fa fa-cutlery"></i></a>
-        </div> -->
-        <div class="col-xs-9 title-wrap">{% block page %} {% endblock %}</div>
-        <div class="col-xs-3 login-wrap">
-          <a href="/"><i class="fa fa-cutlery"></i></a>
+
+<!-- <div class="container-fluid"> -->
+  <nav class="navbar navbar-default navbar-fixed-top"> 
+    <div class="container-fluid">
+      <div class="row top-bar">
+          <div class="col-xs-2 logo-wrap"><a href="/" id="logo">Meal Planner</a></div> 
+        <!-- <div class="col-xs-9 title-wrap">{% block page %} {% endblock %}</div> -->
+          <div class="col-xs-6 col-xs-offset-4" id="menu-box">
+
+          <ul class="nav nav-tabs">
+
+            <li role="presentation" class="disabled"><a href="/" id="menu">Home</a></li>
+            <li role="presentation" class="dropdown disabled">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#" 
+                 role="button" aria-haspopup="true" aria-expanded="false" id="menu">
+                Recipe<span class="caret"></span>
+              </a>
+
+              <ul class="dropdown-menu">
+                  <li><a href="/recipes" id="submenu">View</a></li>
+                  <li><a href="/addRecipesForm" id="submenu">Import</a></li>
+              </ul>
+            </li>
+
+            <li role="presentation" class="disabled"><a href="/planner" id="menu">Planner</a></li>
+            <li role="presentation" class="dropdown disabled">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#" 
+                   role="button" aria-haspopup="true" aria-expanded="false" id="menu">
+                Grocery<span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+                <li><a href="/getShoppingLists" id="submenu">List</a></li>
+                <li><a href="/viewExpences" id="submenu">Expenses</a></li>
+                <li><a href="/createBubbleGraph" id="submenu">Ingredients analysis</a></li>
+              </ul>
+            </li>
+
             {% if 'User' in session %}
-            <!-- Trigger the modal with a button -->
-              
-              <a href="/logout">
-              <button type="button" class="sign" data-toggle="modal" data-target="#signIn">Sign Out</button></a>
+
+                <li role="presentation" class="disabled"><a href="/logout" id="menu">Sign out</a></li>
+
             {% else %}
             <!-- Trigger the modal with a button -->
-              <button class="sign" data-toggle="modal" data-target="#signIn">Sign In</button> | 
-              <button class="sign" data-toggle="modal" data-target="#signUp">Sign Up</button>
+              <button class="sign" data-toggle="modal" data-target="#signIn" >Sign In</button>
+            <!-- <li role="button" id="menu-login" data-toggle="modal" data-target="#signIn">Sign In</li>
+ -->
+            {% endif %}
+          </ul>
+         </div>   
+      </div>
+
+        <!-- <div class="col-xs-3 login-wrap">
+          
+             {% if 'User' in session %}-->
+            <!-- Trigger the modal with a button -->
+              
+              <!-- <a href="/logout">
+              <button type="button" class="sign" data-toggle="modal" data-target="#signIn">Sign Out</button></a>
+            {% else %} -->
+            <!-- Trigger the modal with a button -->
+              <!-- <button class="sign" data-toggle="modal" data-target="#signIn">Sign In</button> | 
+              <button class="sign" data-toggle="modal" data-target="#signUp">Sign Up</button> -->
               <!-- <a href="/login">Sign In </a>|<a href="/register">Sign Up </a> -->
               
-            {% endif %}
+            <!-- {% endif %}
         </div>
-       
-   
-   
-  </div> 
+        -->
+    </div>
+   </nav>
+<!-- FOOTER -->
+  <nav class="navbar navbar-default navbar-right navbar-fixed-bottom" id="footer">
+    <div class="container">
+          by Francy di Jesi
+    </div>
+  </nav>
+  <!-- </div>  -->
    
 
 
   <!-- Navigation bar --> 
  
-  <ul class="nav nav-tabs">
+  <!-- <ul class="nav nav-tabs">
 
     <li role="presentation"><a href="/">Home</a></li>
-    <!-- <li role="presentation"><a href="/recipes">Recipe</a></li> -->
+    <!-- <li role="presentation"><a href="/recipes">Recipe</a></li> 
     <li role="presentation" class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" 
            aria-haspopup="true" aria-expanded="false">Recipe<span class="caret"></span>
@@ -92,7 +149,7 @@
     </li>
 
     <li role="presentation"><a href="/planner">Plan Meals</a></li>
-    <!-- <li role="presentation"><a href="/grocery"> Grocery List</a></li> -->
+    <li role="presentation"><a href="/grocery"> Grocery List</a></li>
      <li role="presentation" class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" 
            aria-haspopup="true" aria-expanded="false">Grocery<span class="caret"></span>
@@ -100,16 +157,15 @@
         <ul class="dropdown-menu">
           <li><a href="/getShoppingLists">List</a></li>
           <!-- <li><a href="/importForm">Import<a></li> -->
-          <li><a href="/viewExpences">Expenses</a></li>
+          <!-- <li><a href="/viewExpences">Expenses</a></li>
           <li><a href="/createBubbleGraph">Ingredients analysis</a></li>
           
         </ul>
     </li>
-  </ul>
+  </ul> --> 
 
 
-</div>  
-</nav>
+
 
 
 <!-- Modal Windows -->
@@ -127,13 +183,14 @@
             {% endif %}
           {% endwith %}
            
-            <div><h3>Log In</h3></div>
+            <div><h3></h3></div>
 
             <form class="form-signin" action="/login_confirm" method="POST">
                 <span id="reauth-email" class="reauth-email"></span>
+                
                 <input type="email" id="inputEmail" class="form-control" name="email"placeholder="Email address" required autofocus>
                 
-                <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
+                <input type="password" id="inputPassword" class="form-control" name="password" placeholder="Password" required>
 
                 <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>
             </form>
@@ -159,7 +216,7 @@
                 <span id="reauth-email" class="reauth-email"></span>
                 <input type="email" id="inputEmail" class="form-control" name="email"placeholder="Email address" >
                 
-                <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+                <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
 
                 <input type="password" id="passwordcheck" name="passwordCheck" class="form-control" placeholder="Confirm password" required>
 

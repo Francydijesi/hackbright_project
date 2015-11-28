@@ -31,7 +31,7 @@ This app has three main sections:
 
 ## <a name="run"></a>Recipes 
 ![alt text]
-(https://github.com/Francydijesi/hackbright_project/blob/master/static/img/Readme/Recipe%20form.png "Recipe form")
+(https://github.com/Francydijesi/hackbright_project/blob/master/static/img/Readme/Recipe_Form.png "Recipe form")
 Write down your family recipes or import new ones from the web by using beautiful soup (a Python web scraping library). 
 
 

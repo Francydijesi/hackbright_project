@@ -73,7 +73,7 @@ ___
 If you are interested in keeping track of your grocery budget, here is a tool for recording your expenses and visualizing them.
 
 View the expenses by week or grouped by store, for this month or the past two or three months.
-![alt text]https://github.com/Francydijesi/hackbright_project/blob/master/static/img/Readme/Grocery%20Expenses.png "Grocery expenses graphs")
+![alt text](https://github.com/Francydijesi/hackbright_project/blob/master/static/img/Readme/Grocery%20Expenses.png "Grocery expenses graphs")
 
 ___
 

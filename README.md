@@ -36,13 +36,19 @@ Write down your family recipes or import new ones from the web by using beautifu
 ![alt text]
 (https://github.com/Francydijesi/hackbright_project/blob/master/static/img/Readme/Recipe_Form.png "Recipe form")
 
+___
+
 
 Use the filters or the search function to quickly find your recipe. Click on the picture or the view button to go to the recipe page for more details.
 ![alt text](https://github.com/Francydijesi/hackbright_project/blob/master/static/img/Readme/Recipe%20List.png "Recipe View")
 
+___
+
 
 Follow all the instructions to cook the meal now or save it for a future meal and upload it to the planner.
 ![alt text](https://github.com/Francydijesi/hackbright_project/blob/master/static/img/Readme/Recipe%20Page.png "Recipe Page")
+
+___
 
 
 
@@ -51,22 +57,25 @@ Follow all the instructions to cook the meal now or save it for a future meal an
 Planner is a seven day calendar where you can view the recipes already uploaded in the recipe page, or you can add new ones.
 Once you are done planning for the week, you can generate your shopping list with all the ingredients necessary for your recipes.
 
-![alt text]
-(https://github.com/Francydijesi/hackbright_project/blob/master/static/img/Readme/Add%20meal%20to%20planner.png "Planner").
+![alt text](https://github.com/Francydijesi/hackbright_project/blob/master/static/img/Readme/Add%20meal%20to%20planner.png "Planner")
+
+___
 
 
 ## <a name="run"></a>Grocery
 This list was generated with the ingredients of all the recipes in the planner.
 It can be printed or sent as an SMS, using the Twilio API.
-![alt text]
-(https://github.com/Francydijesi/hackbright_project/blob/master/static/img/Readme/Shopping%20List.png "Shopping list")
+![alt text](https://github.com/Francydijesi/hackbright_project/blob/master/static/img/Readme/Shopping%20List.png "Shopping list")
+
+___
 
 
 If you are interested in keeping track of your grocery budget, here is a tool for recording your expenses and visualizing them.
 
 View the expenses by week or grouped by store, for this month or the past two or three months.
-![alt text]
-(https://github.com/Francydijesi/hackbright_project/blob/master/static/img/Readme/Grocery%20Expenses.png,"Grocery expenses graphs")
+![alt text]https://github.com/Francydijesi/hackbright_project/blob/master/static/img/Readme/Grocery%20Expenses.png "Grocery expenses graphs")
+
+___
 
 
 This bubble chart shows all of the ingredients saved in all the shopping lists, color coded by category. The bigger the bubble, the higher its frequency. 

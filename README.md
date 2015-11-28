@@ -11,6 +11,13 @@ This app has three main sections:
 * Grocery. In this section you can view the shopping list automatically generated, with the ingredients necessary for the weekly meals which were uploaded in the planner. You can also keep track of the grocery expenses and analyze your shopping habits.  
 
 
+## Table of Contents
+* [Technologies Used](#technologiesused)
+* [How to use Meal Planner](#use)
+* [How to locally run Meal Planner](#run)
+* [About the author](#author)
+
+
 ## <a name="technologiesused"></a>Technologies Used
 
 * Python
@@ -29,7 +36,13 @@ This app has three main sections:
 (dependencies are listed in requirements.txt)
 
 
-## <a name="run"></a>Recipes 
+## <a name="use"></a>How to use Meal Planner
+
+
+###Recipes 
+
+
+#### Recipe Import
 
 Write down your family recipes or import new ones from the web by using beautiful soup (a Python web scraping library). 
 
@@ -39,11 +52,15 @@ Write down your family recipes or import new ones from the web by using beautifu
 ___
 
 
+#### Recipes list
+
 Use the filters or the search function to quickly find your recipe. Click on the picture or the view button to go to the recipe page for more details.
 ![alt text](https://github.com/Francydijesi/hackbright_project/blob/master/static/img/Readme/Recipe%20List.png "Recipe View")
 
 ___
 
+
+#### Recipe page
 
 Follow all the instructions to cook the meal now or save it for a future meal and upload it to the planner.
 ![alt text](https://github.com/Francydijesi/hackbright_project/blob/master/static/img/Readme/Recipe%20Page.png "Recipe Page")
@@ -51,8 +68,7 @@ Follow all the instructions to cook the meal now or save it for a future meal an
 ___
 
 
-
-## <a name="run"></a>Planner
+### <a name="run"></a>Planner
 
 Planner is a seven day calendar where you can view the recipes already uploaded in the recipe page, or you can add new ones.
 Once you are done planning for the week, you can generate your shopping list with all the ingredients necessary for your recipes.
@@ -62,13 +78,18 @@ Once you are done planning for the week, you can generate your shopping list wit
 ___
 
 
-## <a name="run"></a>Grocery
+### <a name="run"></a>Grocery
+
+#### List
+
 This list was generated with the ingredients of all the recipes in the planner.
 It can be printed or sent as an SMS, using the Twilio API.
 ![alt text](https://github.com/Francydijesi/hackbright_project/blob/master/static/img/Readme/Shopping%20List.png "Shopping list")
 
 ___
 
+
+#### Expenses
 
 If you are interested in keeping track of your grocery budget, here is a tool for recording your expenses and visualizing them.
 
@@ -78,7 +99,31 @@ View the expenses by week or grouped by store, for this month or the past two or
 ___
 
 
+#### Ingredient analysis
+
 This bubble chart shows all of the ingredients saved in all the shopping lists, color coded by category. The bigger the bubble, the higher its frequency. 
 ![alt text]
 (https://github.com/Francydijesi/hackbright_project/blob/master/static/img/Readme/Ingredient%20Analysis.png "Ingredient Analysis")
+
+
+## <a name="run"></a>How to locally run Meal Planner
+
+* Set up and activate a python virtualenv, and install all dependencies:
+    * `pip install -r requirements.txt`
+  
+* Create the tables in your database:
+    * `python -i model.py`
+    * While in interactive mode, create tables: `db.create_all()`
+    
+* Now, quit interactive mode. Start up the flask server:
+    * `python server.py`
+
+* Go to localhost:5000 to see the web app
+
+
+## <a name="author"></a>About the author
+
+Francesca Paoletti graduated from an italian university in Math with a final thesis in "Data Envelopment Analysis", in the operational research field. She took courses in finance and economics in Italian Banks and at UC Berkeley. She worked for a number of years as a math teacher and a java back end developer. She is very passionate about data science. For more details see her [linkedin] (https://www.linkedin.com/in/francescapaoletti) profile.
+
+
 

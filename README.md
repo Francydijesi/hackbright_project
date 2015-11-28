@@ -55,6 +55,7 @@ ___
 #### Recipes list
 
 Use the filters or the search function to quickly find your recipe. Click on the picture or the view button to go to the recipe page for more details.
+
 ![alt text](https://github.com/Francydijesi/hackbright_project/blob/master/static/img/Readme/Recipe%20List.png "Recipe View")
 
 ___
@@ -63,6 +64,7 @@ ___
 #### Recipe page
 
 Follow all the instructions to cook the meal now or save it for a future meal and upload it to the planner.
+
 ![alt text](https://github.com/Francydijesi/hackbright_project/blob/master/static/img/Readme/Recipe%20Page.png "Recipe Page")
 
 ___
@@ -84,6 +86,7 @@ ___
 
 This list was generated with the ingredients of all the recipes in the planner.
 It can be printed or sent as an SMS, using the Twilio API.
+
 ![alt text](https://github.com/Francydijesi/hackbright_project/blob/master/static/img/Readme/Shopping%20List.png "Shopping list")
 
 ___
@@ -94,6 +97,7 @@ ___
 If you are interested in keeping track of your grocery budget, here is a tool for recording your expenses and visualizing them.
 
 View the expenses by week or grouped by store, for this month or the past two or three months.
+
 ![alt text](https://github.com/Francydijesi/hackbright_project/blob/master/static/img/Readme/Grocery%20Expenses.png "Grocery expenses graphs")
 
 ___
@@ -102,6 +106,7 @@ ___
 #### Ingredient analysis
 
 This bubble chart shows all of the ingredients saved in all the shopping lists, color coded by category. The bigger the bubble, the higher its frequency. 
+
 ![alt text]
 (https://github.com/Francydijesi/hackbright_project/blob/master/static/img/Readme/Ingredient%20Analysis.png "Ingredient Analysis")
 
@@ -123,7 +128,7 @@ This bubble chart shows all of the ingredients saved in all the shopping lists, 
 
 ## <a name="author"></a>About the author
 
-Francesca Paoletti graduated from an italian university in Math with a final thesis in "Data Envelopment Analysis", in the operational research field. She took courses in finance and economics in Italian Banks and at UC Berkeley. She worked for a number of years as a math teacher and a java back end developer. She is very passionate about data science. For more details see her [linkedin] (https://www.linkedin.com/in/francescapaoletti) profile.
+Francesca Paoletti graduated from an italian university in Math with a final thesis in "Data Envelopment Analysis", in the operational research field. She took a course in "Credit Risk Analysis" at IMI Bank in Italy and in "Business Administration" at UC Berkeley. She worked for a number of years as a high schoolmmath teacher and a java back end developer. She is very passionate about data science. For more details see her [linkedin] (https://www.linkedin.com/in/francescapaoletti) profile.
 
 
 

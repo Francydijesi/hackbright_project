@@ -6,9 +6,9 @@ This web application was designed with the goal of solving this simple but commo
 
 ![alt text](https://github.com/Francydijesi/hackbright_project/blob/master/static/img/Readme/Homepage.png "Homepage")
 This app has three main sections:
-* Recipes, where you can store your own recipes or import new ones from the web
-* Planner, a useful tool that allows you to upload the recipes you would like to cook during the week for each day and each meal.
-* Grocery. In this section you can view the shopping list automatically generated, with the ingredients necessary for the weekly meals which were uploaded in the planner. You can also keep track of the grocery expenses and analyze your shopping habits.  
+* __Recipes__, where you can store your own recipes or import new ones from the web
+* __Planner__, a useful tool that allows you to upload the recipes you would like to cook during the week for each day and each meal.
+* __Grocery__, where you can view the shopping list automatically generated, with the ingredients necessary for the weekly meals which were uploaded in the planner. You can also keep track of the grocery expenses and analyze your shopping habits.  
 
 
 ## Table of Contents
@@ -128,7 +128,7 @@ This bubble chart shows all of the ingredients saved in all the shopping lists, 
 
 ## <a name="author"></a>About the author
 
-Francesca Paoletti graduated from an italian university in Math with a final thesis in "Data Envelopment Analysis", in the operational research field. She took a course in "Credit Risk Analysis" at IMI Bank in Italy and in "Business Administration" at UC Berkeley. She worked for a number of years as a high schoolmmath teacher and a java back end developer. She is very passionate about data science. For more details see her [linkedin] (https://www.linkedin.com/in/francescapaoletti) profile.
+Francesca Paoletti graduated from an italian university in Math with a final thesis in "Data Envelopment Analysis", in the operational research field. She took a course in "Credit Risk Analysis" at IMI Bank in Italy and in "Business Administration" at UC Berkeley. She worked for a number of years as a high school math teacher and a java back end developer. She is very passionate about data science. For more details see her [linkedin] (https://www.linkedin.com/in/francescapaoletti) profile.
 
 
 

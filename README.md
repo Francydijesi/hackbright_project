@@ -21,17 +21,18 @@ This app has three main sections:
 ## <a name="technologiesused"></a>Technologies Used
 
 * Python
-* Sqlite
-* Sqlalchemy
-* Flask
+* SQLite relational database
+* SQLAlchemy Object Relational Mapper
+* Flask web framework
+* Jinja2 templating
 * Beautiful soup library
 * Javascript/jQuery
 * AJAX/JSON
-* Jinja2
 * Chart.js
 * D3
-* Bootstrap
+* CSS + Bootstrap
 * Twilio API
+* Unittest for testing
 
 (dependencies are listed in requirements.txt)
 
